@@ -1,0 +1,19 @@
+formatter: markdown table
+
+output:
+  file: "USAGE.md"
+  mode: replace
+
+sort:
+  enabled: false
+
+settings:
+  anchor: true
+  color: true
+  default: true
+  description: true
+  escape: true
+  indent: 2
+  required: true
+  sensitive: true
+  type: true

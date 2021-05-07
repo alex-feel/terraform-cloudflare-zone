@@ -1,0 +1,118 @@
+<!-- BEGIN_TF_DOCS -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15.0 |
+| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | >= 2.15.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_cloudflare"></a> [cloudflare](#provider\_cloudflare) | >= 2.15.0 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [cloudflare_record.this](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record) | resource |
+| [cloudflare_zone.this](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/zone) | resource |
+| [cloudflare_zone_dnssec.this](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/zone_dnssec) | resource |
+| [cloudflare_zone_settings_override.this](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/zone_settings_override) | resource |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_zone"></a> [zone](#input\_zone) | The DNS zone name which will be added, e.g. example.com. | `string` | n/a | yes |
+| <a name="input_paused"></a> [paused](#input\_paused) | Indicates if the zone is only using Cloudflare DNS services. A true value means the zone will not receive security or performance benefits. | `bool` | `false` | no |
+| <a name="input_jump_start"></a> [jump\_start](#input\_jump\_start) | Automatically attempt to fetch existing DNS records on creation. Ignored after zone is created. | `bool` | `false` | no |
+| <a name="input_plan"></a> [plan](#input\_plan) | The desired plan for the zone. Can be updated once the one is created. One of free, pro, business, enterprise. Changing this value will create/cancel associated subscriptions. | `string` | `"free"` | no |
+| <a name="input_type"></a> [type](#input\_type) | A full zone implies that DNS is hosted with Cloudflare. A partial zone is typically a partner-hosted zone or a CNAME setup. Valid values: full, partial. | `string` | `"full"` | no |
+| <a name="input_always_online"></a> [always\_online](#input\_always\_online) | When enabled, Always Online will serve pages from our cache if your server is offline. | `string` | `"on"` | no |
+| <a name="input_always_use_https"></a> [always\_use\_https](#input\_always\_use\_https) | Reply to all requests for URLs that use 'http' with a 301 redirect to the equivalent 'https' URL. If you only want to redirect for a subset of requests, consider creating an 'Always use HTTPS' page rule. | `string` | `"off"` | no |
+| <a name="input_automatic_https_rewrites"></a> [automatic\_https\_rewrites](#input\_automatic\_https\_rewrites) | Enable the Automatic HTTPS Rewrites feature for this zone. | `string` | `"on"` | no |
+| <a name="input_brotli"></a> [brotli](#input\_brotli) | When the client requesting an asset supports the brotli compression algorithm, Cloudflare will serve a brotli compressed version of the asset. | `string` | `"off"` | no |
+| <a name="input_browser_check"></a> [browser\_check](#input\_browser\_check) | Browser Integrity Check is similar to Bad Behavior and looks for common HTTP headers abused most commonly by spammers and denies access to your page. It will also challenge visitors that do not have a user agent or a non standard user agent (also commonly used by abuse bots, crawlers or visitors). | `string` | `"on"` | no |
+| <a name="input_development_mode"></a> [development\_mode](#input\_development\_mode) | Development Mode temporarily allows you to enter development mode for your websites if you need to make changes to your site. This will bypass Cloudflare's accelerated cache and slow down your site, but is useful if you are making changes to cacheable content (like images, css, or JavaScript) and would like to see those changes right away. Once entered, development mode will last for 3 hours and then automatically toggle off. | `string` | `"off"` | no |
+| <a name="input_email_obfuscation"></a> [email\_obfuscation](#input\_email\_obfuscation) | Encrypt email adresses on your web page from bots, while keeping them visible to humans. | `string` | `"on"` | no |
+| <a name="input_hotlink_protection"></a> [hotlink\_protection](#input\_hotlink\_protection) | When enabled, the Hotlink Protection option ensures that other sites cannot suck up your bandwidth by building pages that use images hosted on your site. Anytime a request for an image on your site hits Cloudflare, we check to ensure that it's not another site requesting them. People will still be able to download and view images from your page, but other sites won't be able to steal them for use on their own pages. | `string` | `"off"` | no |
+| <a name="input_http2"></a> [http2](#input\_http2) | HTTP2 setting. | `string` | `"off"` | no |
+| <a name="input_http3"></a> [http3](#input\_http3) | HTTP3 setting. | `string` | `"off"` | no |
+| <a name="input_ip_geolocation"></a> [ip\_geolocation](#input\_ip\_geolocation) | Enable IP Geolocation to have Cloudflare geolocate visitors to your website and pass the country code to you. | `string` | `"on"` | no |
+| <a name="input_ipv6"></a> [ipv6](#input\_ipv6) | Enable IPv6 on all subdomains that are Cloudflare enabled. | `string` | `"off"` | no |
+| <a name="input_mirage"></a> [mirage](#input\_mirage) | Automatically optimize image loading for website visitors on mobile devices. | `string` | `"off"` | no |
+| <a name="input_opportunistic_encryption"></a> [opportunistic\_encryption](#input\_opportunistic\_encryption) | Enable the Opportunistic Encryption feature for this zone. | `string` | `"on"` | no |
+| <a name="input_opportunistic_onion"></a> [opportunistic\_onion](#input\_opportunistic\_onion) | Add an Alt-Svc header to all legitimate requests from Tor, allowing the connection to use our onion services instead of exit nodes. | `string` | `"off"` | no |
+| <a name="input_origin_error_page_pass_thru"></a> [origin\_error\_page\_pass\_thru](#input\_origin\_error\_page\_pass\_thru) | Cloudflare will proxy customer error pages on any 502,504 errors on origin server instead of showing a default Cloudflare error page. This does not apply to 522 errors and is limited to Enterprise Zones. | `string` | `"off"` | no |
+| <a name="input_prefetch_preload"></a> [prefetch\_preload](#input\_prefetch\_preload) | Cloudflare will prefetch any URLs that are included in the response headers. This is limited to Enterprise Zones. | `string` | `"off"` | no |
+| <a name="input_privacy_pass"></a> [privacy\_pass](#input\_privacy\_pass) | Privacy Pass is a browser extension developed by the Privacy Pass Team to improve the browsing experience for your visitors. Enabling Privacy Pass will reduce the number of CAPTCHAs shown to your visitors. | `string` | `"on"` | no |
+| <a name="input_response_buffering"></a> [response\_buffering](#input\_response\_buffering) | Enables or disables buffering of responses from the proxied server. Cloudflare may buffer the whole payload to deliver it at once to the client versus allowing it to be delivered in chunks. By default, the proxied server streams directly and is not buffered by Cloudflare. This is limited to Enterprise Zones. | `string` | `"off"` | no |
+| <a name="input_rocket_loader"></a> [rocket\_loader](#input\_rocket\_loader) | Rocket Loader is a general-purpose asynchronous JavaScript optimisation which prioritises the rendering of your content while loading your site's Javascript asynchronously. Turning on Rocket Loader will immediately improve a web page's rendering time sometimes measured as Time to First Paint (TTFP) and also the window.onload time (assuming there is JavaScript on the page), which can have a positive impact on your Google search ranking. When turned on, Rocket Loader will automatically defer the loading of all Javascript referenced in your HTML, with no configuration required. | `string` | `"off"` | no |
+| <a name="input_server_side_exclude"></a> [server\_side\_exclude](#input\_server\_side\_exclude) | If there is sensitive content on your website that you want visible to real visitors, but that you want to hide from suspicious visitors, all you have to do is wrap the content with Cloudflare SSE tags. Wrap any content that you want to be excluded from suspicious visitors in the following SSE tags: <!--sse--><!--/sse-->. For example: <!--sse--> Bad visitors won't see my phone number, 555-555-5555 <!--/sse-->. Note: SSE only will work with HTML. If you have HTML minification enabled, you won't see the SSE tags in your HTML source when it's served through Cloudflare. SSE will still function in this case, as Cloudflare's HTML minification and SSE functionality occur on-the-fly as the resource moves through our network to the visitor's computer. | `string` | `"on"` | no |
+| <a name="input_sort_query_string_for_cache"></a> [sort\_query\_string\_for\_cache](#input\_sort\_query\_string\_for\_cache) | Cloudflare will treat files with the same query strings as the same file in cache, regardless of the order of the query strings. This is limited to Enterprise Zones. | `string` | `"off"` | no |
+| <a name="input_tls_client_auth"></a> [tls\_client\_auth](#input\_tls\_client\_auth) | TLS Client Auth requires Cloudflare to connect to your origin server using a client certificate (Enterprise Only). | `string` | `"on"` | no |
+| <a name="input_true_client_ip_header"></a> [true\_client\_ip\_header](#input\_true\_client\_ip\_header) | Allows customer to continue to use True Client IP (Akamai feature) in the headers we send to the origin. This is limited to Enterprise Zones. | `string` | `"off"` | no |
+| <a name="input_universal_ssl"></a> [universal\_ssl](#input\_universal\_ssl) | Disabling Universal SSL removes any currently active Universal SSL certificates for your zone from the edge and prevents any future Universal SSL certificates from being ordered. If there are no dedicated certificates or custom certificates uploaded for the domain, visitors will be unable to access the domain over HTTPS. | `string` | `"on"` | no |
+| <a name="input_waf"></a> [waf](#input\_waf) | The WAF examines HTTP requests to your website. It inspects both GET and POST requests and applies rules to help filter out illegitimate traffic from legitimate website visitors. The Cloudflare WAF inspects website addresses or URLs to detect anything out of the ordinary. If the Cloudflare WAF determines suspicious user behavior, then the WAF will 'challenge' the web visitor with a page that asks them to submit a CAPTCHA successfully to continue their action. If the challenge is failed, the action will be stopped. What this means is that Cloudflare's WAF will block any traffic identified as illegitimate before it reaches your origin web server. | `string` | `"off"` | no |
+| <a name="input_webp"></a> [webp](#input\_webp) | When the client requesting the image supports the WebP image codec, Cloudflare will serve a WebP version of the image when WebP offers a performance advantage over the original image format. Note that the value specified will be ignored unless polish is turned on (i.e. is "lossless" or "lossy"). | `string` | `"off"` | no |
+| <a name="input_websockets"></a> [websockets](#input\_websockets) | WebSockets are open connections sustained between the client and the origin server. Inside a WebSockets connection, the client and the origin can pass data back and forth without having to reestablish sessions. This makes exchanging data within a WebSockets connection fast. WebSockets are often used for real-time applications such as live chat and gaming. | `string` | `"off"` | no |
+| <a name="input_zero_rtt"></a> [zero\_rtt](#input\_zero\_rtt) | 0-RTT setting. | `string` | `"off"` | no |
+| <a name="input_cache_level"></a> [cache\_level](#input\_cache\_level) | Cache Level functions based off the setting level. The basic setting will cache most static resources (i.e., css, images, and JavaScript). The simplified setting will ignore the query string when delivering a cached resource. The aggressive setting will cache all static resources, including ones with a query string. | `string` | `"aggressive"` | no |
+| <a name="input_cname_flattening"></a> [cname\_flattening](#input\_cname\_flattening) | CNAME flattening setting. | `string` | `"flatten_at_root"` | no |
+| <a name="input_h2_prioritization"></a> [h2\_prioritization](#input\_h2\_prioritization) | HTTP/2 Edge Prioritization optimises the delivery of resources served through HTTP/2 to improve page load performance. It also supports fine control of content delivery when used in conjunction with Workers. | `string` | `"off"` | no |
+| <a name="input_image_resizing"></a> [image\_resizing](#input\_image\_resizing) | Image Resizing provides on-demand resizing, conversion and optimisation for images served through Cloudflare's network. | `string` | `"off"` | no |
+| <a name="input_min_tls_version"></a> [min\_tls\_version](#input\_min\_tls\_version) | Only accept HTTPS requests that use at least the TLS protocol version specified. For example, if TLS 1.1 is selected, TLS 1.0 connections will be rejected, while 1.1, 1.2, and 1.3 (if enabled) will be permitted. | `string` | `"1.0"` | no |
+| <a name="input_polish"></a> [polish](#input\_polish) | Strips metadata and compresses your images for faster page load times. Basic (Lossless): Reduce the size of PNG, JPEG, and GIF files - no impact on visual quality. Basic + JPEG (Lossy): Further reduce the size of JPEG files for faster image loading. Larger JPEGs are converted to progressive images, loading a lower-resolution image first and ending in a higher-resolution version. Not recommended for hi-res photography sites. | `string` | `"off"` | no |
+| <a name="input_pseudo_ipv4"></a> [pseudo\_ipv4](#input\_pseudo\_ipv4) | Pseudo IPv4 setting. | `string` | `"off"` | no |
+| <a name="input_security_level"></a> [security\_level](#input\_security\_level) | Choose the appropriate security profile for your website, which will automatically adjust each of the security settings. If you choose to customize an individual security setting, the profile will become Custom. | `string` | `"medium"` | no |
+| <a name="input_ssl"></a> [ssl](#input\_ssl) | SSL encrypts your visitor's connection and safeguards credit card numbers and other personal data to and from your website. SSL can take up to 5 minutes to fully activate. Requires Cloudflare active on your root domain or www domain. Off: no SSL between the visitor and Cloudflare, and no SSL between Cloudflare and your web server (all HTTP traffic). Flexible: SSL between the visitor and Cloudflare -- visitor sees HTTPS on your site, but no SSL between Cloudflare and your web server. You don't need to have an SSL cert on your web server, but your vistors will still see the site as being HTTPS enabled. Full: SSL between the visitor and Cloudflare -- visitor sees HTTPS on your site, and SSL between Cloudflare and your web server. You'll need to have your own SSL cert or self-signed cert at the very least. Full (Strict): SSL between the visitor and Cloudflare -- visitor sees HTTPS on your site, and SSL between Cloudflare and your web server. You'll need to have a valid SSL certificate installed on your web server. This certificate must be signed by a certificate authority, have an expiration date in the future, and respond for the request domain name (hostname). | `string` | `"off"` | no |
+| <a name="input_tls_1_3"></a> [tls\_1\_3](#input\_tls\_1\_3) | Enable Crypto TLS 1.3 feature for this zone. | `string` | `"off"` | no |
+| <a name="input_browser_cache_ttl"></a> [browser\_cache\_ttl](#input\_browser\_cache\_ttl) | Browser Cache TTL (in seconds) specifies how long Cloudflare-cached resources will remain on your visitors' computers. Cloudflare will honor any larger times specified by your server. Setting a TTL of 0 is equivalent to selecting `Respect Existing Headers`. | `number` | `14400` | no |
+| <a name="input_challenge_ttl"></a> [challenge\_ttl](#input\_challenge\_ttl) | Specify how long a visitor is allowed access to your site after successfully completing a challenge (such as a CAPTCHA). After the TTL has expired the visitor will have to complete a new challenge. We recommend a 15 - 45 minute setting and will attempt to honor any setting above 45 minutes. | `number` | `1800` | no |
+| <a name="input_max_upload"></a> [max\_upload](#input\_max\_upload) | The amount of data visitors can upload to your website in a single request. | `number` | `100` | no |
+| <a name="input_minify"></a> [minify](#input\_minify) | Automatically minify certain assets for your website. | <pre>object({<br>    css  = optional(string)<br>    html = optional(string)<br>    js   = optional(string)<br>  })</pre> | <pre>{<br>  "css": "off",<br>  "html": "off",<br>  "js": "off"<br>}</pre> | no |
+| <a name="input_mobile_redirect"></a> [mobile\_redirect](#input\_mobile\_redirect) | Automatically redirect visitors on mobile devices to a mobile-optimized subdomain. | <pre>object({<br>    mobile_subdomain = string<br>    status           = optional(string)<br>    strip_uri        = optional(bool)<br>  })</pre> | <pre>{<br>  "mobile_subdomain": "",<br>  "status": "off",<br>  "strip_uri": false<br>}</pre> | no |
+| <a name="input_security_header"></a> [security\_header](#input\_security\_header) | Cloudflare security headers for a zone. | <pre>object({<br>    enabled            = optional(bool)<br>    preload            = optional(bool)<br>    max_age            = optional(number)<br>    include_subdomains = optional(bool)<br>    nosniff            = optional(bool)<br>  })</pre> | <pre>{<br>  "enabled": true,<br>  "include_subdomains": true,<br>  "max_age": 86400,<br>  "nosniff": true,<br>  "preload": false<br>}</pre> | no |
+| <a name="input_enable_dnssec"></a> [enable\_dnssec](#input\_enable\_dnssec) | Enable or disable DNSSEC. | `bool` | `false` | no |
+| <a name="input_records"></a> [records](#input\_records) | Zone's DNS records. | <pre>list(object({<br>    record_name = string<br>    type        = string<br>    name        = optional(string)<br>    value       = string<br>    priority    = optional(number)<br>    ttl         = optional(number)<br>    proxied     = optional(bool)<br>  }))</pre> | `[]` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_zone_id"></a> [zone\_id](#output\_zone\_id) | The zone ID. |
+| <a name="output_plan"></a> [plan](#output\_plan) | The name of the commercial plan to apply to the zone. |
+| <a name="output_vanity_name_servers"></a> [vanity\_name\_servers](#output\_vanity\_name\_servers) | List of Vanity Nameservers (if set). |
+| <a name="output_meta_wildcard_proxiable"></a> [meta\_wildcard\_proxiable](#output\_meta\_wildcard\_proxiable) | Indicates whether wildcard DNS records can receive Cloudflare security and performance features. |
+| <a name="output_meta_phishing_detected"></a> [meta\_phishing\_detected](#output\_meta\_phishing\_detected) | Indicates if URLs on the zone have been identified as hosting phishing content. |
+| <a name="output_status"></a> [status](#output\_status) | Status of the zone. Valid values: active, pending, initializing, moved, deleted, deactivated. |
+| <a name="output_name_servers"></a> [name\_servers](#output\_name\_servers) | Cloudflare-assigned name servers. This is only populated for zones that use Cloudflare DNS. |
+| <a name="output_verification_key"></a> [verification\_key](#output\_verification\_key) | Contains the TXT record value to validate domain ownership. This is only populated for zones of type partial. |
+| <a name="output_initial_settings"></a> [initial\_settings](#output\_initial\_settings) | Settings present in the zone at the time the resource is created. This will be used to restore the original settings when this resource is destroyed. Shares the same schema as the settings attribute (Above). |
+| <a name="output_initial_settings_read_at"></a> [initial\_settings\_read\_at](#output\_initial\_settings\_read\_at) | Time when this resource was created and the initial\_settings were set. |
+| <a name="output_readonly_settings"></a> [readonly\_settings](#output\_readonly\_settings) | Which of the current settings are not able to be set by the user. Which settings these are is determined by plan level and user permissions. |
+| <a name="output_zone_type"></a> [zone\_type](#output\_zone\_type) | A full zone implies that DNS is hosted with Cloudflare. A partial zone is typically a partner-hosted zone or a CNAME setup. |
+| <a name="output_dnssec_status"></a> [dnssec\_status](#output\_dnssec\_status) | The status of the Zone DNSSEC. |
+| <a name="output_flags"></a> [flags](#output\_flags) | Zone DNSSEC flags. |
+| <a name="output_algorithm"></a> [algorithm](#output\_algorithm) | Zone DNSSEC algorithm. |
+| <a name="output_key_type"></a> [key\_type](#output\_key\_type) | Key type used for Zone DNSSEC. |
+| <a name="output_digest_type"></a> [digest\_type](#output\_digest\_type) | Digest Type for Zone DNSSEC. |
+| <a name="output_digest_algorithm"></a> [digest\_algorithm](#output\_digest\_algorithm) | Digest algorithm use for Zone DNSSEC. |
+| <a name="output_digest"></a> [digest](#output\_digest) | Zone DNSSEC digest. |
+| <a name="output_ds"></a> [ds](#output\_ds) | DS for the Zone DNSSEC. |
+| <a name="output_key_tag"></a> [key\_tag](#output\_key\_tag) | Key Tag for the Zone DNSSEC. |
+| <a name="output_public_key"></a> [public\_key](#output\_public\_key) | Public Key for the Zone DNSSEC. |
+| <a name="output_modified_on"></a> [modified\_on](#output\_modified\_on) | Zone DNSSEC updated time. |
+| <a name="output_record_ids"></a> [record\_ids](#output\_record\_ids) | The record ID. |
+| <a name="output_record_hostnames"></a> [record\_hostnames](#output\_record\_hostnames) | The FQDN of the record. |
+| <a name="output_record_proxiable"></a> [record\_proxiable](#output\_record\_proxiable) | Shows whether this record can be proxied, must be true if setting proxied=true. |
+| <a name="output_record_created_on"></a> [record\_created\_on](#output\_record\_created\_on) | The RFC3339 timestamp of when the record was created. |
+| <a name="output_record_modified_on"></a> [record\_modified\_on](#output\_record\_modified\_on) | The RFC3339 timestamp of when the record was last modified. |
+| <a name="output_record_metadata"></a> [record\_metadata](#output\_record\_metadata) | A key-value map of string metadata Cloudflare associates with the record. |
+<!-- END_TF_DOCS -->
