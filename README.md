@@ -58,6 +58,10 @@ You can find detailed usage information in [USAGE.md](./USAGE.md).
 
 ## Notes
 
+[Cloudflare Zone settings](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/zone_settings_override):
+
+* If you try to use a zone setting that is available in a higher plan than your current one, the setting will be ignored. Keep in mind that as a result, your configuration may contain zone settings that are not actually applied to the zone, but this keeps you from getting errors when you mistakenly try to change a setting that is not available on your current plan.
+
 [Cloudflare record](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record):
 
 * The `name` argument defaults to `@` (root).
