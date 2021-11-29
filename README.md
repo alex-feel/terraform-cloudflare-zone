@@ -66,6 +66,7 @@ You can find detailed usage information in [USAGE.md](./USAGE.md).
 
 * The `name` argument defaults to `@` (root).
 * The `data` argument is not yet supported.
+* The `ttl` argument defaults to `1` (automatic). Must be the default when using the `proxied` argument with `true` value.
 * The `proxied` argument defaults to `false` (for records that support it). You must explicitly set this argument to `true` for the records that you want to proxy through Cloudflare.
 * For each record, you need to come up with any valid name and specify it in the `record_name` argument (see example above), however, if you create records without using this module, you will also need to come up with a name for each `cloudflare_record` resource. I could generate a name based on some raw data, but either I won't be able to generate a sufficiently unique name, or the name will change every time, forcing Terraform to recreate records over and over again.
 
