@@ -8,8 +8,6 @@ locals {
   avail_starting_with_enterprise = ["enterprise"]
 }
 
-# These local variables are unnecessary
-# Will be used in the future for additional validation of input variable values
 locals {
   http2_avail                       = local.avail_starting_with_pro
   http3_avail                       = local.avail_starting_with_pro
@@ -24,7 +22,7 @@ locals {
   waf_avail                         = local.avail_starting_with_pro
   webp_avail                        = local.avail_starting_with_pro
   zero_rtt_avail                    = local.avail_starting_with_pro
-  cname_flattening_avail            = local.avail_starting_with_pro # Not sure if the setting change is available starting with Pro plan
+  cname_flattening_avail            = local.avail_starting_with_pro
   h2_prioritization_avail           = local.avail_starting_with_pro
   image_resizing_avail              = local.avail_starting_with_business
   polish_avail                      = local.avail_starting_with_pro
@@ -32,24 +30,24 @@ locals {
 }
 
 locals {
-  http2                       = contains(local.http2_avail, var.plan) ? "off" : null
-  http3                       = contains(local.http3_avail, var.plan) ? "off" : null
-  ipv6                        = contains(local.ipv6_avail, var.plan) ? "off" : null
-  mirage                      = contains(local.mirage_avail, var.plan) ? "off" : null
-  origin_error_page_pass_thru = contains(local.origin_error_page_pass_thru_avail, var.plan) ? "off" : null
-  prefetch_preload            = contains(local.prefetch_preload_avail, var.plan) ? "off" : null
-  response_buffering          = contains(local.response_buffering_avail, var.plan) ? "off" : null
-  sort_query_string_for_cache = contains(local.sort_query_string_for_cache_avail, var.plan) ? "off" : null
-  tls_client_auth             = contains(local.tls_client_auth_avail, var.plan) ? "on" : null
-  true_client_ip_header       = contains(local.true_client_ip_header_avail, var.plan) ? "off" : null
-  waf                         = contains(local.waf_avail, var.plan) ? "off" : null
-  webp                        = contains(local.webp_avail, var.plan) ? "off" : null
-  zero_rtt                    = contains(local.zero_rtt_avail, var.plan) ? "off" : null
-  cname_flattening            = contains(local.cname_flattening_avail, var.plan) ? "flatten_at_root" : null
-  h2_prioritization           = contains(local.h2_prioritization_avail, var.plan) ? "off" : null
-  image_resizing              = contains(local.image_resizing_avail, var.plan) ? "off" : null
-  polish                      = contains(local.polish_avail, var.plan) ? "off" : null
-  pseudo_ipv4                 = contains(local.pseudo_ipv4_avail, var.plan) ? "off" : null
+  http2                       = contains(local.http2_avail, var.plan) ? var.http2 : null
+  http3                       = contains(local.http3_avail, var.plan) ? var.http3 : null
+  ipv6                        = contains(local.ipv6_avail, var.plan) ? var.ipv6 : null
+  mirage                      = contains(local.mirage_avail, var.plan) ? var.mirage : null
+  origin_error_page_pass_thru = contains(local.origin_error_page_pass_thru_avail, var.plan) ? var.origin_error_page_pass_thru : null
+  prefetch_preload            = contains(local.prefetch_preload_avail, var.plan) ? var.prefetch_preload : null
+  response_buffering          = contains(local.response_buffering_avail, var.plan) ? var.response_buffering : null
+  sort_query_string_for_cache = contains(local.sort_query_string_for_cache_avail, var.plan) ? var.sort_query_string_for_cache : null
+  tls_client_auth             = contains(local.tls_client_auth_avail, var.plan) ? var.tls_client_auth : null
+  true_client_ip_header       = contains(local.true_client_ip_header_avail, var.plan) ? var.true_client_ip_header : null
+  waf                         = contains(local.waf_avail, var.plan) ? var.waf : null
+  webp                        = contains(local.webp_avail, var.plan) ? var.webp : null
+  zero_rtt                    = contains(local.zero_rtt_avail, var.plan) ? var.zero_rtt : null
+  cname_flattening            = contains(local.cname_flattening_avail, var.plan) ? var.cname_flattening : null
+  h2_prioritization           = contains(local.h2_prioritization_avail, var.plan) ? var.h2_prioritization : null
+  image_resizing              = contains(local.image_resizing_avail, var.plan) ? var.image_resizing : null
+  polish                      = contains(local.polish_avail, var.plan) ? var.polish : null
+  pseudo_ipv4                 = contains(local.pseudo_ipv4_avail, var.plan) ? var.pseudo_ipv4 : null
 }
 
 locals {
