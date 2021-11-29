@@ -1,5 +1,7 @@
 # Cloudflare Zone Terraform Module
 
+[![](https://img.shields.io/badge/terraform%20registry-published-%235c4ee5?style=flat&logo=terraform)](https://registry.terraform.io/modules/alex-feel/zone/cloudflare/latest)
+
 Terraform module that creates zone resources on Cloudflare.
 
 These types of resources are supported:
@@ -14,11 +16,34 @@ These types of resources are supported:
 Example of using the module:
 
 ```hcl
+terraform {
+  required_version = ">=1.0.10"
+
+  required_providers {
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "3.4.0"
+    }
+  }
+
+  backend "remote" {
+    organization = "acme"
+
+    workspaces {
+      name = "infrastructure-prod-worldwide"
+    }
+  }
+}
+
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
+}
+
 module "acme_com" {
-  source        = "alex-feel/zone/cloudflare"
-  version       = "1.0.0"
+  source  = "alex-feel/zone/cloudflare"
+  version = "1.2.0"
   # Required
-  zone          = "acme.com"
+  zone = "acme.com"
   # Optional
   always_online = "off"
   minify = {
@@ -29,20 +54,20 @@ module "acme_com" {
     {
       record_name = "a_main"
       type        = "A"
-      value       = "135.180.1.14"
+      value       = "157.131.111.93"
       proxied     = true
     },
     {
       record_name = "a_www"
       type        = "A"
       name        = "www"
-      value       = "135.180.1.14"
+      value       = "157.131.111.93"
       proxied     = true
     },
     {
-      record_name = "mx_google_1"
+      record_name = "mx_1"
       type        = "MX"
-      value       = "aspmx.l.google.com"
+      value       = "mx.acme.com"
       priority    = 1
     },
     {
@@ -54,7 +79,7 @@ module "acme_com" {
 }
 ```
 
-You can find detailed usage information in [USAGE.md](./USAGE.md).
+You can find detailed usage information in [USAGE.md](https://github.com/alex-feel/terraform-cloudflare-zone/blob/main/USAGE.md).
 
 ## Notes
 
@@ -64,11 +89,11 @@ You can find detailed usage information in [USAGE.md](./USAGE.md).
 
 [Cloudflare record](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record):
 
-* The `name` argument defaults to `@` (root).
+* The `name` argument value defaults to `@` (root).
 * The `data` argument is not yet supported.
-* The `ttl` argument defaults to `1` (automatic). Must be the default when using the `proxied` argument with `true` value.
-* The `proxied` argument defaults to `false` (for records that support it). You must explicitly set this argument to `true` for the records that you want to proxy through Cloudflare.
-* For each record, you need to come up with any valid name and specify it in the `record_name` argument (see example above), however, if you create records without using this module, you will also need to come up with a name for each `cloudflare_record` resource. I could generate a name based on some raw data, but either I won't be able to generate a sufficiently unique name, or the name will change every time, forcing Terraform to recreate records over and over again.
+* The `ttl` argument value defaults to `1` (automatic). The value is forced to `1` (automatic), regardless of explicitly set value, if you set the `proxied` argument to `true`.
+* The `proxied` argument value defaults to `false` (for records that support it). You must explicitly set this argument value to `true` for the records that you want to proxy through Cloudflare.
+* For each record, you need to come up with any valid name and specify it in the `record_name` argument value (see example above). However, if you create records without using this module, you will also need to come up with a name for each `cloudflare_record` resource. I could generate a name based on some raw data, but either I won't be able to generate a sufficiently unique name, or the name will change every time, forcing Terraform to recreate records over and over again.
 
 ## License
 
