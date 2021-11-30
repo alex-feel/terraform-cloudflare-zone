@@ -169,6 +169,6 @@ resource "cloudflare_record" "this" {
   name     = each.value.name
   value    = each.value.value
   priority = each.value.priority
-  ttl      = contains(["a", "aaaa", "cname"], lower(each.value.type)) && each.value.proxied == true ? 1 : each.value.ttl
+  ttl      = contains(["A", "AAAA", "CNAME"], each.value.type) && each.value.proxied == true ? 1 : each.value.ttl
   proxied  = each.value.proxied
 }
