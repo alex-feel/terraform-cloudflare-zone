@@ -25,7 +25,7 @@ variable "plan" {
   default     = "free"
 
   validation {
-    condition     = contains(["free", "pro", "business", "enterprise"], lower(var.plan))
+    condition     = contains(["free", "pro", "business", "enterprise"], var.plan)
     error_message = "The plan value must be one of the following: \"free\", \"pro\", \"business\", \"enterprise\"."
   }
 }
@@ -36,7 +36,7 @@ variable "type" {
   default     = "full"
 
   validation {
-    condition     = contains(["full", "partial"], lower(var.type))
+    condition     = contains(["full", "partial"], var.type)
     error_message = "The type value must be one of the following: \"full\", \"partial\"."
   }
 }
@@ -47,7 +47,7 @@ variable "always_online" {
   default     = "on"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.always_online))
+    condition     = contains(["off", "on"], var.always_online)
     error_message = "The always_online value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -58,7 +58,7 @@ variable "always_use_https" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.always_use_https))
+    condition     = contains(["off", "on"], var.always_use_https)
     error_message = "The always_use_https value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -69,7 +69,7 @@ variable "automatic_https_rewrites" {
   default     = "on"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.automatic_https_rewrites))
+    condition     = contains(["off", "on"], var.automatic_https_rewrites)
     error_message = "The automatic_https_rewrites value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -80,7 +80,7 @@ variable "brotli" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.brotli))
+    condition     = contains(["off", "on"], var.brotli)
     error_message = "The brotli value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -91,7 +91,7 @@ variable "browser_check" {
   default     = "on"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.browser_check))
+    condition     = contains(["off", "on"], var.browser_check)
     error_message = "The browser_check value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -102,7 +102,7 @@ variable "development_mode" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.development_mode))
+    condition     = contains(["off", "on"], var.development_mode)
     error_message = "The development_mode value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -113,7 +113,7 @@ variable "email_obfuscation" {
   default     = "on"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.email_obfuscation))
+    condition     = contains(["off", "on"], var.email_obfuscation)
     error_message = "The email_obfuscation value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -124,7 +124,7 @@ variable "hotlink_protection" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.hotlink_protection))
+    condition     = contains(["off", "on"], var.hotlink_protection)
     error_message = "The hotlink_protection value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -135,7 +135,7 @@ variable "http2" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.http2))
+    condition     = contains(["off", "on"], var.http2)
     error_message = "The http2 value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -146,7 +146,7 @@ variable "http3" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.http3))
+    condition     = contains(["off", "on"], var.http3)
     error_message = "The http3 value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -157,7 +157,7 @@ variable "ip_geolocation" {
   default     = "on"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.ip_geolocation))
+    condition     = contains(["off", "on"], var.ip_geolocation)
     error_message = "The ip_geolocation value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -168,7 +168,7 @@ variable "ipv6" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.ipv6))
+    condition     = contains(["off", "on"], var.ipv6)
     error_message = "The ipv6 value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -179,7 +179,7 @@ variable "mirage" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.mirage))
+    condition     = contains(["off", "on"], var.mirage)
     error_message = "The mirage value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -190,7 +190,7 @@ variable "opportunistic_encryption" {
   default     = "on"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.opportunistic_encryption))
+    condition     = contains(["off", "on"], var.opportunistic_encryption)
     error_message = "The opportunistic_encryption value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -201,7 +201,7 @@ variable "opportunistic_onion" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.opportunistic_onion))
+    condition     = contains(["off", "on"], var.opportunistic_onion)
     error_message = "The opportunistic_onion value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -212,7 +212,7 @@ variable "origin_error_page_pass_thru" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.origin_error_page_pass_thru))
+    condition     = contains(["off", "on"], var.origin_error_page_pass_thru)
     error_message = "The origin_error_page_pass_thru value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -223,7 +223,7 @@ variable "prefetch_preload" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.prefetch_preload))
+    condition     = contains(["off", "on"], var.prefetch_preload)
     error_message = "The prefetch_preload value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -234,7 +234,7 @@ variable "privacy_pass" {
   default     = "on"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.privacy_pass))
+    condition     = contains(["off", "on"], var.privacy_pass)
     error_message = "The privacy_pass value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -245,7 +245,7 @@ variable "response_buffering" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.response_buffering))
+    condition     = contains(["off", "on"], var.response_buffering)
     error_message = "The response_buffering value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -256,7 +256,7 @@ variable "rocket_loader" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.rocket_loader))
+    condition     = contains(["off", "on"], var.rocket_loader)
     error_message = "The rocket_loader value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -267,7 +267,7 @@ variable "server_side_exclude" {
   default     = "on"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.server_side_exclude))
+    condition     = contains(["off", "on"], var.server_side_exclude)
     error_message = "The server_side_exclude value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -278,7 +278,7 @@ variable "sort_query_string_for_cache" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.sort_query_string_for_cache))
+    condition     = contains(["off", "on"], var.sort_query_string_for_cache)
     error_message = "The sort_query_string_for_cache value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -289,7 +289,7 @@ variable "tls_client_auth" {
   default     = "on"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.tls_client_auth))
+    condition     = contains(["off", "on"], var.tls_client_auth)
     error_message = "The tls_client_auth value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -300,7 +300,7 @@ variable "true_client_ip_header" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.true_client_ip_header))
+    condition     = contains(["off", "on"], var.true_client_ip_header)
     error_message = "The true_client_ip_header value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -311,7 +311,7 @@ variable "universal_ssl" {
   default     = "on"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.universal_ssl))
+    condition     = contains(["off", "on"], var.universal_ssl)
     error_message = "The universal_ssl value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -322,7 +322,7 @@ variable "waf" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.waf))
+    condition     = contains(["off", "on"], var.waf)
     error_message = "The waf value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -333,7 +333,7 @@ variable "webp" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.webp))
+    condition     = contains(["off", "on"], var.webp)
     error_message = "The webp value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -344,7 +344,7 @@ variable "websockets" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.websockets))
+    condition     = contains(["off", "on"], var.websockets)
     error_message = "The websockets value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -355,7 +355,7 @@ variable "zero_rtt" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on"], lower(var.zero_rtt))
+    condition     = contains(["off", "on"], var.zero_rtt)
     error_message = "The zero_rtt value must be one of the following: \"off\", \"on\"."
   }
 }
@@ -366,7 +366,7 @@ variable "cache_level" {
   default     = "aggressive"
 
   validation {
-    condition     = contains(["aggressive", "basic", "simplified"], lower(var.cache_level))
+    condition     = contains(["aggressive", "basic", "simplified"], var.cache_level)
     error_message = "The cache_level value must be one of the following: \"aggressive\", \"basic\", \"simplified\"."
   }
 }
@@ -377,7 +377,7 @@ variable "cname_flattening" {
   default     = "flatten_at_root"
 
   validation {
-    condition     = contains(["flatten_at_root", "flatten_all", "flatten_none"], lower(var.cname_flattening))
+    condition     = contains(["flatten_at_root", "flatten_all", "flatten_none"], var.cname_flattening)
     error_message = "The cname_flattening value must be one of the following: \"flatten_at_root\", \"flatten_all\", \"flatten_none\"."
   }
 }
@@ -388,7 +388,7 @@ variable "h2_prioritization" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on", "custom"], lower(var.h2_prioritization))
+    condition     = contains(["off", "on", "custom"], var.h2_prioritization)
     error_message = "The h2_prioritization value must be one of the following: \"off\", \"on\", \"custom\"."
   }
 }
@@ -399,7 +399,7 @@ variable "image_resizing" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on", "open"], lower(var.image_resizing))
+    condition     = contains(["off", "on", "open"], var.image_resizing)
     error_message = "The image_resizing value must be one of the following: \"off\", \"on\", \"open\"."
   }
 }
@@ -421,7 +421,7 @@ variable "polish" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "lossless", "lossy"], lower(var.polish))
+    condition     = contains(["off", "lossless", "lossy"], var.polish)
     error_message = "The polish value must be one of the following: \"off\", \"lossless\", \"lossy\"."
   }
 }
@@ -432,7 +432,7 @@ variable "pseudo_ipv4" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "add_header", "overwrite_header"], lower(var.pseudo_ipv4))
+    condition     = contains(["off", "add_header", "overwrite_header"], var.pseudo_ipv4)
     error_message = "The pseudo_ipv4 value must be one of the following: \"off\", \"add_header\", \"overwrite_header\"."
   }
 }
@@ -443,7 +443,7 @@ variable "security_level" {
   default     = "medium"
 
   validation {
-    condition     = contains(["off", "essentially_off", "low", "medium", "high", "under_attack"], lower(var.security_level))
+    condition     = contains(["off", "essentially_off", "low", "medium", "high", "under_attack"], var.security_level)
     error_message = "The security_level value must be one of the following: \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\"."
   }
 }
@@ -454,7 +454,7 @@ variable "ssl" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "flexible", "full", "strict"], lower(var.ssl))
+    condition     = contains(["off", "flexible", "full", "strict"], var.ssl)
     error_message = "The ssl value must be one of the following: \"off\", \"flexible\", \"full\", \"strict\"."
   }
 }
@@ -465,7 +465,7 @@ variable "tls_1_3" {
   default     = "off"
 
   validation {
-    condition     = contains(["off", "on", "zrt"], lower(var.tls_1_3))
+    condition     = contains(["off", "on", "zrt"], var.tls_1_3)
     error_message = "The tls_1_3 value must be one of the following: \"off\", \"on\", \"zrt\"."
   }
 }
@@ -517,7 +517,7 @@ variable "minify" {
   }
 
   validation {
-    condition     = try(contains(["off", "on"], lower(var.minify.css)), true) && try(contains(["off", "on"], lower(var.minify.html)), true) && try(contains(["off", "on"], lower(var.minify.js)), true)
+    condition     = try(contains(["off", "on"], var.minify.css), true) && try(contains(["off", "on"], var.minify.html), true) && try(contains(["off", "on"], var.minify.js), true)
     error_message = "The minify.css, minify.html, minify.js values must be one of the following: \"off\", \"on\"."
   }
 }
@@ -536,7 +536,7 @@ variable "mobile_redirect" {
   }
 
   validation {
-    condition     = try(contains(["off", "on"], lower(var.mobile_redirect.status)), true) && try((length(var.mobile_redirect.mobile_subdomain) >= 1 || lower(var.mobile_redirect.status) == "off" && var.mobile_redirect.mobile_subdomain == ""), true)
+    condition     = try(contains(["off", "on"], var.mobile_redirect.status), true) && try((length(var.mobile_redirect.mobile_subdomain) >= 1 || var.mobile_redirect.status == "off" && var.mobile_redirect.mobile_subdomain == ""), true)
     error_message = "The mobile_redirect.status value must be one of the following: \"off\", \"on\", the mobile_redirect.mobile_subdomain value must have a minimum length of 1."
   }
 }
@@ -585,7 +585,7 @@ variable "records" {
   default     = []
 
   validation {
-    condition     = alltrue([for i in var.records : try(contains(["a", "aaaa", "caa", "cert", "cname", "dnskey", "ds", "https", "loc", "mx", "naptr", "ns", "ptr", "smimea", "spf", "srv", "sshfp", "svcb", "tlsa", "txt", "uri"], lower(i.type)), true)]) && alltrue([for i in var.records : try(i.priority >= 0 && i.priority <= 65535, true)]) && alltrue([for i in var.records : try(contains([1, 120, 300, 600, 900, 1800, 3600, 7200, 18000, 43200, 86400], i.ttl), true)])
+    condition     = alltrue([for i in var.records : try(contains(["A", "AAAA", "CAA", "CERT", "CNAME", "DNSKEY", "DS", "HTTPS", "LOC", "MX", "NAPTR", "NS", "PTR", "SMIMEA", "SPF", "SRV", "SSHFP", "SVCB", "TLSA", "TXT", "URI"], i.type), true)]) && alltrue([for i in var.records : try(i.priority >= 0 && i.priority <= 65535, true)]) && alltrue([for i in var.records : try(contains([1, 120, 300, 600, 900, 1800, 3600, 7200, 18000, 43200, 86400], i.ttl), true)])
     error_message = "All the records[*].type values must be one of the following: \"A\", \"AAAA\", \"CAA\", \"CERT\", \"CNAME\", \"DNSKEY\", \"DS\", \"HTTPS\", \"LOC\", \"MX\", \"NAPTR\", \"NS\", \"PTR\", \"SMIMEA\", \"SPF\", \"SRV\", \"SSHFP\", \"SVCB\", \"TLSA\", \"TXT\", \"URI\", all the records[*].priority values must be between 0 and 65535, all the records[*].ttl values must be one of the following: 1, 120, 300, 600, 900, 1800, 3600, 7200, 18000, 43200, 86400."
   }
 }
