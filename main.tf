@@ -51,10 +51,6 @@ locals {
 }
 
 locals {
-  # Should be "on" by default, but if so, an HTTP 400 error occurs when creating a new zone
-  # Will be removed after the problem is solved
-  universal_ssl = null
-
   minify = defaults(var.minify, {
     css  = "off"
     html = "off"
@@ -117,7 +113,7 @@ resource "cloudflare_zone_settings_override" "this" {
     sort_query_string_for_cache = local.sort_query_string_for_cache
     tls_client_auth             = local.tls_client_auth
     true_client_ip_header       = local.true_client_ip_header
-    universal_ssl               = local.universal_ssl
+    universal_ssl               = var.universal_ssl
     waf                         = local.waf
     webp                        = local.webp
     websockets                  = var.websockets
