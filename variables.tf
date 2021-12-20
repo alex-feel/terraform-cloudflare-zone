@@ -107,6 +107,17 @@ variable "development_mode" {
   }
 }
 
+variable "early_hints" {
+  type        = string
+  description = "When enabled, Cloudflare will attempt to speed up overall page loads by serving 103 responses with Link headers from the final response (https://developers.cloudflare.com/cache/about/early-hints)."
+  default     = "off"
+
+  validation {
+    condition     = contains(["off", "on"], var.early_hints)
+    error_message = "The early_hints value must be one of the following: \"off\", \"on\"."
+  }
+}
+
 variable "email_obfuscation" {
   type        = string
   description = "Encrypt email adresses on your web page from bots, while keeping them visible to humans."
@@ -203,6 +214,17 @@ variable "opportunistic_onion" {
   validation {
     condition     = contains(["off", "on"], var.opportunistic_onion)
     error_message = "The opportunistic_onion value must be one of the following: \"off\", \"on\"."
+  }
+}
+
+variable "orange_to_orange" {
+  type        = string
+  description = "Orange to Orange (O2O) allows zones on Cloudflare to CNAME to other zones also on Cloudflare."
+  default     = "off"
+
+  validation {
+    condition     = contains(["off", "on"], var.orange_to_orange)
+    error_message = "The orange_to_orange value must be one of the following: \"off\", \"on\"."
   }
 }
 
@@ -423,6 +445,17 @@ variable "polish" {
   validation {
     condition     = contains(["off", "lossless", "lossy"], var.polish)
     error_message = "The polish value must be one of the following: \"off\", \"lossless\", \"lossy\"."
+  }
+}
+
+variable "proxy_read_timeout" {
+  type        = number
+  description = "Maximum time between two read operations from origin."
+  default     = 100
+
+  validation {
+    condition     = var.proxy_read_timeout >= 1 && var.proxy_read_timeout <= 6000
+    error_message = "The proxy_read_timeout value must be between 1 and 6000."
   }
 }
 

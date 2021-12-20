@@ -13,6 +13,7 @@ locals {
   http3_avail                       = local.avail_starting_with_pro
   ipv6_avail                        = local.avail_starting_with_pro
   mirage_avail                      = local.avail_starting_with_pro
+  orange_to_orange_avail            = local.avail_starting_with_enterprise
   origin_error_page_pass_thru_avail = local.avail_starting_with_enterprise
   prefetch_preload_avail            = local.avail_starting_with_enterprise
   response_buffering_avail          = local.avail_starting_with_enterprise
@@ -26,6 +27,7 @@ locals {
   h2_prioritization_avail           = local.avail_starting_with_pro
   image_resizing_avail              = local.avail_starting_with_business
   polish_avail                      = local.avail_starting_with_pro
+  proxy_read_timeout_avail          = local.avail_starting_with_enterprise
   pseudo_ipv4_avail                 = local.avail_starting_with_pro
 }
 
@@ -34,6 +36,7 @@ locals {
   http3                       = contains(local.http3_avail, var.plan) ? var.http3 : null
   ipv6                        = contains(local.ipv6_avail, var.plan) ? var.ipv6 : null
   mirage                      = contains(local.mirage_avail, var.plan) ? var.mirage : null
+  orange_to_orange            = contains(local.orange_to_orange_avail, var.plan) ? var.orange_to_orange : null
   origin_error_page_pass_thru = contains(local.origin_error_page_pass_thru_avail, var.plan) ? var.origin_error_page_pass_thru : null
   prefetch_preload            = contains(local.prefetch_preload_avail, var.plan) ? var.prefetch_preload : null
   response_buffering          = contains(local.response_buffering_avail, var.plan) ? var.response_buffering : null
@@ -47,6 +50,7 @@ locals {
   h2_prioritization           = contains(local.h2_prioritization_avail, var.plan) ? var.h2_prioritization : null
   image_resizing              = contains(local.image_resizing_avail, var.plan) ? var.image_resizing : null
   polish                      = contains(local.polish_avail, var.plan) ? var.polish : null
+  proxy_read_timeout          = contains(local.proxy_read_timeout_avail, var.plan) ? var.proxy_read_timeout : null
   pseudo_ipv4                 = contains(local.pseudo_ipv4_avail, var.plan) ? var.pseudo_ipv4 : null
 }
 
@@ -95,6 +99,7 @@ resource "cloudflare_zone_settings_override" "this" {
     brotli                      = var.brotli
     browser_check               = var.browser_check
     development_mode            = var.development_mode
+    early_hints                 = var.early_hints
     email_obfuscation           = var.email_obfuscation
     hotlink_protection          = var.hotlink_protection
     http2                       = local.http2
@@ -102,6 +107,7 @@ resource "cloudflare_zone_settings_override" "this" {
     ip_geolocation              = var.ip_geolocation
     ipv6                        = local.ipv6
     mirage                      = local.mirage
+    orange_to_orange            = local.orange_to_orange
     opportunistic_encryption    = var.opportunistic_encryption
     opportunistic_onion         = var.opportunistic_onion
     origin_error_page_pass_thru = local.origin_error_page_pass_thru
@@ -124,6 +130,7 @@ resource "cloudflare_zone_settings_override" "this" {
     image_resizing              = local.image_resizing
     min_tls_version             = var.min_tls_version
     polish                      = local.polish
+    proxy_read_timeout          = local.proxy_read_timeout
     pseudo_ipv4                 = local.pseudo_ipv4
     security_level              = var.security_level
     ssl                         = var.ssl
