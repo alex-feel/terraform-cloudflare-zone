@@ -17,12 +17,12 @@ Example of using the module:
 
 ```hcl
 terraform {
-  required_version = ">=1.0.10"
+  required_version = ">=0.15.0"
 
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "3.4.0"
+      version = "3.5.0"
     }
   }
 
@@ -41,7 +41,7 @@ provider "cloudflare" {
 
 module "acme_com" {
   source  = "alex-feel/zone/cloudflare"
-  version = "1.2.0"
+  version = "1.3.0"
   # Required
   zone = "acme.com"
   # Optional
