@@ -1,6 +1,6 @@
 config {
-  module = false
-  force = true
+  module              = true
+  force               = true
   disabled_by_default = false
 }
 
@@ -45,7 +45,7 @@ rule "terraform_required_providers" {
 }
 
 rule "terraform_unused_required_providers" {
-  enabled = false
+  enabled = true
 }
 
 rule "terraform_standard_module_structure" {
