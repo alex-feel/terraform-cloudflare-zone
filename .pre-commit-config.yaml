@@ -1,0 +1,68 @@
+repos:
+- repo: local
+  hooks:
+    - id: terraform_fmt
+      name: Terraform Format
+      description: Rewrites Terraform configuration files to a canonical format and style.
+      entry: terraform fmt -recursive
+      language: system
+      pass_filenames: false
+      files: (\.tf|\.tfvars)$
+      exclude: \.terraform\/.*$
+
+    - id: terraform_init
+      name: Terraform Init
+      description: Initializes a working directory containing Terraform configuration files.
+      entry: terraform init -backend=false -upgrade
+      language: system
+      pass_filenames: false
+      files: (\.tf|\.tfvars)$
+      exclude: \.terraform\/.*$
+
+    - id: terraform_validate
+      name: Terraform Validate
+      description: Validates the configuration files.
+      entry: terraform validate
+      language: system
+      pass_filenames: false
+      files: (\.tf|\.tfvars)$
+      exclude: \.terraform\/.*$
+
+    - id: terraform_docs
+      name: Terraform Docs
+      description: Generates documentation from Terraform modules in various output formats.
+      require_serial: true
+      entry: terraform-docs .
+      language: system
+      pass_filenames: false
+      files: (\.tf|\.terraform\.lock\.hcl)$
+      exclude: \.terraform\/.*$
+
+    - id: tflint
+      name: TFLint
+      description: Finds possible errors (like illegal instance types) for Major Cloud providers (AWS/Azure/GCP), warns about deprecated syntax, unused declarations, enforces best practices, naming conventions.
+      require_serial: true
+      entry: tflint --format compact
+      language: system
+      pass_filenames: false
+      files: (\.tf|\.tfvars)$
+      exclude: \.terraform\/.*$
+
+    - id: tfsec
+      name: TFSec
+      description: Uses static analysis of your terraform templates to spot potential security issues.
+      require_serial: true
+      entry: tfsec
+      language: system
+      pass_filenames: false
+      files: (\.tf|\.tfvars)$
+      exclude: \.terraform\/.*$
+
+    - id: terrascan
+      name: Terrascan
+      description: Detects compliance and security violations across Infrastructure as Code.
+      entry: terrascan scan -i terraform
+      language: system
+      pass_filenames: false
+      files: (\.tf|\.tfvars)$
+      exclude: \.terraform\/.*$
