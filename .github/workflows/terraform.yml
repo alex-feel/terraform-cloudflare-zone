@@ -13,13 +13,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Format
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Init
+        run: terraform init -backend=false -upgrade
+
+      - name: Terraform Validate
+        run: terraform validate -no-color
+
       - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Init TFLint
-        run: tflint --init
 
       - name: Run TFLint
         run: tflint --format compact
@@ -29,6 +38,9 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Terraform Format
-        id: fmt
-        run: terraform fmt -check
+      - name: Run Terrascan
+        uses: accurics/terrascan-action@main
+        with:
+          iac_type: 'terraform'
+          scm_token: ${{ secrets.GITHUB_TOKEN }}
+          sarif_upload: true
