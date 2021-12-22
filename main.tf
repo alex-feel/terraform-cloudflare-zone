@@ -55,6 +55,10 @@ locals {
 }
 
 locals {
+  security_level_avail_values = contains(local.avail_starting_with_enterprise, var.plan) ? ["off", "essentially_off", "low", "medium", "high", "under_attack"] : ["essentially_off", "low", "medium", "high", "under_attack"]
+}
+
+locals {
   minify = defaults(var.minify, {
     css  = "off"
     html = "off"
@@ -132,7 +136,7 @@ resource "cloudflare_zone_settings_override" "this" {
     polish                      = local.polish
     proxy_read_timeout          = local.proxy_read_timeout
     pseudo_ipv4                 = local.pseudo_ipv4
-    security_level              = var.security_level != "off" ? var.security_level : null
+    security_level              = contains(local.security_level_avail_values, var.security_level) ? var.security_level : null
     ssl                         = var.ssl
     tls_1_3                     = var.tls_1_3
     browser_cache_ttl           = var.browser_cache_ttl
