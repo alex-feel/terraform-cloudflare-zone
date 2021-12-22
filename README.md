@@ -15,6 +15,8 @@ These types of resources are supported:
 
 Example of using the module:
 
+`main.tf`:
+
 ```hcl
 terraform {
   required_version = ">=0.15.0"
@@ -41,7 +43,7 @@ provider "cloudflare" {
 
 module "acme_com" {
   source  = "alex-feel/zone/cloudflare"
-  version = "1.3.0"
+  version = "1.3.1"
   # Required
   zone = "acme.com"
   # Optional
@@ -76,6 +78,16 @@ module "acme_com" {
       value       = "v=spf1 a mx ip4:192.100.66.0/24 a:mail.sonic.net ip4:64.142.0.0/17 ~all"
     }
   ]
+}
+```
+
+`variables.tf`:
+
+```hcl
+variable "cloudflare_api_token" {
+  type        = string
+  sensitive   = true
+  description = "The Cloudflare API token."
 }
 ```
 
