@@ -49,7 +49,7 @@ locals {
   cname_flattening            = contains(local.cname_flattening_avail, var.plan) ? var.cname_flattening : null
   h2_prioritization           = contains(local.h2_prioritization_avail, var.plan) ? var.h2_prioritization : null
   image_resizing              = contains(local.image_resizing_avail, var.plan) ? var.image_resizing : null
-  polish                      = contains(local.polish_avail, var.plan) ? var.polish : null
+  polish                      = contains(local.polish_avail, var.plan) ? (var.polish == null || var.polish == "off") && local.webp == "on" ? "lossless" : var.polish : null
   proxy_read_timeout          = contains(local.proxy_read_timeout_avail, var.plan) ? var.proxy_read_timeout : null
   pseudo_ipv4                 = contains(local.pseudo_ipv4_avail, var.plan) ? var.pseudo_ipv4 : null
 }
