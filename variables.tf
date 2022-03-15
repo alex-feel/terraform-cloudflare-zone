@@ -614,11 +614,11 @@ variable "records" {
     ttl         = optional(number)
     proxied     = optional(bool)
   }))
-  description = "Zone's DNS records.\nPossible values for records[*].type argument: one of the following: \"A\", \"AAAA\", \"CAA\", \"CERT\", \"CNAME\", \"DNSKEY\", \"DS\", \"HTTPS\", \"LOC\", \"MX\", \"NAPTR\", \"NS\", \"PTR\", \"SMIMEA\", \"SPF\", \"SRV\", \"SSHFP\", \"SVCB\", \"TLSA\", \"TXT\", \"URI\".\nPossible values for records[*].priority argument: between 0 and 65535.\nPossible values for records[*].ttl argument: one of the following: 1, 120, 300, 600, 900, 1800, 3600, 7200, 18000, 43200, 86400."
+  description = "Zone's DNS records.\nPossible values for records[].type argument: one of the following: \"A\", \"AAAA\", \"CAA\", \"CERT\", \"CNAME\", \"DNSKEY\", \"DS\", \"HTTPS\", \"LOC\", \"MX\", \"NAPTR\", \"NS\", \"PTR\", \"SMIMEA\", \"SPF\", \"SRV\", \"SSHFP\", \"SVCB\", \"TLSA\", \"TXT\", \"URI\".\nPossible values for records[].priority argument: between 0 and 65535.\nPossible values for records[].ttl argument: one of the following: 1, 120, 300, 600, 900, 1800, 3600, 7200, 18000, 43200, 86400."
   default     = []
 
   validation {
     condition     = alltrue([for i in var.records : try(contains(["A", "AAAA", "CAA", "CERT", "CNAME", "DNSKEY", "DS", "HTTPS", "LOC", "MX", "NAPTR", "NS", "PTR", "SMIMEA", "SPF", "SRV", "SSHFP", "SVCB", "TLSA", "TXT", "URI"], i.type), true)]) && alltrue([for i in var.records : try(i.priority >= 0 && i.priority <= 65535, true)]) && alltrue([for i in var.records : try(contains([1, 120, 300, 600, 900, 1800, 3600, 7200, 18000, 43200, 86400], i.ttl), true)])
-    error_message = "All the records[*].type values must be one of the following: \"A\", \"AAAA\", \"CAA\", \"CERT\", \"CNAME\", \"DNSKEY\", \"DS\", \"HTTPS\", \"LOC\", \"MX\", \"NAPTR\", \"NS\", \"PTR\", \"SMIMEA\", \"SPF\", \"SRV\", \"SSHFP\", \"SVCB\", \"TLSA\", \"TXT\", \"URI\", all the records[*].priority values must be between 0 and 65535, all the records[*].ttl values must be one of the following: 1, 120, 300, 600, 900, 1800, 3600, 7200, 18000, 43200, 86400."
+    error_message = "All the records[].type values must be one of the following: \"A\", \"AAAA\", \"CAA\", \"CERT\", \"CNAME\", \"DNSKEY\", \"DS\", \"HTTPS\", \"LOC\", \"MX\", \"NAPTR\", \"NS\", \"PTR\", \"SMIMEA\", \"SPF\", \"SRV\", \"SSHFP\", \"SVCB\", \"TLSA\", \"TXT\", \"URI\", all the records[].priority values must be between 0 and 65535, all the records[].ttl values must be one of the following: 1, 120, 300, 600, 900, 1800, 3600, 7200, 18000, 43200, 86400."
   }
 }
