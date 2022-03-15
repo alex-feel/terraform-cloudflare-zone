@@ -32,15 +32,3 @@ jobs:
 
       - name: Run TFLint
         run: tflint --format compact
-
-      - name: Run TFSec
-        uses: aquasecurity/tfsec-pr-commenter-action@main
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run Terrascan
-        uses: accurics/terrascan-action@main
-        with:
-          iac_type: 'terraform'
-          scm_token: ${{ secrets.GITHUB_TOKEN }}
-          sarif_upload: true
