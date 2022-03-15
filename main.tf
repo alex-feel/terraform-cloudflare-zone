@@ -3,9 +3,9 @@ terraform {
 }
 
 locals {
-  avail_starting_with_pro        = ["pro", "business", "enterprise"]
-  avail_starting_with_business   = ["business", "enterprise"]
-  avail_starting_with_enterprise = ["enterprise"]
+  avail_starting_with_pro        = ["pro", "business", "enterprise", "partners_pro", "partners_business", "partners_enterprise"]
+  avail_starting_with_business   = ["business", "enterprise", "partners_business", "partners_enterprise"]
+  avail_starting_with_enterprise = ["enterprise", "partners_enterprise"]
 }
 
 locals {
