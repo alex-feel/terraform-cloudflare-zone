@@ -1,14 +1,4 @@
 repos:
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.1.0
-  hooks:
-    - id: end-of-file-fixer
-      name: End of line fixer
-      description: Ensures that files is either empty, or ends with one newline
-    - id: trailing-whitespace
-      name: Trailing whitespace
-      description: Trims trailing whitespace
-
 - repo: local
   hooks:
     - id: terraform_fmt
@@ -57,3 +47,13 @@ repos:
       pass_filenames: false
       files: (\.tf|\.terraform\.lock\.hcl)$
       exclude: \.terraform\/.*$
+
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.1.0
+  hooks:
+    - id: end-of-file-fixer
+      name: End of line fixer
+      description: Ensures that files is either empty, or ends with one newline.
+    - id: trailing-whitespace
+      name: Trailing whitespace
+      description: Trims trailing whitespace.
