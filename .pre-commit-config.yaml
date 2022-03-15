@@ -1,4 +1,14 @@
 repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.1.0
+  hooks:
+    - id: end-of-file-fixer
+      name: End of line fixer
+      description: Ensures that files is either empty, or ends with one newline
+    - id: trailing-whitespace
+      name: Trailing whitespace
+      description: Trims trailing whitespace
+
 - repo: local
   hooks:
     - id: terraform_fmt
@@ -28,16 +38,6 @@ repos:
       files: (\.tf|\.tfvars)$
       exclude: \.terraform\/.*$
 
-    - id: terraform_docs
-      name: Terraform Docs
-      description: Generates documentation from Terraform modules in various output formats.
-      require_serial: true
-      entry: terraform-docs .
-      language: system
-      pass_filenames: false
-      files: (\.tf|\.terraform\.lock\.hcl)$
-      exclude: \.terraform\/.*$
-
     - id: tflint
       name: TFLint
       description: Finds possible errors (like illegal instance types) for Major Cloud providers (AWS/Azure/GCP), warns about deprecated syntax, unused declarations, enforces best practices, naming conventions.
@@ -48,21 +48,12 @@ repos:
       files: (\.tf|\.tfvars)$
       exclude: \.terraform\/.*$
 
-    - id: tfsec
-      name: TFSec
-      description: Uses static analysis of your terraform templates to spot potential security issues.
+    - id: terraform_docs
+      name: Terraform Docs
+      description: Generates documentation from Terraform modules in various output formats.
       require_serial: true
-      entry: tfsec
+      entry: terraform-docs .
       language: system
       pass_filenames: false
-      files: (\.tf|\.tfvars)$
-      exclude: \.terraform\/.*$
-
-    - id: terrascan
-      name: Terrascan
-      description: Detects compliance and security violations across Infrastructure as Code.
-      entry: terrascan scan -i terraform
-      language: system
-      pass_filenames: false
-      files: (\.tf|\.tfvars)$
+      files: (\.tf|\.terraform\.lock\.hcl)$
       exclude: \.terraform\/.*$
