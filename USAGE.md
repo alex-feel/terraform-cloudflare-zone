@@ -4,7 +4,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15.0 |
-| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | >= 3.5.0 |
+| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | >= 3.10.0 |
 
 ## Modules
 
@@ -26,7 +26,7 @@ No modules.
 | <a name="input_zone"></a> [zone](#input\_zone) | The DNS zone name which will be added, e.g. example.com. | `string` | n/a | yes |
 | <a name="input_paused"></a> [paused](#input\_paused) | Indicates if the zone is only using Cloudflare DNS services. A true value means the zone will not receive security or performance benefits. | `bool` | `false` | no |
 | <a name="input_jump_start"></a> [jump\_start](#input\_jump\_start) | Automatically attempt to fetch existing DNS records on creation. Ignored after zone is created. | `bool` | `false` | no |
-| <a name="input_plan"></a> [plan](#input\_plan) | The desired plan for the zone. Can be updated once the one is created. One of free, pro, business, enterprise. Changing this value will create/cancel associated subscriptions. | `string` | `"free"` | no |
+| <a name="input_plan"></a> [plan](#input\_plan) | The desired plan for the zone. Can be updated once the one is created. One of free, pro, business, enterprise, partners\_free, partners\_pro, partners\_business, partners\_enterprise. Changing this value will create/cancel associated subscriptions. | `string` | `"free"` | no |
 | <a name="input_type"></a> [type](#input\_type) | A full zone implies that DNS is hosted with Cloudflare. A partial zone is typically a partner-hosted zone or a CNAME setup. Valid values: full, partial. | `string` | `"full"` | no |
 | <a name="input_always_online"></a> [always\_online](#input\_always\_online) | When enabled, Always Online will serve pages from our cache if your server is offline. | `string` | `"on"` | no |
 | <a name="input_always_use_https"></a> [always\_use\_https](#input\_always\_use\_https) | Reply to all requests for URLs that use 'http' with a 301 redirect to the equivalent 'https' URL. If you only want to redirect for a subset of requests, consider creating an 'Always use HTTPS' page rule. | `string` | `"off"` | no |

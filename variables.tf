@@ -21,12 +21,12 @@ variable "jump_start" {
 
 variable "plan" {
   type        = string
-  description = "The desired plan for the zone. Can be updated once the one is created. One of free, pro, business, enterprise. Changing this value will create/cancel associated subscriptions."
+  description = "The desired plan for the zone. Can be updated once the one is created. One of free, pro, business, enterprise, partners_free, partners_pro, partners_business, partners_enterprise. Changing this value will create/cancel associated subscriptions."
   default     = "free"
 
   validation {
-    condition     = contains(["free", "pro", "business", "enterprise"], var.plan)
-    error_message = "The plan value must be one of the following: \"free\", \"pro\", \"business\", \"enterprise\"."
+    condition     = contains(["free", "pro", "business", "enterprise", "partners_free", "partners_pro", "partners_business", "partners_enterprise"], var.plan)
+    error_message = "The plan value must be one of the following: \"free\", \"pro\", \"business\", \"enterprise\", \"partners_free\", \"partners_pro\", \"partners_business\", \"partners_enterprise\"."
   }
 }
 
