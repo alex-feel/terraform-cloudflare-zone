@@ -1,14 +1,6 @@
 terraform {
   required_version = ">=0.15.0"
 
-  cloud {
-    organization = "acme"
-
-    workspaces {
-      name = "infrastructure-prod-worldwide"
-    }
-  }
-
   required_providers {
     cloudflare = {
       source = "cloudflare/cloudflare"
