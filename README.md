@@ -15,16 +15,16 @@ These types of resources are supported:
 
 ## Usage
 
-Examples of using the module can be found [here](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples).
+You can find examples of using the module [here](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples).
 
-You can find detailed usage information in [USAGE.md](https://github.com/alex-feel/terraform-cloudflare-zone/blob/main/USAGE.md).
+Also, you can find detailed usage information in [USAGE.md](https://github.com/alex-feel/terraform-cloudflare-zone/blob/main/USAGE.md).
 
 ## Notes
 
 [Cloudflare Zone settings](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/zone_settings_override):
 
 * If you try to use a zone setting that is available in a higher plan than your current one, the setting will be ignored. Keep in mind that as a result, your configuration may contain zone settings that are not actually applied to the zone, but this keeps you from getting errors when you mistakenly try to change a setting that is not available on your current plan.
-* If the value of the `webp` argument is `on` and the value of the `polish` argument is not set or is set to `off`, then the value of the `polish` argument will be forced to `lossless`. This allows the `webp` setting to be unambiguously applied because [it is ignored by default](https://github.com/alex-feel/terraform-cloudflare-zone/blob/main/USAGE.md#input_webp) unless the `polish` setting is turned on. An explicit value of the `polish` argument other than `null` and `off` will be respected by the module.
+* If the value of the `webp` argument is `on` and the value of the `polish` argument is not set or is set to `off`, then the value of the `polish` argument is forced to `lossless`. This allows the `webp` setting to be unambiguously applied bearing in mind that [it is ignored by default](https://github.com/alex-feel/terraform-cloudflare-zone/blob/main/USAGE.md#input_webp) unless the `polish` setting is turned on. An explicit value of the `polish` argument other than `null` and `off` will be respected by the module.
 
 [Cloudflare record](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record):
 
