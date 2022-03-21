@@ -6,6 +6,10 @@
 
 Terraform module that creates zone resources on Cloudflare.
 
+The main goals of this module are to simplify the creation of resources in Cloudflare, while reducing the number of possible user mistakes. See notes below for more information.
+
+## Supported Resources
+
 These types of resources are supported:
 
 * [Cloudflare Zone](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/zone)
@@ -32,11 +36,11 @@ Also, you can find detailed usage information in [USAGE.md](https://github.com/a
 [Cloudflare record](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record):
 
 * The `name` argument value defaults to `@` (root).
-* The `data` argument is not yet supported.
+* The `data` argument **is supported**. The `value` argument takes precedence over the `data` argument to avoid errors if two arguments are accidentally given at the same time, since only one of them can be given at the same time.
 * The `ttl` argument value defaults to `1` (automatic). The value is forced to `1` (automatic), regardless of explicitly set value, if you set the `proxied` argument to `true`.
 * The `proxied` argument value defaults to `false` (for records that support it). You must explicitly set this argument value to `true` for the records that you want to proxy through Cloudflare.
 * For each record, you need to come up with any valid name and specify it in the `record_name` argument value (see example above). However, if you create records without using this module, you will also need to come up with a name for each `cloudflare_record` resource. I could generate a name based on some raw data, but either I won't be able to generate a sufficiently unique name, or the name will change every time, forcing Terraform to recreate records over and over again.
 
 ## License
 
-GNU General Public License v3.0. See LICENSE for full details.
+GNU General Public License v3.0. See [LICENSE](https://github.com/alex-feel/terraform-cloudflare-zone/blob/main/LICENSE) for full details.
