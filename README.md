@@ -22,6 +22,7 @@ These types of resources are supported:
 You can find examples of using the module [here](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples), including:
 
 * A basic [example](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples/basic).
+* An [example](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples/creating-record-using-data-argument) of how to create a record using the `data` argument.
 * An [example](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples/stop-email-spoofing-of-parked-domains) of how to stop email spoofing of parked domains.
 
 Also, you can find detailed usage information in [USAGE.md](https://github.com/alex-feel/terraform-cloudflare-zone/blob/main/USAGE.md).
