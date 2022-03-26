@@ -65,57 +65,57 @@ output "zone_type" {
 # cloudflare_zone_dnssec resource
 
 output "dnssec_status" {
-  value       = join("", cloudflare_zone_dnssec.this[*].status)
+  value       = try(cloudflare_zone_dnssec.this[0].status, null)
   description = "The status of the Zone DNSSEC."
 }
 
 output "flags" {
-  value       = join("", cloudflare_zone_dnssec.this[*].flags)
+  value       = try(cloudflare_zone_dnssec.this[0].flags, null)
   description = "Zone DNSSEC flags."
 }
 
 output "algorithm" {
-  value       = join("", cloudflare_zone_dnssec.this[*].algorithm)
+  value       = try(cloudflare_zone_dnssec.this[0].algorithm, null)
   description = "Zone DNSSEC algorithm."
 }
 
 output "key_type" {
-  value       = join("", cloudflare_zone_dnssec.this[*].key_type)
+  value       = try(cloudflare_zone_dnssec.this[0].key_type, null)
   description = "Key type used for Zone DNSSEC."
 }
 
 output "digest_type" {
-  value       = join("", cloudflare_zone_dnssec.this[*].digest_type)
+  value       = try(cloudflare_zone_dnssec.this[0].digest_type, null)
   description = "Digest Type for Zone DNSSEC."
 }
 
 output "digest_algorithm" {
-  value       = join("", cloudflare_zone_dnssec.this[*].digest_algorithm)
+  value       = try(cloudflare_zone_dnssec.this[0].digest_algorithm, null)
   description = "Digest algorithm use for Zone DNSSEC."
 }
 
 output "digest" {
-  value       = join("", cloudflare_zone_dnssec.this[*].digest)
+  value       = try(cloudflare_zone_dnssec.this[0].digest, null)
   description = "Zone DNSSEC digest."
 }
 
 output "ds" {
-  value       = join("", cloudflare_zone_dnssec.this[*].ds)
+  value       = try(cloudflare_zone_dnssec.this[0].ds, null)
   description = "DS for the Zone DNSSEC."
 }
 
 output "key_tag" {
-  value       = join("", cloudflare_zone_dnssec.this[*].key_tag)
+  value       = try(cloudflare_zone_dnssec.this[0].key_tag, null)
   description = "Key Tag for the Zone DNSSEC."
 }
 
 output "public_key" {
-  value       = join("", cloudflare_zone_dnssec.this[*].public_key)
+  value       = try(cloudflare_zone_dnssec.this[0].public_key, null)
   description = "Public Key for the Zone DNSSEC."
 }
 
 output "modified_on" {
-  value       = join("", cloudflare_zone_dnssec.this[*].modified_on)
+  value       = try(cloudflare_zone_dnssec.this[0].modified_on, null)
   description = "Zone DNSSEC updated time."
 }
 
