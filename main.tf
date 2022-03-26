@@ -233,5 +233,5 @@ resource "cloudflare_record" "this" {
   }
   priority = each.value.priority
   ttl      = contains(["A", "AAAA", "CNAME"], each.value.type) && each.value.proxied == true ? 1 : each.value.ttl
-  proxied  = contains(["A", "AAAA", "CNAME"], each.value.type) && each.value.proxied == true ? true : false
+  proxied  = contains(["A", "AAAA", "CNAME"], each.value.type) && each.value.proxied == true ? length(regexall("^\\*{1}", each.value.name)) == 0 || (length(regexall("^\\*{1}", each.value.name)) > 0 && contains(local.avail_starting_with_enterprise, var.plan)) ? true : false : false
 }
