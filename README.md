@@ -31,7 +31,7 @@ Also, you can find detailed usage information in [USAGE.md](https://github.com/a
 
 [Cloudflare Zone settings](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/zone_settings_override):
 
-* If you try to use a zone setting that is available in a higher plan than your current one, the setting will be ignored. Keep in mind that as a result, your configuration may contain zone settings that are not actually applied to the zone, but this keeps you from getting errors when you mistakenly try to change a setting that is not available on your current plan.
+* If you try to use a zone setting that is available in a higher plan than your current one, the setting will be ignored without errors.
 * If the value of the `webp` argument is `on` and the value of the `polish` argument is not set or is set to `off`, then the value of the `polish` argument is forced to `lossless`. This allows the `webp` setting to be unambiguously applied bearing in mind that [it is ignored by default](https://github.com/alex-feel/terraform-cloudflare-zone/blob/main/USAGE.md#input_webp) unless the `polish` setting is turned on. An explicit value of the `polish` argument other than `null` and `off` will be respected by the module.
 
 [Cloudflare record](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record):
@@ -40,7 +40,8 @@ Also, you can find detailed usage information in [USAGE.md](https://github.com/a
 * The `data` argument **is supported**. The `value` argument takes precedence over the `data` argument to avoid errors if two arguments are accidentally given at the same time, since only one of them can be given at the same time.
 * The `ttl` argument value defaults to `1` (automatic). The value is forced to `1` (automatic), regardless of explicitly set value, if you set the `proxied` argument to `true`.
 * The `proxied` argument value defaults to `false` (for records that support it). You must explicitly set this argument value to `true` for the records that you want to proxy through Cloudflare.
-* For each record, you need to come up with any valid name and specify it in the `record_name` argument value (see example above). However, if you create records without using this module, you will also need to come up with a name for each `cloudflare_record` resource. I could generate a name based on some raw data, but either I won't be able to generate a sufficiently unique name, or the name will change every time, forcing Terraform to recreate records over and over again.
+* The `proxied` argument value is forced to `false` for unsupported record types, regardless of explicitly set value.
+* For each record, you need to come up with any valid name and specify it in the `record_name` argument value (see examples [here](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples)).
 
 ## License
 
