@@ -6,7 +6,7 @@ sections:
 
 output:
   file: "USAGE.md"
-  mode: replace
+  mode: inject
 
 sort:
   enabled: false
