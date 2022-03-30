@@ -106,10 +106,10 @@ No modules.
 | <a name="output_key_tag"></a> [key\_tag](#output\_key\_tag) | Key Tag for the Zone DNSSEC. |
 | <a name="output_public_key"></a> [public\_key](#output\_public\_key) | Public Key for the Zone DNSSEC. |
 | <a name="output_modified_on"></a> [modified\_on](#output\_modified\_on) | Zone DNSSEC updated time. |
-| <a name="output_record_ids"></a> [record\_ids](#output\_record\_ids) | The record ID. |
-| <a name="output_record_hostnames"></a> [record\_hostnames](#output\_record\_hostnames) | The FQDN of the record. |
-| <a name="output_record_proxiable"></a> [record\_proxiable](#output\_record\_proxiable) | Shows whether this record can be proxied, must be true if setting proxied=true. |
-| <a name="output_record_created_on"></a> [record\_created\_on](#output\_record\_created\_on) | The RFC3339 timestamp of when the record was created. |
-| <a name="output_record_modified_on"></a> [record\_modified\_on](#output\_record\_modified\_on) | The RFC3339 timestamp of when the record was last modified. |
-| <a name="output_record_metadata"></a> [record\_metadata](#output\_record\_metadata) | A key-value map of string metadata Cloudflare associates with the record. |
+| <a name="output_record_ids"></a> [record\_ids](#output\_record\_ids) | The record IDs. |
+| <a name="output_record_hostnames"></a> [record\_hostnames](#output\_record\_hostnames) | The FQDN of the records. |
+| <a name="output_record_proxiable"></a> [record\_proxiable](#output\_record\_proxiable) | Shows whether these records can be proxied, must be true if setting proxied=true. |
+| <a name="output_record_created_on"></a> [record\_created\_on](#output\_record\_created\_on) | The RFC3339 timestamp of when the records were created. |
+| <a name="output_record_modified_on"></a> [record\_modified\_on](#output\_record\_modified\_on) | The RFC3339 timestamp of when the records were last modified. |
+| <a name="output_record_metadata"></a> [record\_metadata](#output\_record\_metadata) | A key-value map of string metadata Cloudflare associates with the records. |
 <!-- END_TF_DOCS -->

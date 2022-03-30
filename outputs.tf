@@ -123,30 +123,30 @@ output "modified_on" {
 
 output "record_ids" {
   value       = { for k, v in cloudflare_record.this : k => v.id }
-  description = "The record ID."
+  description = "The record IDs."
 }
 
 output "record_hostnames" {
   value       = { for k, v in cloudflare_record.this : k => v.hostname }
-  description = "The FQDN of the record."
+  description = "The FQDN of the records."
 }
 
 output "record_proxiable" {
   value       = { for k, v in cloudflare_record.this : k => v.proxiable }
-  description = "Shows whether this record can be proxied, must be true if setting proxied=true."
+  description = "Shows whether these records can be proxied, must be true if setting proxied=true."
 }
 
 output "record_created_on" {
   value       = { for k, v in cloudflare_record.this : k => v.created_on }
-  description = "The RFC3339 timestamp of when the record was created."
+  description = "The RFC3339 timestamp of when the records were created."
 }
 
 output "record_modified_on" {
   value       = { for k, v in cloudflare_record.this : k => v.modified_on }
-  description = "The RFC3339 timestamp of when the record was last modified."
+  description = "The RFC3339 timestamp of when the records were last modified."
 }
 
 output "record_metadata" {
   value       = { for k, v in cloudflare_record.this : k => v.metadata }
-  description = "A key-value map of string metadata Cloudflare associates with the record."
+  description = "A key-value map of string metadata Cloudflare associates with the records."
 }
