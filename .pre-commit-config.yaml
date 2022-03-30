@@ -60,4 +60,4 @@ repos:
     - id: mixed-line-ending
       name: Mixed Line Ending
       description: Replaces or checks mixed line ending.
-      args: ['--fix=crlf']
+      args: ['--fix=lf']
