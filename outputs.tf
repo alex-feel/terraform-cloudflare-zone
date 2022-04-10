@@ -150,3 +150,30 @@ output "record_metadata" {
   value       = { for k, v in cloudflare_record.this : k => v.metadata }
   description = "A key-value map of string metadata Cloudflare associates with the records."
 }
+
+# cloudflare_page_rule resource
+
+output "page_rule_ids" {
+  value       = { for k, v in cloudflare_page_rule.this : k => v.id }
+  description = "The page rule IDs."
+}
+
+output "page_rule_targets" {
+  value       = { for k, v in cloudflare_page_rule.this : k => v.target }
+  description = "The URL pattern targeted by the page rules."
+}
+
+output "page_rule_actions" {
+  value       = { for k, v in cloudflare_page_rule.this : k => v.actions }
+  description = "The actions applied by the page rules."
+}
+
+output "page_rule_priorities" {
+  value       = { for k, v in cloudflare_page_rule.this : k => v.priority }
+  description = "The priority of the page rules."
+}
+
+output "page_rule_statuses" {
+  value       = { for k, v in cloudflare_page_rule.this : k => v.status }
+  description = "Whether the page rules are active or disabled."
+}

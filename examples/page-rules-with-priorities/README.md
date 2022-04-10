@@ -1,8 +1,6 @@
-# Basic
+# How to set page rule priorities
 
-The configuration in this directory demonstrates the basic usage of the module and its features.
-
-Note. If you need to prioritize page rules, in which case you can only partially use the module, creating page rules requires using the regular `cloudflare_page_rule` resources, as well as the `depends_on` meta argument, as described [here](https://github.com/cloudflare/terraform-provider-cloudflare/issues/187#issuecomment-450987683). See an [example](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples/page-rules-with-priorities) of using the module in such a case.
+The configuration in this directory demonstrates how to set page rule priorities, taking into account the specific implementation of the Cloudflare API. You can find details in this [issue](https://github.com/cloudflare/terraform-provider-cloudflare/issues/187).
 
 ## Usage
 

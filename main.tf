@@ -83,6 +83,16 @@ locals {
     ttl     = 1
     proxied = false
   })
+
+  page_rules = defaults(var.page_rules, {
+    actions = {
+      minify = {
+        html = "off"
+        css  = "off"
+        js   = "off"
+      }
+    }
+  })
 }
 
 resource "cloudflare_zone" "this" {
@@ -234,4 +244,119 @@ resource "cloudflare_record" "this" {
   priority = each.value.priority
   ttl      = contains(["A", "AAAA", "CNAME"], each.value.type) && each.value.proxied == true ? 1 : each.value.ttl
   proxied  = contains(["A", "AAAA", "CNAME"], each.value.type) && each.value.proxied == true ? length(regexall("^\\*{1}", each.value.name)) == 0 || (length(regexall("^\\*{1}", each.value.name)) > 0 && contains(local.avail_starting_with_enterprise, var.plan)) ? true : false : false
+}
+
+//noinspection HILUnresolvedReference
+resource "cloudflare_page_rule" "this" {
+  for_each = var.page_rules != null ? { for page_rule in local.page_rules : page_rule.page_rule_name => page_rule } : {}
+
+  zone_id = cloudflare_zone.this.id
+
+  target = each.value.target
+  //noinspection HILUnresolvedReference
+  actions {
+    always_online            = each.value.actions["always_online"]
+    always_use_https         = each.value.actions["always_use_https"]
+    automatic_https_rewrites = each.value.actions["automatic_https_rewrites"]
+    browser_cache_ttl        = each.value.actions["browser_cache_ttl"]
+    browser_check            = each.value.actions["browser_check"]
+    bypass_cache_on_cookie   = each.value.actions["bypass_cache_on_cookie"]
+    cache_by_device_type     = each.value.actions["cache_by_device_type"]
+    cache_deception_armor    = each.value.actions["cache_deception_armor"]
+    //noinspection HILUnresolvedReference
+    dynamic "cache_key_fields" {
+      for_each = each.value.actions["cache_key_fields"] != null && contains(local.avail_starting_with_enterprise, var.plan) ? [1] : []
+
+      content {
+        //noinspection HILUnresolvedReference
+        cookie {
+          check_presence = try(each.value.actions["cache_key_fields"]["cookie"]["check_presence"], null)
+          include        = try(each.value.actions["cache_key_fields"]["cookie"]["include"], null)
+        }
+        //noinspection HILUnresolvedReference
+        header {
+          check_presence = try(each.value.actions["cache_key_fields"]["header"]["check_presence"], null)
+          exclude        = try(each.value.actions["cache_key_fields"]["header"]["exclude"], null)
+          include        = try(each.value.actions["cache_key_fields"]["header"]["include"], null)
+        }
+        //noinspection HILUnresolvedReference
+        host {
+          resolved = try(each.value.actions["cache_key_fields"]["host"]["resolved"], null)
+        }
+        //noinspection HILUnresolvedReference
+        query_string {
+          exclude = try(each.value.actions["cache_key_fields"]["query_string"]["exclude"], null)
+          include = try(each.value.actions["cache_key_fields"]["query_string"]["include"], null)
+          ignore  = try(each.value.actions["cache_key_fields"]["query_string"]["ignore"], null)
+        }
+        //noinspection HILUnresolvedReference
+        user {
+          device_type = try(each.value.actions["cache_key_fields"]["user"]["device_type"], null)
+          geo         = try(each.value.actions["cache_key_fields"]["user"]["geo"], null)
+          lang        = try(each.value.actions["cache_key_fields"]["user"]["lang"], null)
+        }
+      }
+    }
+    cache_level     = each.value.actions["cache_level"]
+    cache_on_cookie = each.value.actions["cache_on_cookie"]
+    //noinspection HILUnresolvedReference
+    dynamic "cache_ttl_by_status" {
+      for_each = each.value.actions["cache_ttl_by_status"] != null && contains(local.avail_starting_with_enterprise, var.plan) ? each.value.actions["cache_ttl_by_status"][*] : []
+
+      //noinspection HILUnresolvedReference
+      content {
+        codes = try(each.value.actions["cache_ttl_by_status"][cache_ttl_by_status.key]["codes"], null)
+        ttl   = try(each.value.actions["cache_ttl_by_status"][cache_ttl_by_status.key]["ttl"], null)
+      }
+    }
+    disable_apps           = each.value.actions["disable_apps"]
+    disable_performance    = each.value.actions["disable_performance"]
+    disable_railgun        = each.value.actions["disable_railgun"]
+    disable_security       = each.value.actions["disable_security"]
+    disable_zaraz          = each.value.actions["disable_zaraz"]
+    edge_cache_ttl         = each.value.actions["edge_cache_ttl"]
+    email_obfuscation      = each.value.actions["email_obfuscation"]
+    explicit_cache_control = each.value.actions["explicit_cache_control"]
+    //noinspection HILUnresolvedReference
+    dynamic "forwarding_url" {
+      for_each = each.value.actions["forwarding_url"] != null ? [1] : []
+
+      //noinspection HILUnresolvedReference
+      content {
+        status_code = try(each.value.actions["forwarding_url"]["status_code"], null)
+        url         = try(each.value.actions["forwarding_url"]["url"], null)
+      }
+    }
+    host_header_override = each.value.actions["host_header_override"]
+    ip_geolocation       = each.value.actions["ip_geolocation"]
+    //noinspection HILUnresolvedReference
+    dynamic "minify" {
+      for_each = each.value.actions["minify"] != null ? [1] : []
+
+      //noinspection HILUnresolvedReference
+      content {
+        html = each.value.actions["minify"]["html"]
+        css  = each.value.actions["minify"]["css"]
+        js   = each.value.actions["minify"]["js"]
+      }
+    }
+    mirage                      = contains(local.mirage_avail, var.plan) ? each.value.actions["mirage"] : null
+    opportunistic_encryption    = each.value.actions["opportunistic_encryption"]
+    origin_error_page_pass_thru = contains(local.origin_error_page_pass_thru_avail, var.plan) ? each.value.actions["origin_error_page_pass_thru"] : null
+    polish                      = contains(local.polish_avail, var.plan) ? each.value.actions["polish"] : null
+    resolve_override            = each.value.actions["resolve_override"]
+    respect_strong_etag         = each.value.actions["respect_strong_etag"]
+    response_buffering          = contains(local.response_buffering_avail, var.plan) ? each.value.actions["response_buffering"] : null
+    rocket_loader               = each.value.actions["rocket_loader"]
+    security_level              = try(contains(local.security_level_avail_values, each.value.actions["security_level"]), false) ? each.value.actions["security_level"] : null
+    server_side_exclude         = each.value.actions["server_side_exclude"]
+    #    https://github.com/cloudflare/terraform-provider-cloudflare/issues/1544
+    #    smart_errors                = each.value.actions["smart_errors"]
+    sort_query_string_for_cache = contains(local.sort_query_string_for_cache_avail, var.plan) ? each.value.actions["sort_query_string_for_cache"] : null
+    ssl                         = each.value.actions["ssl"]
+    true_client_ip_header       = contains(local.true_client_ip_header_avail, var.plan) ? each.value.actions["true_client_ip_header"] : null
+    waf                         = contains(local.waf_avail, var.plan) ? each.value.actions["waf"] : null
+  }
+  priority = each.value.priority
+  status   = each.value.status
 }
