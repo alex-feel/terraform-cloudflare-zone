@@ -16,6 +16,7 @@ These types of resources are supported:
 * [Cloudflare Zone settings](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/zone_settings_override)
 * [Cloudflare Zone DNSSEC](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/zone_dnssec)
 * [Cloudflare record](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record)
+* [Cloudflare page rule](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/page_rule)
 
 ## Usage
 
@@ -44,6 +45,14 @@ Also, you can find detailed usage information in [USAGE.md](https://github.com/a
 * The `proxied` argument value is forced to `false` for unsupported record types, regardless of explicitly set value.
 * The `proxied` argument value is forced to `false` for wildcard records for non-enterprise plans, regardless of explicitly set value, because non-enterprise customers can create but not proxy wildcard records.
 * For each record, you need to come up with any valid name and specify it in the `record_name` argument value (see examples [here](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples)).
+
+[Cloudflare page rule](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/page_rule):
+
+* It is not necessary to specify empty `cookie`, `header`, `host`, `query_string`, or `user` blocks in the `cache_key_fields` [block](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/page_rule#cache-key-fields) if you don't need them, despite the fact that, according to the documentation, all blocks are required, but allowed to be empty. You can only specify the blocks you need.
+* It is not necessary to specify all arguments, such as `html`, `css`, and `js` in the `minify` [block](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/page_rule#minify), despite the fact that according to the documentation all arguments are required. You can only specify the arguments you need.
+* If you try to use an [action](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/page_rule#actions) that is available in a higher plan than your current one, the action will be ignored without errors.
+* For each page rule, you need to come up with any valid name and specify it in the `page_rule_name` argument value (see an example [here](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples/basic)).
+* Due to the specific implementation of the Cloudflare API, in fact, you cannot use the `priority` argument to set the priority of a particular page rule. You can find details in this [issue](https://github.com/cloudflare/terraform-provider-cloudflare/issues/187). If you need to prioritize page rules, in which case you can only partially use the module, creating page rules requires using the regular `cloudflare_page_rule` resources, as well as the `depends_on` meta argument, as described [here](https://github.com/cloudflare/terraform-provider-cloudflare/issues/187#issuecomment-450987683). See an [example](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples/page-rules-with-priorities) of using the module in such a case.
 
 ## License
 
