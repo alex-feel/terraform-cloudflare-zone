@@ -31,6 +31,18 @@ locals {
   pseudo_ipv4_avail                 = local.avail_starting_with_pro
 }
 
+# cloudflare_zone resource
+
+resource "cloudflare_zone" "this" {
+  zone       = var.zone
+  paused     = var.paused
+  jump_start = var.jump_start
+  plan       = var.plan
+  type       = var.type
+}
+
+# cloudflare_zone_settings_override resource
+
 locals {
   http2                       = contains(local.http2_avail, var.plan) ? var.http2 : null
   http3                       = contains(local.http3_avail, var.plan) ? var.http3 : null
@@ -77,30 +89,6 @@ locals {
     include_subdomains = true
     nosniff            = true
   })
-
-  records = defaults(var.records, {
-    name    = "@"
-    ttl     = 1
-    proxied = false
-  })
-
-  page_rules = defaults(var.page_rules, {
-    actions = {
-      minify = {
-        html = "off"
-        css  = "off"
-        js   = "off"
-      }
-    }
-  })
-}
-
-resource "cloudflare_zone" "this" {
-  zone       = var.zone
-  paused     = var.paused
-  jump_start = var.jump_start
-  plan       = var.plan
-  type       = var.type
 }
 
 resource "cloudflare_zone_settings_override" "this" {
@@ -178,10 +166,22 @@ resource "cloudflare_zone_settings_override" "this" {
   }
 }
 
+# cloudflare_zone_dnssec resource
+
 resource "cloudflare_zone_dnssec" "this" {
   count = var.enable_dnssec ? 1 : 0
 
   zone_id = cloudflare_zone.this.id
+}
+
+# cloudflare_record resource
+
+locals {
+  records = defaults(var.records, {
+    name    = "@"
+    ttl     = 1
+    proxied = false
+  })
 }
 
 //noinspection HILUnresolvedReference
@@ -194,6 +194,7 @@ resource "cloudflare_record" "this" {
   name = each.value.name
   //noinspection ConflictingProperties
   value = each.value.value
+
   //noinspection ConflictingProperties,HILUnresolvedReference
   dynamic "data" {
     for_each = each.value.value == null && each.value.data != null ? [1] : []
@@ -241,9 +242,24 @@ resource "cloudflare_record" "this" {
       weight         = each.value.data["weight"]
     }
   }
+
   priority = each.value.priority
   ttl      = contains(["A", "AAAA", "CNAME"], each.value.type) && each.value.proxied == true ? 1 : each.value.ttl
   proxied  = contains(["A", "AAAA", "CNAME"], each.value.type) && each.value.proxied == true ? length(regexall("^\\*{1}", each.value.name)) == 0 || (length(regexall("^\\*{1}", each.value.name)) > 0 && contains(local.avail_starting_with_enterprise, var.plan)) ? true : false : false
+}
+
+# cloudflare_page_rule resource
+
+locals {
+  page_rules = defaults(var.page_rules, {
+    actions = {
+      minify = {
+        html = "off"
+        css  = "off"
+        js   = "off"
+      }
+    }
+  })
 }
 
 //noinspection HILUnresolvedReference
@@ -263,6 +279,7 @@ resource "cloudflare_page_rule" "this" {
     bypass_cache_on_cookie   = each.value.actions["bypass_cache_on_cookie"]
     cache_by_device_type     = each.value.actions["cache_by_device_type"]
     cache_deception_armor    = each.value.actions["cache_deception_armor"]
+
     //noinspection HILUnresolvedReference
     dynamic "cache_key_fields" {
       for_each = each.value.actions["cache_key_fields"] != null && contains(local.avail_starting_with_enterprise, var.plan) ? [1] : []
@@ -297,8 +314,10 @@ resource "cloudflare_page_rule" "this" {
         }
       }
     }
+
     cache_level     = each.value.actions["cache_level"]
     cache_on_cookie = each.value.actions["cache_on_cookie"]
+
     //noinspection HILUnresolvedReference
     dynamic "cache_ttl_by_status" {
       for_each = each.value.actions["cache_ttl_by_status"] != null && contains(local.avail_starting_with_enterprise, var.plan) ? each.value.actions["cache_ttl_by_status"][*] : []
@@ -309,6 +328,7 @@ resource "cloudflare_page_rule" "this" {
         ttl   = try(each.value.actions["cache_ttl_by_status"][cache_ttl_by_status.key]["ttl"], null)
       }
     }
+
     disable_apps           = each.value.actions["disable_apps"]
     disable_performance    = each.value.actions["disable_performance"]
     disable_railgun        = each.value.actions["disable_railgun"]
@@ -317,6 +337,7 @@ resource "cloudflare_page_rule" "this" {
     edge_cache_ttl         = each.value.actions["edge_cache_ttl"]
     email_obfuscation      = each.value.actions["email_obfuscation"]
     explicit_cache_control = each.value.actions["explicit_cache_control"]
+
     //noinspection HILUnresolvedReference
     dynamic "forwarding_url" {
       for_each = each.value.actions["forwarding_url"] != null ? [1] : []
@@ -327,8 +348,10 @@ resource "cloudflare_page_rule" "this" {
         url         = try(each.value.actions["forwarding_url"]["url"], null)
       }
     }
+
     host_header_override = each.value.actions["host_header_override"]
     ip_geolocation       = each.value.actions["ip_geolocation"]
+
     //noinspection HILUnresolvedReference
     dynamic "minify" {
       for_each = each.value.actions["minify"] != null ? [1] : []
@@ -340,6 +363,7 @@ resource "cloudflare_page_rule" "this" {
         js   = each.value.actions["minify"]["js"]
       }
     }
+
     mirage                      = contains(local.mirage_avail, var.plan) ? each.value.actions["mirage"] : null
     opportunistic_encryption    = each.value.actions["opportunistic_encryption"]
     origin_error_page_pass_thru = contains(local.origin_error_page_pass_thru_avail, var.plan) ? each.value.actions["origin_error_page_pass_thru"] : null

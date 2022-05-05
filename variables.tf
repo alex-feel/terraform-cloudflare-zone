@@ -357,7 +357,7 @@ variable "mobile_redirect" {
   }
 
   validation {
-    condition     = try((length(var.mobile_redirect.mobile_subdomain) >= 1 || var.mobile_redirect.status == "off" && var.mobile_redirect.mobile_subdomain == ""), true)
+    condition     = try((length(var.mobile_redirect.mobile_subdomain) >= 1 || var.mobile_redirect.mobile_subdomain == "" && var.mobile_redirect.status == "off"), true)
     error_message = "The mobile_redirect.mobile_subdomain value must have a minimum length of 1."
   }
 }
