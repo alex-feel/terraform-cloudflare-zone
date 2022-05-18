@@ -1,6 +1,6 @@
-# How to stop email spoofing of parked domains
+# How to set the same settings for any number of domains
 
-The configuration in this directory demonstrates how to stop email spoofing of parked domains using the module and its features.
+The configuration in this directory demonstrates how to set the same settings for any number of domains using the module and its features. For example, you can create the same A-record for all domains in the list, or set the same settings for them.
 
 ## Usage
 
