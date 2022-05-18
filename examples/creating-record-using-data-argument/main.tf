@@ -19,8 +19,10 @@ module "acme_com" {
   source = "registry.terraform.io/alex-feel/zone/cloudflare"
   # It is recommended to pin a module to a specific version, available versions can be found at https://github.com/alex-feel/terraform-cloudflare-zone/tags
   version = "x.x.x"
+
   # Required
   zone = "acme.com"
+
   records = [
     {
       record_name = "_sip_tls_srv"

@@ -19,14 +19,18 @@ module "acme_com" {
   source = "registry.terraform.io/alex-feel/zone/cloudflare"
   # It is recommended to pin a module to a specific version, available versions can be found at https://github.com/alex-feel/terraform-cloudflare-zone/tags
   version = "x.x.x"
+
   # Required
   zone = "acme.com"
+
   # Optional
   always_online = "off"
   minify = {
     html = "on"
   }
+
   enable_dnssec = true
+
   records = [
     {
       record_name = "a_main"
@@ -53,14 +57,15 @@ module "acme_com" {
       value       = "v=spf1 a mx ip4:192.100.66.0/24 a:mail.sonic.net ip4:64.142.0.0/17 ~all"
     }
   ]
+
   page_rules = [
     {
-      page_rule_name = "forward_page_to_example_com_page"
-      target         = "acme.com/page"
+      page_rule_name = "forward_naked_domain_to_www"
+      target         = "acme.com/*"
       actions = {
         forwarding_url = {
           status_code = 301
-          url         = "https://www.example.com/page"
+          url         = "https://www.acme.com/$1"
         }
       }
     },

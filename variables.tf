@@ -1,5 +1,7 @@
 # Required
 
+# cloudflare_zone resource
+
 variable "zone" {
   type        = string
   description = "The DNS zone name which will be added, e.g. example.com."
@@ -7,15 +9,17 @@ variable "zone" {
 
 # Optional
 
+# cloudflare_zone resource
+
 variable "paused" {
   type        = bool
-  description = "Indicates if the zone is only using Cloudflare DNS services. A true value means the zone will not receive security or performance benefits.\nPossible values: false, true."
+  description = "Indicates if the zone is only using Cloudflare DNS services. A true value means the zone will not receive security or performance benefits.\nPossible values: true, false."
   default     = false
 }
 
 variable "jump_start" {
   type        = bool
-  description = "Automatically attempt to fetch existing DNS records on creation. Ignored after zone is created.\nPossible values: false, true."
+  description = "Automatically attempt to fetch existing DNS records on creation. Ignored after zone is created.\nPossible values: true, false."
   default     = false
 }
 
@@ -31,238 +35,240 @@ variable "type" {
   default     = "full"
 }
 
+# cloudflare_zone_settings_override resource
+
 variable "always_online" {
   type        = string
-  description = "When enabled, Always Online will serve pages from our cache if your server is offline.\nPossible values: \"off\", \"on\"."
+  description = "When enabled, Always Online will serve pages from our cache if your server is offline.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
 # The provider does not validate the variable value at the `terraform plan` stage
 variable "always_use_https" {
   type        = string
-  description = "Reply to all requests for URLs that use 'http' with a 301 redirect to the equivalent 'https' URL. If you only want to redirect for a subset of requests, consider creating an 'Always use HTTPS' page rule.\nPossible values: \"off\", \"on\"."
+  description = "Reply to all requests for URLs that use 'http' with a 301 redirect to the equivalent 'https' URL. If you only want to redirect for a subset of requests, consider creating an 'Always use HTTPS' page rule.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 
   validation {
     condition     = contains(["off", "on"], var.always_use_https)
-    error_message = "The always_use_https value must be one of the following: \"off\", \"on\"."
+    error_message = "The always_use_https value must be one of the following: \"on\", \"off\"."
   }
 }
 
 variable "automatic_https_rewrites" {
   type        = string
-  description = "Enable the Automatic HTTPS Rewrites feature for this zone.\nPossible values: \"off\", \"on\"."
+  description = "Enable the Automatic HTTPS Rewrites feature for this zone.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
 variable "brotli" {
   type        = string
-  description = "When the client requesting an asset supports the brotli compression algorithm, Cloudflare will serve a brotli compressed version of the asset.\nPossible values: \"off\", \"on\"."
+  description = "When the client requesting an asset supports the brotli compression algorithm, Cloudflare will serve a brotli compressed version of the asset.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "browser_check" {
   type        = string
-  description = "Browser Integrity Check is similar to Bad Behavior and looks for common HTTP headers abused most commonly by spammers and denies access to your page. It will also challenge visitors that do not have a user agent or a non standard user agent (also commonly used by abuse bots, crawlers or visitors).\nPossible values: \"off\", \"on\"."
+  description = "Browser Integrity Check is similar to Bad Behavior and looks for common HTTP headers abused most commonly by spammers and denies access to your page. It will also challenge visitors that do not have a user agent or a non standard user agent (also commonly used by abuse bots, crawlers or visitors).\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
 variable "development_mode" {
   type        = string
-  description = "Development Mode temporarily allows you to enter development mode for your websites if you need to make changes to your site. This will bypass Cloudflare's accelerated cache and slow down your site, but is useful if you are making changes to cacheable content (like images, css, or JavaScript) and would like to see those changes right away. Once entered, development mode will last for 3 hours and then automatically toggle off.\nPossible values: \"off\", \"on\"."
+  description = "Development Mode temporarily allows you to enter development mode for your websites if you need to make changes to your site. This will bypass Cloudflare's accelerated cache and slow down your site, but is useful if you are making changes to cacheable content (like images, css, or JavaScript) and would like to see those changes right away. Once entered, development mode will last for 3 hours and then automatically toggle off.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "early_hints" {
   type        = string
-  description = "When enabled, Cloudflare will attempt to speed up overall page loads by serving 103 responses with Link headers from the final response (https://developers.cloudflare.com/cache/about/early-hints).\nPossible values: \"off\", \"on\"."
+  description = "When enabled, Cloudflare will attempt to speed up overall page loads by serving 103 responses with Link headers from the final response (https://developers.cloudflare.com/cache/about/early-hints).\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "email_obfuscation" {
   type        = string
-  description = "Encrypt email adresses on your web page from bots, while keeping them visible to humans.\nPossible values: \"off\", \"on\"."
+  description = "Encrypt email adresses on your web page from bots, while keeping them visible to humans.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
 variable "hotlink_protection" {
   type        = string
-  description = "When enabled, the Hotlink Protection option ensures that other sites cannot suck up your bandwidth by building pages that use images hosted on your site. Anytime a request for an image on your site hits Cloudflare, we check to ensure that it's not another site requesting them. People will still be able to download and view images from your page, but other sites won't be able to steal them for use on their own pages.\nPossible values: \"off\", \"on\"."
+  description = "When enabled, the Hotlink Protection option ensures that other sites cannot suck up your bandwidth by building pages that use images hosted on your site. Anytime a request for an image on your site hits Cloudflare, we check to ensure that it's not another site requesting them. People will still be able to download and view images from your page, but other sites won't be able to steal them for use on their own pages.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "http2" {
   type        = string
-  description = "HTTP2 setting.\nPossible values: \"off\", \"on\"."
+  description = "HTTP2 setting.\nAvailable on the following plans: \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "http3" {
   type        = string
-  description = "HTTP3 setting.\nPossible values: \"off\", \"on\"."
+  description = "HTTP3 setting.\nAvailable on the following plans: \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "ip_geolocation" {
   type        = string
-  description = "Enable IP Geolocation to have Cloudflare geolocate visitors to your website and pass the country code to you.\nPossible values: \"off\", \"on\"."
+  description = "Enable IP Geolocation to have Cloudflare geolocate visitors to your website and pass the country code to you.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
 variable "ipv6" {
   type        = string
-  description = "Enable IPv6 on all subdomains that are Cloudflare enabled.\nPossible values: \"off\", \"on\"."
+  description = "Enable IPv6 on all subdomains that are Cloudflare enabled.\nAvailable on the following plans: \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "mirage" {
   type        = string
-  description = "Automatically optimize image loading for website visitors on mobile devices.\nPossible values: \"off\", \"on\"."
+  description = "Automatically optimize image loading for website visitors on mobile devices.\nAvailable on the following plans: \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "opportunistic_encryption" {
   type        = string
-  description = "Enable the Opportunistic Encryption feature for this zone.\nPossible values: \"off\", \"on\"."
+  description = "Enable the Opportunistic Encryption feature for this zone.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
 variable "opportunistic_onion" {
   type        = string
-  description = "Add an Alt-Svc header to all legitimate requests from Tor, allowing the connection to use our onion services instead of exit nodes.\nPossible values: \"off\", \"on\"."
+  description = "Add an Alt-Svc header to all legitimate requests from Tor, allowing the connection to use our onion services instead of exit nodes.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "orange_to_orange" {
   type        = string
-  description = "Orange to Orange (O2O) allows zones on Cloudflare to CNAME to other zones also on Cloudflare.\nPossible values: \"off\", \"on\"."
+  description = "Orange to Orange (O2O) allows zones on Cloudflare to CNAME to other zones also on Cloudflare.\nAvailable on the following plans: \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "origin_error_page_pass_thru" {
   type        = string
-  description = "Cloudflare will proxy customer error pages on any 502,504 errors on origin server instead of showing a default Cloudflare error page. This does not apply to 522 errors and is limited to Enterprise Zones.\nPossible values: \"off\", \"on\"."
+  description = "Cloudflare will proxy customer error pages on any 502,504 errors on origin server instead of showing a default Cloudflare error page. This does not apply to 522 errors.\nAvailable on the following plans: \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "prefetch_preload" {
   type        = string
-  description = "Cloudflare will prefetch any URLs that are included in the response headers. This is limited to Enterprise Zones.\nPossible values: \"off\", \"on\"."
+  description = "Cloudflare will prefetch any URLs that are included in the response headers.\nAvailable on the following plans: \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "privacy_pass" {
   type        = string
-  description = "Privacy Pass is a browser extension developed by the Privacy Pass Team to improve the browsing experience for your visitors. Enabling Privacy Pass will reduce the number of CAPTCHAs shown to your visitors.\nPossible values: \"off\", \"on\"."
+  description = "Privacy Pass is a browser extension developed by the Privacy Pass Team to improve the browsing experience for your visitors. Enabling Privacy Pass will reduce the number of CAPTCHAs shown to your visitors.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
 variable "response_buffering" {
   type        = string
-  description = "Enables or disables buffering of responses from the proxied server. Cloudflare may buffer the whole payload to deliver it at once to the client versus allowing it to be delivered in chunks. By default, the proxied server streams directly and is not buffered by Cloudflare. This is limited to Enterprise Zones.\nPossible values: \"off\", \"on\"."
+  description = "Enables or disables buffering of responses from the proxied server. Cloudflare may buffer the whole payload to deliver it at once to the client versus allowing it to be delivered in chunks. By default, the proxied server streams directly and is not buffered by Cloudflare.\nAvailable on the following plans: \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "rocket_loader" {
   type        = string
-  description = "Rocket Loader is a general-purpose asynchronous JavaScript optimisation which prioritises the rendering of your content while loading your site's Javascript asynchronously. Turning on Rocket Loader will immediately improve a web page's rendering time sometimes measured as Time to First Paint (TTFP) and also the window.onload time (assuming there is JavaScript on the page), which can have a positive impact on your Google search ranking. When turned on, Rocket Loader will automatically defer the loading of all Javascript referenced in your HTML, with no configuration required.\nPossible values: \"off\", \"on\"."
+  description = "Rocket Loader is a general-purpose asynchronous JavaScript optimisation which prioritises the rendering of your content while loading your site's Javascript asynchronously. Turning on Rocket Loader will immediately improve a web page's rendering time, sometimes measured as Time to First Paint (TTFP) and also the window.onload time (assuming there is JavaScript on the page), which can have a positive impact on your Google search ranking. When turned on, Rocket Loader will automatically defer the loading of all Javascript referenced in your HTML, with no configuration required.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\", \"manual\"."
   default     = "off"
 }
 
 variable "server_side_exclude" {
   type        = string
-  description = "If there is sensitive content on your website that you want visible to real visitors, but that you want to hide from suspicious visitors, all you have to do is wrap the content with Cloudflare SSE tags. Wrap any content that you want to be excluded from suspicious visitors in the following SSE tags: <!--sse--><!--/sse-->. For example: <!--sse--> Bad visitors won't see my phone number, 555-555-5555 <!--/sse-->. Note: SSE only will work with HTML. If you have HTML minification enabled, you won't see the SSE tags in your HTML source when it's served through Cloudflare. SSE will still function in this case, as Cloudflare's HTML minification and SSE functionality occur on-the-fly as the resource moves through our network to the visitor's computer.\nPossible values: \"off\", \"on\"."
+  description = "If there is sensitive content on your website that you want visible to real visitors, but that you want to hide from suspicious visitors, all you have to do is wrap the content with Cloudflare SSE tags. Wrap any content that you want to be excluded from suspicious visitors in the following SSE tags: <!--sse--><!--/sse-->. For example: <!--sse--> Bad visitors won't see my phone number, 555-555-5555 <!--/sse-->. Note: SSE only will work with HTML. If you have HTML minification enabled, you won't see the SSE tags in your HTML source when it's served through Cloudflare. SSE will still function in this case, as Cloudflare's HTML minification and SSE functionality occur on-the-fly as the resource moves through our network to the visitor's computer.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
 variable "sort_query_string_for_cache" {
   type        = string
-  description = "Cloudflare will treat files with the same query strings as the same file in cache, regardless of the order of the query strings. This is limited to Enterprise Zones.\nPossible values: \"off\", \"on\"."
+  description = "Cloudflare will treat files with the same query strings as the same file in cache, regardless of the order of the query strings.\nAvailable on the following plans: \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "tls_client_auth" {
   type        = string
-  description = "TLS Client Auth requires Cloudflare to connect to your origin server using a client certificate (Enterprise Only).\nPossible values: \"off\", \"on\"."
+  description = "TLS Client Auth requires Cloudflare to connect to your origin server using a client certificate.\nAvailable on the following plans: \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
 variable "true_client_ip_header" {
   type        = string
-  description = "Allows customer to continue to use True Client IP (Akamai feature) in the headers we send to the origin. This is limited to Enterprise Zones.\nPossible values: \"off\", \"on\"."
+  description = "Allows customer to continue to use True Client IP (Akamai feature) in the headers we send to the origin.\nAvailable on the following plans: \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "universal_ssl" {
   type        = string
-  description = "Disabling Universal SSL removes any currently active Universal SSL certificates for your zone from the edge and prevents any future Universal SSL certificates from being ordered. If there are no dedicated certificates or custom certificates uploaded for the domain, visitors will be unable to access the domain over HTTPS.\nPossible values: \"off\", \"on\"."
+  description = "Disabling Universal SSL removes any currently active Universal SSL certificates for your zone from the edge and prevents any future Universal SSL certificates from being ordered. If there are no dedicated certificates or custom certificates uploaded for the domain, visitors will be unable to access the domain over HTTPS.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
 variable "waf" {
   type        = string
-  description = "The WAF examines HTTP requests to your website. It inspects both GET and POST requests and applies rules to help filter out illegitimate traffic from legitimate website visitors. The Cloudflare WAF inspects website addresses or URLs to detect anything out of the ordinary. If the Cloudflare WAF determines suspicious user behavior, then the WAF will 'challenge' the web visitor with a page that asks them to submit a CAPTCHA successfully to continue their action. If the challenge is failed, the action will be stopped. What this means is that Cloudflare's WAF will block any traffic identified as illegitimate before it reaches your origin web server.\nPossible values: \"off\", \"on\"."
+  description = "The WAF examines HTTP requests to your website. It inspects both GET and POST requests and applies rules to help filter out illegitimate traffic from legitimate website visitors. The Cloudflare WAF inspects website addresses or URLs to detect anything out of the ordinary. If the Cloudflare WAF determines suspicious user behavior, then the WAF will 'challenge' the web visitor with a page that asks them to submit a CAPTCHA successfully to continue their action. If the challenge is failed, the action will be stopped. What this means is that Cloudflare's WAF will block any traffic identified as illegitimate before it reaches your origin web server.\nAvailable on the following plans: \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "webp" {
   type        = string
-  description = "When the client requesting the image supports the WebP image codec, Cloudflare will serve a WebP version of the image when WebP offers a performance advantage over the original image format. Note that the value specified will be ignored unless polish is turned on (i.e. is \"lossless\" or \"lossy\").\nPossible values: \"off\", \"on\"."
+  description = "When the client requesting the image supports the WebP image codec, Cloudflare will serve a WebP version of the image when WebP offers a performance advantage over the original image format. Note that the value specified will be ignored unless polish is turned on (i.e. is \"lossless\" or \"lossy\").\nAvailable on the following plans: \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "websockets" {
   type        = string
-  description = "WebSockets are open connections sustained between the client and the origin server. Inside a WebSockets connection, the client and the origin can pass data back and forth without having to reestablish sessions. This makes exchanging data within a WebSockets connection fast. WebSockets are often used for real-time applications such as live chat and gaming.\nPossible values: \"off\", \"on\"."
+  description = "WebSockets are open connections sustained between the client and the origin server. Inside a WebSockets connection, the client and the origin can pass data back and forth without having to reestablish sessions. This makes exchanging data within a WebSockets connection fast. WebSockets are often used for real-time applications such as live chat and gaming.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "zero_rtt" {
   type        = string
-  description = "0-RTT setting.\nPossible values: \"off\", \"on\"."
+  description = "0-RTT setting.\nAvailable on the following plans: \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "cache_level" {
   type        = string
-  description = "Cache Level functions based off the setting level. The basic setting will cache most static resources (i.e., css, images, and JavaScript). The simplified setting will ignore the query string when delivering a cached resource. The aggressive setting will cache all static resources, including ones with a query string.\nPossible values: \"aggressive\", \"basic\", \"simplified\"."
+  description = "Cache Level functions based off the setting level. The basic setting will cache most static resources (i.e., css, images, and JavaScript). The simplified setting will ignore the query string when delivering a cached resource. The aggressive setting will cache all static resources, including ones with a query string.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"aggressive\", \"basic\", \"simplified\"."
   default     = "aggressive"
 }
 
 variable "cname_flattening" {
   type        = string
-  description = "CNAME flattening setting.\nPossible values: \"flatten_at_root\", \"flatten_all\", \"flatten_none\"."
+  description = "CNAME flattening setting.\nAvailable on the following plans: \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"flatten_at_root\", \"flatten_all\", \"flatten_none\"."
   default     = "flatten_at_root"
 }
 
 variable "h2_prioritization" {
   type        = string
-  description = "HTTP/2 Edge Prioritization optimises the delivery of resources served through HTTP/2 to improve page load performance. It also supports fine control of content delivery when used in conjunction with Workers.\nPossible values: \"off\", \"on\", \"custom\"."
+  description = "HTTP/2 Edge Prioritization optimises the delivery of resources served through HTTP/2 to improve page load performance. It also supports fine control of content delivery when used in conjunction with Workers.\nAvailable on the following plans: \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\", \"custom\"."
   default     = "off"
 }
 
 variable "image_resizing" {
   type        = string
-  description = "Image Resizing provides on-demand resizing, conversion and optimisation for images served through Cloudflare's network.\nPossible values: \"off\", \"on\", \"open\"."
+  description = "Image Resizing provides on-demand resizing, conversion and optimisation for images served through Cloudflare's network.\nAvailable on the following plans: \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\", \"open\"."
   default     = "off"
 }
 
 variable "min_tls_version" {
   type        = string
-  description = "Only accept HTTPS requests that use at least the TLS protocol version specified. For example, if TLS 1.1 is selected, TLS 1.0 connections will be rejected, while 1.1, 1.2, and 1.3 (if enabled) will be permitted.\nPossible values: \"1.0\", \"1.1\", \"1.2\", \"1.3\"."
+  description = "Only accept HTTPS requests that use at least the TLS protocol version specified. For example, if TLS 1.1 is selected, TLS 1.0 connections will be rejected, while 1.1, 1.2, and 1.3 (if enabled) will be permitted.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"1.0\", \"1.1\", \"1.2\", \"1.3\"."
   default     = "1.0"
 }
 
 variable "polish" {
   type        = string
-  description = "Strips metadata and compresses your images for faster page load times. Basic (Lossless): Reduce the size of PNG, JPEG, and GIF files - no impact on visual quality. Basic + JPEG (Lossy): Further reduce the size of JPEG files for faster image loading. Larger JPEGs are converted to progressive images, loading a lower-resolution image first and ending in a higher-resolution version. Not recommended for hi-res photography sites.\nPossible values: \"off\", \"lossless\", \"lossy\"."
+  description = "Strips metadata and compresses your images for faster page load times. Basic (Lossless): Reduce the size of PNG, JPEG, and GIF files - no impact on visual quality. Basic + JPEG (Lossy): Further reduce the size of JPEG files for faster image loading. Larger JPEGs are converted to progressive images, loading a lower-resolution image first and ending in a higher-resolution version. Not recommended for hi-res photography sites.\nAvailable on the following plans: \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"off\", \"lossless\", \"lossy\"."
   default     = "off"
 }
 
 # The provider does not validate the variable value at the `terraform plan` stage
 variable "proxy_read_timeout" {
   type        = number
-  description = "Maximum time between two read operations from origin.\nPossible values: between 1 and 6000."
+  description = "Maximum time between two read operations from origin.\nAvailable on the following plans: \"enterprise\", \"partners_enterprise\".\nPossible values: between 1 and 6000."
   default     = 100
 
   validation {
@@ -273,7 +279,7 @@ variable "proxy_read_timeout" {
 
 variable "pseudo_ipv4" {
   type        = string
-  description = "Pseudo IPv4 setting.\nPossible values: \"off\", \"add_header\", \"overwrite_header\"."
+  description = "Pseudo IPv4 setting.\nAvailable on the following plans: \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"off\", \"add_header\", \"overwrite_header\"."
   default     = "off"
 }
 
@@ -281,7 +287,7 @@ variable "pseudo_ipv4" {
 # Thus, the variable value validation should be used because the provider will not be able to validate the variable value at the `terraform plan` stage
 variable "security_level" {
   type        = string
-  description = "Choose the appropriate security profile for your website, which will automatically adjust each of the security settings. If you choose to customize an individual security setting, the profile will become Custom.\nPossible values: \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\"."
+  description = "Choose the appropriate security profile for your website, which will automatically adjust each of the security settings. If you choose to customize an individual security setting, the profile will become Custom.\nAvailability of values depending on the plan:\n\"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\": \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\";\n\"enterprise\", \"partners_enterprise\": \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\".\nPossible values: \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\"."
   default     = "medium"
 
   validation {
@@ -292,32 +298,32 @@ variable "security_level" {
 
 variable "ssl" {
   type        = string
-  description = "SSL encrypts your visitor's connection and safeguards credit card numbers and other personal data to and from your website. SSL can take up to 5 minutes to fully activate. Requires Cloudflare active on your root domain or www domain. Off: no SSL between the visitor and Cloudflare, and no SSL between Cloudflare and your web server (all HTTP traffic). Flexible: SSL between the visitor and Cloudflare -- visitor sees HTTPS on your site, but no SSL between Cloudflare and your web server. You don't need to have an SSL cert on your web server, but your vistors will still see the site as being HTTPS enabled. Full: SSL between the visitor and Cloudflare -- visitor sees HTTPS on your site, and SSL between Cloudflare and your web server. You'll need to have your own SSL cert or self-signed cert at the very least. Full (Strict): SSL between the visitor and Cloudflare -- visitor sees HTTPS on your site, and SSL between Cloudflare and your web server. You'll need to have a valid SSL certificate installed on your web server. This certificate must be signed by a certificate authority, have an expiration date in the future, and respond for the request domain name (hostname).\nPossible values: \"off\", \"flexible\", \"full\", \"strict\"."
+  description = "SSL encrypts your visitor's connection and safeguards credit card numbers and other personal data to and from your website. SSL can take up to 5 minutes to fully activate. Requires Cloudflare active on your root domain or www domain. Off: no SSL between the visitor and Cloudflare, and no SSL between Cloudflare and your web server (all HTTP traffic). Flexible: SSL between the visitor and Cloudflare -- visitor sees HTTPS on your site, but no SSL between Cloudflare and your web server. You don't need to have an SSL cert on your web server, but your visitors will still see the site as being HTTPS enabled. Full: SSL between the visitor and Cloudflare -- visitor sees HTTPS on your site, and SSL between Cloudflare and your web server. You'll need to have your own SSL cert or self-signed cert at the very least. Full (Strict): SSL between the visitor and Cloudflare -- visitor sees HTTPS on your site, and SSL between Cloudflare and your web server. You'll need to have a valid SSL certificate installed on your web server. This certificate must be signed by a certificate authority, have an expiration date in the future, and respond for the request domain name (hostname).\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"off\", \"flexible\", \"full\", \"strict\", \"origin_pull\"."
   default     = "off"
 }
 
 variable "tls_1_3" {
   type        = string
-  description = "Enable Crypto TLS 1.3 feature for this zone.\nPossible values: \"off\", \"on\", \"zrt\"."
+  description = "Enable Crypto TLS 1.3 feature for this zone.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\", \"zrt\"."
   default     = "off"
 }
 
 variable "browser_cache_ttl" {
   type        = number
-  description = "Browser Cache TTL (in seconds) specifies how long Cloudflare-cached resources will remain on your visitors' computers. Cloudflare will honor any larger times specified by your server. Setting a TTL of 0 is equivalent to selecting `Respect Existing Headers`.\nPossible values: one of the following: 0, 30, 60, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000."
+  description = "Browser Cache TTL (in seconds) specifies how long Cloudflare-cached resources will remain on your visitors' computers. Cloudflare will honor any larger times specified by your server. Setting a TTL of 0 is equivalent to selecting `Respect Existing Headers`.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: from 0 and above."
   default     = 14400
 }
 
 variable "challenge_ttl" {
   type        = number
-  description = "Specify how long a visitor is allowed access to your site after successfully completing a challenge (such as a CAPTCHA). After the TTL has expired the visitor will have to complete a new challenge. We recommend a 15 - 45 minute setting and will attempt to honor any setting above 45 minutes.\nPossible values: one of the following: 300, 900, 1800, 2700, 3600, 7200, 10800, 14400, 28800, 57600, 86400, 604800, 2592000, 31536000."
+  description = "Specify how long a visitor is allowed access to your site after successfully completing a challenge (such as a CAPTCHA). After the TTL has expired the visitor will have to complete a new challenge. We recommend a 15 - 45 minute setting and will attempt to honor any setting above 45 minutes.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: from 0 and above."
   default     = 1800
 }
 
 # The provider does not validate the variable value at the `terraform plan` stage
 variable "max_upload" {
   type        = number
-  description = "The amount of data visitors can upload to your website in a single request.\nPossible values: one of the following: 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500."
+  description = "The amount of data visitors can upload to your website in a single request.\nAvailability of values depending on the plan:\n\"free\", \"pro\", \"partners_pro\": 100;\n\"business\", \"partners_business\": 125, 150, 175, 200;\n\"enterprise\", \"partners_enterprise\": 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500.\nPossible values: 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500."
   default     = 100
 
   validation {
@@ -332,7 +338,8 @@ variable "minify" {
     html = optional(string)
     js   = optional(string)
   })
-  description = "Automatically minify certain assets for your website.\nPossible values for each argument: \"off\", \"on\"."
+  description = "Automatically minify certain assets for your website.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for each argument: \"on\", \"off\"."
+  # These defaults don't really apply and are just for documentation purposes, see `main.tf` file
   default = {
     css  = "off"
     html = "off"
@@ -349,7 +356,8 @@ variable "mobile_redirect" {
     status           = optional(string)
     strip_uri        = optional(bool)
   })
-  description = "Automatically redirect visitors on mobile devices to a mobile-optimized subdomain.\nPossible values for mobile_redirect.status argument: \"off\", \"on\".\nPossible values for mobile_redirect.strip_uri argument: false, true."
+  description = "Automatically redirect visitors on mobile devices to a mobile-optimized subdomain.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for mobile_redirect.status argument: \"on\", \"off\".\nPossible values for mobile_redirect.strip_uri argument: true, false."
+  # These defaults don't really apply and are just for documentation purposes, see `main.tf` file
   default = {
     mobile_subdomain = ""
     status           = "off"
@@ -370,7 +378,8 @@ variable "security_header" {
     include_subdomains = optional(bool)
     nosniff            = optional(bool)
   })
-  description = "Cloudflare security headers for a zone.\nPossible values for security_header.enabled argument: false, true.\nPossible values for security_header.preload argument: false, true.\nPossible values for security_header.max_age argument: one of the following: 0, 30, 60, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000.\nPossible values for security_header.include_subdomains argument: false, true.\nPossible values for security_header.nosniff argument: false, true."
+  description = "Cloudflare security headers for a zone.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for security_header.enabled argument: true, false.\nPossible values for security_header.preload argument: true, false.\nPossible values for security_header.max_age argument: 0, 30, 60, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000.\nPossible values for security_header.include_subdomains argument: true, false.\nPossible values for security_header.nosniff argument: true, false."
+  # These defaults don't really apply and are just for documentation purposes, see `main.tf` file
   default = {
     enabled            = true
     preload            = false
@@ -386,11 +395,15 @@ variable "security_header" {
   }
 }
 
+# cloudflare_zone_dnssec resource
+
 variable "enable_dnssec" {
   type        = bool
-  description = "Enable or disable DNSSEC.\nPossible values: false, true."
+  description = "Enable or disable DNSSEC.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: true, false."
   default     = false
 }
+
+# cloudflare_record resource
 
 variable "records" {
   type = list(object({
@@ -443,7 +456,7 @@ variable "records" {
     ttl      = optional(number)
     proxied  = optional(bool)
   }))
-  description = "Zone's DNS records.\nPossible values for records[].type argument: one of the following: \"A\", \"AAAA\", \"CAA\", \"CERT\", \"CNAME\", \"DNSKEY\", \"DS\", \"HTTPS\", \"LOC\", \"MX\", \"NAPTR\", \"NS\", \"PTR\", \"SMIMEA\", \"SPF\", \"SRV\", \"SSHFP\", \"SVCB\", \"TLSA\", \"TXT\", \"URI\".\nPossible values for records[].priority argument: between 0 and 65535.\nPossible values for records[].ttl argument: one of the following: 1, 120, 300, 600, 900, 1800, 3600, 7200, 18000, 43200, 86400."
+  description = "Zone's DNS records.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for records[].type argument: \"A\", \"AAAA\", \"CAA\", \"CERT\", \"CNAME\", \"DNSKEY\", \"DS\", \"HTTPS\", \"LOC\", \"MX\", \"NAPTR\", \"NS\", \"PTR\", \"SMIMEA\", \"SPF\", \"SRV\", \"SSHFP\", \"SVCB\", \"TLSA\", \"TXT\", \"URI\".\nPossible values for records[].priority argument: between 0 and 65535.\nPossible values for records[].ttl argument: 1, 120, 300, 600, 900, 1800, 3600, 7200, 18000, 43200, 86400."
   default     = []
 
   //noinspection HILUnresolvedReference
@@ -452,6 +465,8 @@ variable "records" {
     error_message = "All the records[].priority values must be between 0 and 65535, all the records[].ttl values must be one of the following: 1, 120, 300, 600, 900, 1800, 3600, 7200, 18000, 43200, 86400."
   }
 }
+
+# cloudflare_page_rule resource
 
 variable "page_rules" {
   type = list(object({
@@ -534,6 +549,6 @@ variable "page_rules" {
     priority = optional(number)
     status   = optional(string)
   }))
-  description = "Zone's page rules."
+  description = "Zone's page rules.\nNumber of allowed page rules depending on the plan:\n\"free\": 3;\n\"pro\", \"partners_pro\": 20;\n\"business\", \"partners_business\": 50;\n\"enterprise\", \"partners_enterprise\": 125.\nAvailability of values depending on the plan is the same as the availability of the same settings for the cloudflare_zone_settings_override resource, and for other settings, the availability can be found at https://support.cloudflare.com/hc/en-us/articles/218411427#h_18YTlvNlZET4Poljeih3TJ."
   default     = []
 }

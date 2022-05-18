@@ -1,4 +1,5 @@
 terraform {
+  # The module functionality uses the defaults function, more details in https://www.terraform.io/language/functions/defaults
   experiments = [module_variable_optional_attrs]
 }
 
@@ -374,7 +375,7 @@ resource "cloudflare_page_rule" "this" {
     rocket_loader               = each.value.actions["rocket_loader"]
     security_level              = try(contains(local.security_level_avail_values, each.value.actions["security_level"]), false) ? each.value.actions["security_level"] : null
     server_side_exclude         = each.value.actions["server_side_exclude"]
-    #    https://github.com/cloudflare/terraform-provider-cloudflare/issues/1544
+    #    Unsupported argument, see https://github.com/cloudflare/terraform-provider-cloudflare/issues/1544
     #    smart_errors                = each.value.actions["smart_errors"]
     sort_query_string_for_cache = contains(local.sort_query_string_for_cache_avail, var.plan) ? each.value.actions["sort_query_string_for_cache"] : null
     ssl                         = each.value.actions["ssl"]
