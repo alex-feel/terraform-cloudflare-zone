@@ -82,14 +82,6 @@ locals {
     status    = "off"
     strip_uri = false
   })
-
-  security_header = defaults(var.security_header, {
-    enabled            = true
-    preload            = false
-    max_age            = 86400
-    include_subdomains = true
-    nosniff            = true
-  })
 }
 
 resource "cloudflare_zone_settings_override" "this" {
@@ -158,11 +150,11 @@ resource "cloudflare_zone_settings_override" "this" {
 
     //noinspection HILUnresolvedReference
     security_header {
-      enabled            = local.security_header.enabled
-      preload            = local.security_header.preload
-      max_age            = local.security_header.max_age
-      include_subdomains = local.security_header.include_subdomains
-      nosniff            = local.security_header.nosniff
+      enabled            = var.security_header.enabled
+      preload            = var.security_header.preload
+      max_age            = var.security_header.max_age
+      include_subdomains = var.security_header.include_subdomains
+      nosniff            = var.security_header.nosniff
     }
   }
 }
