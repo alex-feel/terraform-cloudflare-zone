@@ -32,6 +32,20 @@ locals {
   zero_rtt_avail                    = local.avail_starting_with_pro
 }
 
+locals {
+  security_level_avail_values = contains(local.avail_starting_with_enterprise, var.plan) ? ["off", "essentially_off", "low", "medium", "high", "under_attack"] : ["essentially_off", "low", "medium", "high", "under_attack"]
+}
+
+locals {
+  security_level_closest_avail_values = {
+    "free"              = "essentially_off"
+    "pro"               = "essentially_off"
+    "partners_pro"      = "essentially_off"
+    "business"          = "essentially_off"
+    "partners_business" = "essentially_off"
+  }
+}
+
 # cloudflare_zone resource
 
 resource "cloudflare_zone" "this" {
@@ -65,10 +79,6 @@ locals {
   waf                         = contains(local.waf_avail, var.plan) ? var.waf : null
   webp                        = contains(local.webp_avail, var.plan) ? var.webp : null
   zero_rtt                    = contains(local.zero_rtt_avail, var.plan) ? var.zero_rtt : null
-}
-
-locals {
-  security_level_avail_values = contains(local.avail_starting_with_enterprise, var.plan) ? ["off", "essentially_off", "low", "medium", "high", "under_attack"] : ["essentially_off", "low", "medium", "high", "under_attack"]
 }
 
 locals {
@@ -121,7 +131,7 @@ resource "cloudflare_zone_settings_override" "this" {
     pseudo_ipv4                 = local.pseudo_ipv4
     response_buffering          = local.response_buffering
     rocket_loader               = var.rocket_loader
-    security_level              = contains(local.security_level_avail_values, var.security_level) ? var.security_level : null
+    security_level              = contains(local.security_level_avail_values, var.security_level) ? var.security_level : local.security_level_closest_avail_values[var.plan]
     server_side_exclude         = var.server_side_exclude
     sort_query_string_for_cache = local.sort_query_string_for_cache
     ssl                         = var.ssl
@@ -364,7 +374,7 @@ resource "cloudflare_page_rule" "this" {
     respect_strong_etag         = each.value.actions["respect_strong_etag"]
     response_buffering          = contains(local.response_buffering_avail, var.plan) ? each.value.actions["response_buffering"] : null
     rocket_loader               = each.value.actions["rocket_loader"]
-    security_level              = try(contains(local.security_level_avail_values, each.value.actions["security_level"]), false) ? each.value.actions["security_level"] : null
+    security_level              = try(contains(local.security_level_avail_values, each.value.actions["security_level"]), false) ? each.value.actions["security_level"] : local.security_level_closest_avail_values[var.plan]
     server_side_exclude         = each.value.actions["server_side_exclude"]
     #    Unsupported argument, see https://github.com/cloudflare/terraform-provider-cloudflare/issues/1544
     #    smart_errors                = each.value.actions["smart_errors"]
