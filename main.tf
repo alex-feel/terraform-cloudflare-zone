@@ -34,6 +34,7 @@ locals {
 
 locals {
   security_level_avail_values = contains(local.avail_starting_with_enterprise, var.plan) ? ["off", "essentially_off", "low", "medium", "high", "under_attack"] : ["essentially_off", "low", "medium", "high", "under_attack"]
+  max_upload_avail_values     = contains(local.avail_starting_with_enterprise, var.plan) ? [225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500] : contains(local.avail_starting_with_business, var.plan) ? [125, 150, 175, 200] : [100]
 }
 
 locals {
@@ -43,6 +44,14 @@ locals {
     "partners_pro"      = "essentially_off"
     "business"          = "essentially_off"
     "partners_business" = "essentially_off"
+  }
+
+  max_upload_closest_avail_values = {
+    "free"              = 100
+    "pro"               = 100
+    "partners_pro"      = 100
+    "business"          = 200
+    "partners_business" = 200
   }
 }
 
@@ -117,7 +126,7 @@ resource "cloudflare_zone_settings_override" "this" {
     image_resizing              = local.image_resizing
     ip_geolocation              = var.ip_geolocation
     ipv6                        = local.ipv6
-    max_upload                  = var.max_upload
+    max_upload                  = contains(local.max_upload_avail_values, var.max_upload) ? var.max_upload : local.max_upload_closest_avail_values[var.plan]
     min_tls_version             = var.min_tls_version
     mirage                      = local.mirage
     opportunistic_encryption    = var.opportunistic_encryption
