@@ -148,7 +148,6 @@ resource "cloudflare_zone_settings_override" "this" {
       strip_uri        = local.mobile_redirect.strip_uri
     }
 
-    //noinspection HILUnresolvedReference
     security_header {
       enabled            = var.security_header.enabled
       preload            = var.security_header.preload
