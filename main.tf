@@ -4,19 +4,25 @@ terraform {
 }
 
 locals {
-  avail_starting_with_pro        = ["pro", "business", "enterprise", "partners_pro", "partners_business", "partners_enterprise"]
-  avail_starting_with_business   = ["business", "enterprise", "partners_business", "partners_enterprise"]
+  avail_starting_with_pro        = ["pro", "partners_pro", "business", "partners_business", "enterprise", "partners_enterprise"]
+  avail_starting_with_business   = ["business", "partners_business", "enterprise", "partners_enterprise"]
   avail_starting_with_enterprise = ["enterprise", "partners_enterprise"]
 }
 
 locals {
+  cname_flattening_avail            = local.avail_starting_with_pro
+  h2_prioritization_avail           = local.avail_starting_with_pro
   http2_avail                       = local.avail_starting_with_pro
   http3_avail                       = local.avail_starting_with_pro
+  image_resizing_avail              = local.avail_starting_with_business
   ipv6_avail                        = local.avail_starting_with_pro
   mirage_avail                      = local.avail_starting_with_pro
   orange_to_orange_avail            = local.avail_starting_with_enterprise
   origin_error_page_pass_thru_avail = local.avail_starting_with_enterprise
+  polish_avail                      = local.avail_starting_with_pro
   prefetch_preload_avail            = local.avail_starting_with_enterprise
+  proxy_read_timeout_avail          = local.avail_starting_with_enterprise
+  pseudo_ipv4_avail                 = local.avail_starting_with_pro
   response_buffering_avail          = local.avail_starting_with_enterprise
   sort_query_string_for_cache_avail = local.avail_starting_with_enterprise
   tls_client_auth_avail             = local.avail_starting_with_enterprise
@@ -24,12 +30,6 @@ locals {
   waf_avail                         = local.avail_starting_with_pro
   webp_avail                        = local.avail_starting_with_pro
   zero_rtt_avail                    = local.avail_starting_with_pro
-  cname_flattening_avail            = local.avail_starting_with_pro
-  h2_prioritization_avail           = local.avail_starting_with_pro
-  image_resizing_avail              = local.avail_starting_with_business
-  polish_avail                      = local.avail_starting_with_pro
-  proxy_read_timeout_avail          = local.avail_starting_with_enterprise
-  pseudo_ipv4_avail                 = local.avail_starting_with_pro
 }
 
 # cloudflare_zone resource
@@ -45,13 +45,19 @@ resource "cloudflare_zone" "this" {
 # cloudflare_zone_settings_override resource
 
 locals {
+  cname_flattening            = contains(local.cname_flattening_avail, var.plan) ? var.cname_flattening : null
+  h2_prioritization           = contains(local.h2_prioritization_avail, var.plan) ? var.h2_prioritization : null
   http2                       = contains(local.http2_avail, var.plan) ? var.http2 : null
   http3                       = contains(local.http3_avail, var.plan) ? var.http3 : null
+  image_resizing              = contains(local.image_resizing_avail, var.plan) ? var.image_resizing : null
   ipv6                        = contains(local.ipv6_avail, var.plan) ? var.ipv6 : null
   mirage                      = contains(local.mirage_avail, var.plan) ? var.mirage : null
   orange_to_orange            = contains(local.orange_to_orange_avail, var.plan) ? var.orange_to_orange : null
   origin_error_page_pass_thru = contains(local.origin_error_page_pass_thru_avail, var.plan) ? var.origin_error_page_pass_thru : null
+  polish                      = contains(local.polish_avail, var.plan) ? (var.polish == null || var.polish == "off") && local.webp == "on" ? "lossless" : var.polish : null
   prefetch_preload            = contains(local.prefetch_preload_avail, var.plan) ? var.prefetch_preload : null
+  proxy_read_timeout          = contains(local.proxy_read_timeout_avail, var.plan) ? var.proxy_read_timeout : null
+  pseudo_ipv4                 = contains(local.pseudo_ipv4_avail, var.plan) ? var.pseudo_ipv4 : null
   response_buffering          = contains(local.response_buffering_avail, var.plan) ? var.response_buffering : null
   sort_query_string_for_cache = contains(local.sort_query_string_for_cache_avail, var.plan) ? var.sort_query_string_for_cache : null
   tls_client_auth             = contains(local.tls_client_auth_avail, var.plan) ? var.tls_client_auth : null
@@ -59,12 +65,6 @@ locals {
   waf                         = contains(local.waf_avail, var.plan) ? var.waf : null
   webp                        = contains(local.webp_avail, var.plan) ? var.webp : null
   zero_rtt                    = contains(local.zero_rtt_avail, var.plan) ? var.zero_rtt : null
-  cname_flattening            = contains(local.cname_flattening_avail, var.plan) ? var.cname_flattening : null
-  h2_prioritization           = contains(local.h2_prioritization_avail, var.plan) ? var.h2_prioritization : null
-  image_resizing              = contains(local.image_resizing_avail, var.plan) ? var.image_resizing : null
-  polish                      = contains(local.polish_avail, var.plan) ? (var.polish == null || var.polish == "off") && local.webp == "on" ? "lossless" : var.polish : null
-  proxy_read_timeout          = contains(local.proxy_read_timeout_avail, var.plan) ? var.proxy_read_timeout : null
-  pseudo_ipv4                 = contains(local.pseudo_ipv4_avail, var.plan) ? var.pseudo_ipv4 : null
 }
 
 locals {
@@ -82,14 +82,6 @@ locals {
     status    = "off"
     strip_uri = false
   })
-
-  security_header = defaults(var.security_header, {
-    enabled            = true
-    preload            = false
-    max_age            = 86400
-    include_subdomains = true
-    nosniff            = true
-  })
 }
 
 resource "cloudflare_zone_settings_override" "this" {
@@ -100,26 +92,40 @@ resource "cloudflare_zone_settings_override" "this" {
     always_use_https            = var.always_use_https
     automatic_https_rewrites    = var.automatic_https_rewrites
     brotli                      = var.brotli
+    browser_cache_ttl           = var.browser_cache_ttl
     browser_check               = var.browser_check
+    cache_level                 = var.cache_level
+    challenge_ttl               = var.challenge_ttl
+    cname_flattening            = local.cname_flattening
     development_mode            = var.development_mode
     early_hints                 = var.early_hints
     email_obfuscation           = var.email_obfuscation
+    h2_prioritization           = local.h2_prioritization
     hotlink_protection          = var.hotlink_protection
     http2                       = local.http2
     http3                       = local.http3
+    image_resizing              = local.image_resizing
     ip_geolocation              = var.ip_geolocation
     ipv6                        = local.ipv6
+    max_upload                  = var.max_upload
+    min_tls_version             = var.min_tls_version
     mirage                      = local.mirage
-    orange_to_orange            = local.orange_to_orange
     opportunistic_encryption    = var.opportunistic_encryption
     opportunistic_onion         = var.opportunistic_onion
+    orange_to_orange            = local.orange_to_orange
     origin_error_page_pass_thru = local.origin_error_page_pass_thru
+    polish                      = local.polish
     prefetch_preload            = local.prefetch_preload
     privacy_pass                = var.privacy_pass
+    proxy_read_timeout          = local.proxy_read_timeout
+    pseudo_ipv4                 = local.pseudo_ipv4
     response_buffering          = local.response_buffering
     rocket_loader               = var.rocket_loader
+    security_level              = contains(local.security_level_avail_values, var.security_level) ? var.security_level : null
     server_side_exclude         = var.server_side_exclude
     sort_query_string_for_cache = local.sort_query_string_for_cache
+    ssl                         = var.ssl
+    tls_1_3                     = var.tls_1_3
     tls_client_auth             = local.tls_client_auth
     true_client_ip_header       = local.true_client_ip_header
     universal_ssl               = var.universal_ssl
@@ -127,20 +133,6 @@ resource "cloudflare_zone_settings_override" "this" {
     webp                        = local.webp
     websockets                  = var.websockets
     zero_rtt                    = local.zero_rtt
-    cache_level                 = var.cache_level
-    cname_flattening            = local.cname_flattening
-    h2_prioritization           = local.h2_prioritization
-    image_resizing              = local.image_resizing
-    min_tls_version             = var.min_tls_version
-    polish                      = local.polish
-    proxy_read_timeout          = local.proxy_read_timeout
-    pseudo_ipv4                 = local.pseudo_ipv4
-    security_level              = contains(local.security_level_avail_values, var.security_level) ? var.security_level : null
-    ssl                         = var.ssl
-    tls_1_3                     = var.tls_1_3
-    browser_cache_ttl           = var.browser_cache_ttl
-    challenge_ttl               = var.challenge_ttl
-    max_upload                  = var.max_upload
 
     //noinspection HILUnresolvedReference
     minify {
@@ -156,13 +148,12 @@ resource "cloudflare_zone_settings_override" "this" {
       strip_uri        = local.mobile_redirect.strip_uri
     }
 
-    //noinspection HILUnresolvedReference
     security_header {
-      enabled            = local.security_header.enabled
-      preload            = local.security_header.preload
-      max_age            = local.security_header.max_age
-      include_subdomains = local.security_header.include_subdomains
-      nosniff            = local.security_header.nosniff
+      enabled            = var.security_header.enabled
+      preload            = var.security_header.preload
+      max_age            = var.security_header.max_age
+      include_subdomains = var.security_header.include_subdomains
+      nosniff            = var.security_header.nosniff
     }
   }
 }
@@ -255,8 +246,8 @@ locals {
   page_rules = defaults(var.page_rules, {
     actions = {
       minify = {
-        html = "off"
         css  = "off"
+        html = "off"
         js   = "off"
       }
     }
