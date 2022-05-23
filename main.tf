@@ -153,6 +153,9 @@ resource "cloudflare_zone_settings_override" "this" {
     websockets                  = var.websockets
     zero_rtt                    = local.zero_rtt
 
+    # At the moment, it is not possible to automatically ignore this option without errors if you do not have the Advanced Certificate Manager plan subscription, as there is no data source that allows you to get the subscription status
+    ciphers = var.ciphers
+
     //noinspection HILUnresolvedReference
     minify {
       css  = local.minify.css
