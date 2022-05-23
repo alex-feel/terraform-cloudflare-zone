@@ -27,7 +27,7 @@ module "acme_com" {
   source = "registry.terraform.io/alex-feel/zone/cloudflare"
   # It is recommended to pin a module to a specific version
   version = "x.x.x"
-  zone = "acme.com"
+  zone    = "acme.com"
   # There may be many other settings here
 }
 ```
