@@ -140,7 +140,7 @@ resource "cloudflare_zone_settings_override" "this" {
     pseudo_ipv4                 = local.pseudo_ipv4
     response_buffering          = local.response_buffering
     rocket_loader               = var.rocket_loader
-    security_level              = contains(local.security_level_avail_values, var.security_level) ? var.security_level : var.security_level != null ? local.security_level_closest_avail_values[var.plan] : null
+    security_level              = contains(local.security_level_avail_values, var.security_level) ? var.security_level : local.security_level_closest_avail_values[var.plan]
     server_side_exclude         = var.server_side_exclude
     sort_query_string_for_cache = local.sort_query_string_for_cache
     ssl                         = var.ssl
