@@ -88,7 +88,7 @@ module "acme_com" {
 * Run the following commands:
 
 ```bash
-$ terraform init
+$ terraform init -upgrade
 ```
 
 Note. Be aware of changes in your infrastructure when using the module with the latest changes, carefully examine the output of the `terraform plan` command before applying the changes.
