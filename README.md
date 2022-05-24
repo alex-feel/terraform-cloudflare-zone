@@ -71,6 +71,28 @@ Also, you can find detailed usage information in [USAGE.md](https://github.com/a
 * For each page rule, you need to come up with any valid name and specify it as the `page_rule_name` argument value (see an example [here](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples/basic)).
 * Due to the specific implementation of the Cloudflare API, in fact, you cannot use the `priority` argument to set the priority of a particular page rule. You can find details in this [issue](https://github.com/cloudflare/terraform-provider-cloudflare/issues/187). If you need to prioritize page rules, in which case you can only partially use the module, creating page rules requires using the regular `cloudflare_page_rule` resources, as well as the `depends_on` meta argument, as described [here](https://github.com/cloudflare/terraform-provider-cloudflare/issues/187#issuecomment-450987683). See an [example](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples/page-rules-with-priorities) of using the module in such a case.
 
+## Get the Latest Changes
+
+If you want to use a module with the latest changes that are not yet available in the Terraform Registry, you need to:
+
+* Change the module `source` argument value from `registry.terraform.io/alex-feel/zone/cloudflare` to `github.com/alex-feel/terraform-cloudflare-zone` and remove the module `version` argument (version constraint), so you have the following:
+
+```hcl
+module "acme_com" {
+  source = "github.com/alex-feel/terraform-cloudflare-zone"
+  zone   = "acme.com"
+  # There may be many other arguments here
+}
+```
+
+* Run the following commands:
+
+```bash
+$ terraform init
+```
+
+Note. Be aware of changes in your infrastructure when using the module with the latest changes, carefully examine the output of the `terraform plan` command before applying the changes.
+
 ## License
 
 GNU General Public License v3.0. See [LICENSE](https://github.com/alex-feel/terraform-cloudflare-zone/blob/main/LICENSE) for full details.
