@@ -332,6 +332,20 @@ variable "max_upload" {
   }
 }
 
+# Supported cipher suites by protocol can be found at https://developers.cloudflare.com/ssl/ssl-tls/cipher-suites/#supported-cipher-suites-by-protocol
+# When trying to use the ciphers "AEAD-AES128-GCM-SHA256", "AEAD-AES256-GCM-SHA384", "AEAD-CHACHA20-POLY1305-SHA256", error 1007 is returned from the API, despite the fact that the ciphers are declared to be supported
+# The provider does not validate the variable value at the `terraform plan` stage
+variable "ciphers" {
+  type        = list(string)
+  description = "An allowlist of ciphers for TLS termination. These ciphers must be in the BoringSSL format.\nAvailable on the following plans: Advanced Certificate Manager plan.\nPossible values of list items: \"ECDHE-ECDSA-AES128-GCM-SHA256\", \"ECDHE-ECDSA-CHACHA20-POLY1305\", \"ECDHE-RSA-AES128-GCM-SHA256\", \"ECDHE-RSA-CHACHA20-POLY1305\", \"ECDHE-ECDSA-AES128-SHA256\", \"ECDHE-ECDSA-AES128-SHA\", \"ECDHE-RSA-AES128-SHA256\", \"ECDHE-RSA-AES128-SHA\", \"AES128-GCM-SHA256\", \"AES128-SHA256\", \"AES128-SHA\", \"ECDHE-ECDSA-AES256-GCM-SHA384\", \"ECDHE-ECDSA-AES256-SHA384\", \"ECDHE-RSA-AES256-GCM-SHA384\", \"ECDHE-RSA-AES256-SHA384\", \"ECDHE-RSA-AES256-SHA\", \"AES256-GCM-SHA384\", \"AES256-SHA256\", \"AES256-SHA\", \"DES-CBC3-SHA\", \"AEAD-AES128-GCM-SHA256\", \"AEAD-AES256-GCM-SHA384\", \"AEAD-CHACHA20-POLY1305-SHA256\"."
+  default     = []
+
+  validation {
+    condition     = alltrue([for i in var.ciphers : contains(["ECDHE-ECDSA-AES128-GCM-SHA256", "ECDHE-ECDSA-CHACHA20-POLY1305", "ECDHE-RSA-AES128-GCM-SHA256", "ECDHE-RSA-CHACHA20-POLY1305", "ECDHE-ECDSA-AES128-SHA256", "ECDHE-ECDSA-AES128-SHA", "ECDHE-RSA-AES128-SHA256", "ECDHE-RSA-AES128-SHA", "AES128-GCM-SHA256", "AES128-SHA256", "AES128-SHA", "ECDHE-ECDSA-AES256-GCM-SHA384", "ECDHE-ECDSA-AES256-SHA384", "ECDHE-RSA-AES256-GCM-SHA384", "ECDHE-RSA-AES256-SHA384", "ECDHE-RSA-AES256-SHA", "AES256-GCM-SHA384", "AES256-SHA256", "AES256-SHA", "DES-CBC3-SHA", "AEAD-AES128-GCM-SHA256", "AEAD-AES256-GCM-SHA384", "AEAD-CHACHA20-POLY1305-SHA256"], i)])
+    error_message = "The ciphers value must be a list of one or more of the following values: \"ECDHE-ECDSA-AES128-GCM-SHA256\", \"ECDHE-ECDSA-CHACHA20-POLY1305\", \"ECDHE-RSA-AES128-GCM-SHA256\", \"ECDHE-RSA-CHACHA20-POLY1305\", \"ECDHE-ECDSA-AES128-SHA256\", \"ECDHE-ECDSA-AES128-SHA\", \"ECDHE-RSA-AES128-SHA256\", \"ECDHE-RSA-AES128-SHA\", \"AES128-GCM-SHA256\", \"AES128-SHA256\", \"AES128-SHA\", \"ECDHE-ECDSA-AES256-GCM-SHA384\", \"ECDHE-ECDSA-AES256-SHA384\", \"ECDHE-RSA-AES256-GCM-SHA384\", \"ECDHE-RSA-AES256-SHA384\", \"ECDHE-RSA-AES256-SHA\", \"AES256-GCM-SHA384\", \"AES256-SHA256\", \"AES256-SHA\", \"DES-CBC3-SHA\", \"AEAD-AES128-GCM-SHA256\", \"AEAD-AES256-GCM-SHA384\", \"AEAD-CHACHA20-POLY1305-SHA256\"."
+  }
+}
+
 variable "minify" {
   type = object({
     css  = optional(string)
