@@ -25,17 +25,22 @@ module "acme_com" {
 
   records = [
     {
-      record_name = "_sip_tls_srv"
+      record_name = "a_sip"
+      type        = "A"
+      name        = "sip"
+      value       = "157.131.111.9"
+    },
+    {
+      record_name = "srv_sip_tls"
       name        = "_sip._tls"
       type        = "SRV"
       data = {
-        name     = "acme_sip"
         service  = "_sip"
         proto    = "_tls"
         priority = 0
         weight   = 0
-        port     = 443
-        target   = "acme.com"
+        port     = 5061
+        target   = "sip.acme.com"
       }
     }
   ]
