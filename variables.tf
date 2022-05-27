@@ -420,6 +420,8 @@ variable "enable_dnssec" {
 
 # cloudflare_record resource
 
+# The provider does not validate if either records[].value or records[].data are provided at the `terraform plan` stage
+# The provider does not validate if records[].priority are provided for "MX" type records at the `terraform plan` stage
 # The provider does not validate records[].priority and the records[].ttl values at the `terraform plan` stage
 # Actually, records[].priority values validation is not required, the fields accept any values, but for values outside the range from 0 to 65535, the resulting value may be unexpected for the end user
 variable "records" {
@@ -478,8 +480,8 @@ variable "records" {
 
   //noinspection HILUnresolvedReference
   validation {
-    condition     = alltrue([for i in var.records : try(i.priority >= 0 && i.priority <= 65535, true)]) && alltrue([for i in var.records : try(i.ttl == 1 || i.ttl >= 60 && i.ttl <= 86400, true)])
-    error_message = "All the records[].priority values must be between 0 and 65535, all the records[].ttl values must be between 60 and 86400 seconds, or 1 for automatic."
+    condition     = alltrue([for i in var.records : try(i.value != null || i.data != null)]) && alltrue([for i in var.records : try(i.type == "MX" ? i.priority != null : true)]) && alltrue([for i in var.records : try(i.priority >= 0 && i.priority <= 65535, true)]) && alltrue([for i in var.records : try(i.ttl == 1 || i.ttl >= 60 && i.ttl <= 86400, true)])
+    error_message = "Either records[].value or records[].data must be provided, if the records[].type equal to \"MX\", then the records[].priority must not be null, all the records[].priority values must be between 0 and 65535, all the records[].ttl values must be between 60 and 86400, or 1 for automatic."
   }
 }
 
