@@ -384,6 +384,7 @@ variable "mobile_redirect" {
   }
 }
 
+# The provider does not validate the security_header.max_age value at the `terraform plan` stage
 variable "security_header" {
   type = object({
     enabled            = optional(bool)
@@ -403,9 +404,9 @@ variable "security_header" {
   }
 
   validation {
-    # Not sure if the values for var.security_header.max_age are valid
-    condition     = try(contains([0, 30, 60, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000], var.security_header.max_age), true)
-    error_message = "The security_header.max_age value must be one of the following: 0, 30, 60, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000."
+    # The maximum value for the security_header.max_age field is a signed integer
+    condition     = var.security_header.max_age >= 0 && var.security_header.max_age <= 2147483647
+    error_message = "The security_header.max_age value must be between 0 and 2147483647."
   }
 }
 
