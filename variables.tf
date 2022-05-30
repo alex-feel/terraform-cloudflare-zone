@@ -393,7 +393,7 @@ variable "security_header" {
     include_subdomains = optional(bool)
     nosniff            = optional(bool)
   })
-  description = "Cloudflare security headers for a zone.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for security_header.enabled argument: true, false.\nPossible values for security_header.preload argument: true, false.\nPossible values for security_header.max_age argument: 0, 30, 60, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000.\nPossible values for security_header.include_subdomains argument: true, false.\nPossible values for security_header.nosniff argument: true, false."
+  description = "Cloudflare security headers for a zone.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for security_header.enabled argument: true, false.\nPossible values for security_header.preload argument: true, false.\nPossible values for security_header.max_age argument: between 0 and 2147483647.\nPossible values for security_header.include_subdomains argument: true, false.\nPossible values for security_header.nosniff argument: true, false."
   # These defaults don't really apply and are just for documentation purposes, see `main.tf` file
   default = {
     enabled            = true
@@ -475,7 +475,7 @@ variable "records" {
     ttl      = optional(number)
     proxied  = optional(bool)
   }))
-  description = "Zone's DNS records.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for records[].type argument: \"A\", \"AAAA\", \"CAA\", \"CERT\", \"CNAME\", \"DNSKEY\", \"DS\", \"HTTPS\", \"LOC\", \"MX\", \"NAPTR\", \"NS\", \"PTR\", \"SMIMEA\", \"SPF\", \"SRV\", \"SSHFP\", \"SVCB\", \"TLSA\", \"TXT\", \"URI\".\nPossible values for records[].priority argument: between 0 and 65535.\nPossible values for records[].ttl argument: 1, 120, 300, 600, 900, 1800, 3600, 7200, 18000, 43200, 86400."
+  description = "Zone's DNS records.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for records[].type argument: \"A\", \"AAAA\", \"CAA\", \"CERT\", \"CNAME\", \"DNSKEY\", \"DS\", \"HTTPS\", \"LOC\", \"MX\", \"NAPTR\", \"NS\", \"PTR\", \"SMIMEA\", \"SPF\", \"SRV\", \"SSHFP\", \"SVCB\", \"TLSA\", \"TXT\", \"URI\".\nPossible values for records[].priority argument: between 0 and 65535.\nPossible values for records[].ttl argument: between 60 and 86400, or 1 for automatic."
   default     = []
 
   //noinspection HILUnresolvedReference
