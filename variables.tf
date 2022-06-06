@@ -51,7 +51,7 @@ variable "always_use_https" {
 
   validation {
     condition     = contains(["off", "on"], var.always_use_https)
-    error_message = "Error: The always_use_https value must be one of the following: \"on\", \"off\"."
+    error_message = "Error details: The always_use_https value must be one of the following: \"on\", \"off\"."
   }
 }
 
@@ -273,7 +273,7 @@ variable "proxy_read_timeout" {
 
   validation {
     condition     = var.proxy_read_timeout >= 1 && var.proxy_read_timeout <= 6000
-    error_message = "Error: The proxy_read_timeout value must be between 1 and 6000."
+    error_message = "Error details: The proxy_read_timeout value must be between 1 and 6000."
   }
 }
 
@@ -292,7 +292,7 @@ variable "security_level" {
 
   validation {
     condition     = contains(["off", "essentially_off", "low", "medium", "high", "under_attack"], var.security_level)
-    error_message = "Error: The security_level value must be one of the following: \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\"."
+    error_message = "Error details: The security_level value must be one of the following: \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\"."
   }
 }
 
@@ -328,7 +328,7 @@ variable "max_upload" {
 
   validation {
     condition     = contains([100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500], var.max_upload)
-    error_message = "Error: The max_upload value must be one of the following: 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500."
+    error_message = "Error details: The max_upload value must be one of the following: 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500."
   }
 }
 
@@ -342,7 +342,7 @@ variable "ciphers" {
 
   validation {
     condition     = alltrue([for i in var.ciphers : contains(["ECDHE-ECDSA-AES128-GCM-SHA256", "ECDHE-ECDSA-CHACHA20-POLY1305", "ECDHE-RSA-AES128-GCM-SHA256", "ECDHE-RSA-CHACHA20-POLY1305", "ECDHE-ECDSA-AES128-SHA256", "ECDHE-ECDSA-AES128-SHA", "ECDHE-RSA-AES128-SHA256", "ECDHE-RSA-AES128-SHA", "AES128-GCM-SHA256", "AES128-SHA256", "AES128-SHA", "ECDHE-ECDSA-AES256-GCM-SHA384", "ECDHE-ECDSA-AES256-SHA384", "ECDHE-RSA-AES256-GCM-SHA384", "ECDHE-RSA-AES256-SHA384", "ECDHE-RSA-AES256-SHA", "AES256-GCM-SHA384", "AES256-SHA256", "AES256-SHA", "DES-CBC3-SHA", "AEAD-AES128-GCM-SHA256", "AEAD-AES256-GCM-SHA384", "AEAD-CHACHA20-POLY1305-SHA256"], i)])
-    error_message = "Error: The ciphers value must be a list of one or more of the following values: \"ECDHE-ECDSA-AES128-GCM-SHA256\", \"ECDHE-ECDSA-CHACHA20-POLY1305\", \"ECDHE-RSA-AES128-GCM-SHA256\", \"ECDHE-RSA-CHACHA20-POLY1305\", \"ECDHE-ECDSA-AES128-SHA256\", \"ECDHE-ECDSA-AES128-SHA\", \"ECDHE-RSA-AES128-SHA256\", \"ECDHE-RSA-AES128-SHA\", \"AES128-GCM-SHA256\", \"AES128-SHA256\", \"AES128-SHA\", \"ECDHE-ECDSA-AES256-GCM-SHA384\", \"ECDHE-ECDSA-AES256-SHA384\", \"ECDHE-RSA-AES256-GCM-SHA384\", \"ECDHE-RSA-AES256-SHA384\", \"ECDHE-RSA-AES256-SHA\", \"AES256-GCM-SHA384\", \"AES256-SHA256\", \"AES256-SHA\", \"DES-CBC3-SHA\", \"AEAD-AES128-GCM-SHA256\", \"AEAD-AES256-GCM-SHA384\", \"AEAD-CHACHA20-POLY1305-SHA256\"."
+    error_message = "Error details: The ciphers value must be a list of one or more of the following values: \"ECDHE-ECDSA-AES128-GCM-SHA256\", \"ECDHE-ECDSA-CHACHA20-POLY1305\", \"ECDHE-RSA-AES128-GCM-SHA256\", \"ECDHE-RSA-CHACHA20-POLY1305\", \"ECDHE-ECDSA-AES128-SHA256\", \"ECDHE-ECDSA-AES128-SHA\", \"ECDHE-RSA-AES128-SHA256\", \"ECDHE-RSA-AES128-SHA\", \"AES128-GCM-SHA256\", \"AES128-SHA256\", \"AES128-SHA\", \"ECDHE-ECDSA-AES256-GCM-SHA384\", \"ECDHE-ECDSA-AES256-SHA384\", \"ECDHE-RSA-AES256-GCM-SHA384\", \"ECDHE-RSA-AES256-SHA384\", \"ECDHE-RSA-AES256-SHA\", \"AES256-GCM-SHA384\", \"AES256-SHA256\", \"AES256-SHA\", \"DES-CBC3-SHA\", \"AEAD-AES128-GCM-SHA256\", \"AEAD-AES256-GCM-SHA384\", \"AEAD-CHACHA20-POLY1305-SHA256\"."
   }
 }
 
@@ -380,7 +380,7 @@ variable "mobile_redirect" {
 
   validation {
     condition     = try((length(var.mobile_redirect.mobile_subdomain) >= 1 || var.mobile_redirect.mobile_subdomain == "" && var.mobile_redirect.status == "off"), true)
-    error_message = "Error: The mobile_redirect.mobile_subdomain value must have a minimum length of 1."
+    error_message = "Error details: The mobile_redirect.mobile_subdomain value must have a minimum length of 1."
   }
 }
 
@@ -406,7 +406,7 @@ variable "security_header" {
   validation {
     # The maximum value for the security_header.max_age field is a signed integer
     condition     = var.security_header.max_age >= 0 && var.security_header.max_age <= 2147483647
-    error_message = "Error: The security_header.max_age value must be between 0 and 2147483647."
+    error_message = "Error details: The security_header.max_age value must be between 0 and 2147483647."
   }
 }
 
@@ -481,22 +481,22 @@ variable "records" {
   //noinspection HILUnresolvedReference
   validation {
     condition     = alltrue([for i in var.records : try(i.value != null || i.data != null)])
-    error_message = "Error: Either value or data must be provided for each record."
+    error_message = "Error details: Either value or data must be provided for each record."
   }
   //noinspection HILUnresolvedReference
   validation {
     condition     = alltrue([for i in var.records : try(i.type == "MX" ? i.priority != null : true)])
-    error_message = "Error: Priority must not be null for each record of type \"MX\"."
+    error_message = "Error details: Priority must not be null for each record of type \"MX\"."
   }
   //noinspection HILUnresolvedReference
   validation {
     condition     = alltrue([for i in var.records : try(i.priority >= 0 && i.priority <= 65535, true)])
-    error_message = "Error: Priority values must be between 0 and 65535."
+    error_message = "Error details: Priority values must be between 0 and 65535."
   }
   //noinspection HILUnresolvedReference
   validation {
     condition     = alltrue([for i in var.records : try(i.ttl == 1 || i.ttl >= 60 && i.ttl <= 86400, true)])
-    error_message = "Error: TTL values must be between 60 and 86400, or 1 for automatic."
+    error_message = "Error details: TTL values must be between 60 and 86400, or 1 for automatic."
   }
 }
 
