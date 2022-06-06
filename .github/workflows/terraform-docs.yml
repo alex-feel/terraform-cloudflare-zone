@@ -1,0 +1,25 @@
+name: Terraform Docs
+
+on:
+  pull_request:
+    paths:
+      - '**.tf'
+
+jobs:
+  terraform:
+    name: Terraform Docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Update Docs in PR
+        uses: terraform-docs/gh-actions@v1.0.0
+        with:
+          working-dir: .
+          output-file: USAGE.md
+          config-file: .terraform-docs.yml
+          git-commit-message: Update docs
+          git-push: true

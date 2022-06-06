@@ -1,10 +1,10 @@
-name: Terraform
+name: Terraform Checks
 
 on: pull_request
 
 jobs:
   terraform:
-    name: Terraform
+    name: Terraform Checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
