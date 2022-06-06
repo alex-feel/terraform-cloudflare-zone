@@ -337,7 +337,7 @@ variable "max_upload" {
 # The provider does not validate the variable value at the `terraform plan` stage
 variable "ciphers" {
   type        = list(string)
-  description = "An allowlist of ciphers for TLS termination. These ciphers must be in the BoringSSL format.\nAvailable on the following plans: Advanced Certificate Manager plan.\nPossible values of list items: \"ECDHE-ECDSA-AES128-GCM-SHA256\", \"ECDHE-ECDSA-CHACHA20-POLY1305\", \"ECDHE-RSA-AES128-GCM-SHA256\", \"ECDHE-RSA-CHACHA20-POLY1305\", \"ECDHE-ECDSA-AES128-SHA256\", \"ECDHE-ECDSA-AES128-SHA\", \"ECDHE-RSA-AES128-SHA256\", \"ECDHE-RSA-AES128-SHA\", \"AES128-GCM-SHA256\", \"AES128-SHA256\", \"AES128-SHA\", \"ECDHE-ECDSA-AES256-GCM-SHA384\", \"ECDHE-ECDSA-AES256-SHA384\", \"ECDHE-RSA-AES256-GCM-SHA384\", \"ECDHE-RSA-AES256-SHA384\", \"ECDHE-RSA-AES256-SHA\", \"AES256-GCM-SHA384\", \"AES256-SHA256\", \"AES256-SHA\", \"DES-CBC3-SHA\", \"AEAD-AES128-GCM-SHA256\", \"AEAD-AES256-GCM-SHA384\", \"AEAD-CHACHA20-POLY1305-SHA256\"."
+  description = "An allowlist of ciphers for TLS termination. These ciphers must be in the BoringSSL format.\nAvailable on the following plans: Advanced Certificate Manager plan.\nPossible values for each element in the list: \"ECDHE-ECDSA-AES128-GCM-SHA256\", \"ECDHE-ECDSA-CHACHA20-POLY1305\", \"ECDHE-RSA-AES128-GCM-SHA256\", \"ECDHE-RSA-CHACHA20-POLY1305\", \"ECDHE-ECDSA-AES128-SHA256\", \"ECDHE-ECDSA-AES128-SHA\", \"ECDHE-RSA-AES128-SHA256\", \"ECDHE-RSA-AES128-SHA\", \"AES128-GCM-SHA256\", \"AES128-SHA256\", \"AES128-SHA\", \"ECDHE-ECDSA-AES256-GCM-SHA384\", \"ECDHE-ECDSA-AES256-SHA384\", \"ECDHE-RSA-AES256-GCM-SHA384\", \"ECDHE-RSA-AES256-SHA384\", \"ECDHE-RSA-AES256-SHA\", \"AES256-GCM-SHA384\", \"AES256-SHA256\", \"AES256-SHA\", \"DES-CBC3-SHA\", \"AEAD-AES128-GCM-SHA256\", \"AEAD-AES256-GCM-SHA384\", \"AEAD-CHACHA20-POLY1305-SHA256\"."
   default     = []
 
   validation {
@@ -362,7 +362,7 @@ variable "minify" {
 }
 
 # The provider validates the `mobile_subdomain` value only at the `terraform apply` stage, making sure that the specified subdomain exists
-# It looks like it is not possible to check that the specified subdomain exists using validation block
+# It looks like it is not possible to check that the specified subdomain (A or CNAME record) exists using validation block
 # Maybe it will be possible after implementation https://github.com/hashicorp/terraform/issues/25609
 variable "mobile_redirect" {
   type = object({
@@ -370,7 +370,7 @@ variable "mobile_redirect" {
     status           = optional(string)
     strip_uri        = optional(bool)
   })
-  description = "Automatically redirect visitors on mobile devices to a mobile-optimized subdomain.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for mobile_redirect.status argument: \"on\", \"off\".\nPossible values for mobile_redirect.strip_uri argument: true, false."
+  description = "Automatically redirect visitors on mobile devices to a mobile-optimized subdomain.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for the `status` argument: \"on\", \"off\".\nPossible values for the `strip_uri` argument: true, false."
   # These defaults don't really apply and are just for documentation purposes, see `main.tf` file
   default = {
     mobile_subdomain = ""
@@ -384,7 +384,7 @@ variable "mobile_redirect" {
   }
 }
 
-# The provider does not validate the security_header.max_age value at the `terraform plan` stage
+# The provider does not validate the `security_header.max_age` value at the `terraform plan` stage
 variable "security_header" {
   type = object({
     enabled            = optional(bool)
@@ -393,7 +393,7 @@ variable "security_header" {
     include_subdomains = optional(bool)
     nosniff            = optional(bool)
   })
-  description = "Cloudflare security headers for a zone.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for security_header.enabled argument: true, false.\nPossible values for security_header.preload argument: true, false.\nPossible values for security_header.max_age argument: between 0 and 2147483647.\nPossible values for security_header.include_subdomains argument: true, false.\nPossible values for security_header.nosniff argument: true, false."
+  description = "Cloudflare security headers for a zone.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for the `enabled` argument: true, false.\nPossible values for the `preload` argument: true, false.\nPossible values for the `max_age` argument: between 0 and 2147483647.\nPossible values for the `include_subdomains` argument: true, false.\nPossible values for the `nosniff` argument: true, false."
   # These defaults don't really apply and are just for documentation purposes, see `main.tf` file
   default = {
     enabled            = true
@@ -404,7 +404,7 @@ variable "security_header" {
   }
 
   validation {
-    # The maximum value for the security_header.max_age field is a signed integer
+    # The maximum value for the `security_header.max_age` field is a signed integer
     condition     = var.security_header.max_age >= 0 && var.security_header.max_age <= 2147483647
     error_message = "Error details: The security_header.max_age value must be between 0 and 2147483647."
   }
@@ -420,10 +420,10 @@ variable "enable_dnssec" {
 
 # cloudflare_record resource
 
-# The provider does not validate if either records[].value or records[].data are provided at the `terraform plan` stage
-# The provider does not validate if records[].priority are provided for "MX" type records at the `terraform plan` stage
-# The provider does not validate records[].priority and the records[].ttl values at the `terraform plan` stage
-# Actually, records[].priority values validation is not required, the fields accept any values, but for values outside the range from 0 to 65535, the resulting value may be unexpected for the end user
+# The provider does not validate if either `value` or `data` are provided at the `terraform plan` stage
+# The provider does not validate if `priority` are provided for "MX" type records at the `terraform plan` stage
+# The provider does not validate `priority` and the `ttl` values at the `terraform plan` stage
+# Actually, `priority` values validation is not required, the field accepts any values, but for values outside the range from 0 to 65535, the resulting value may be unexpected for the end user
 variable "records" {
   type = list(object({
     record_name = string
@@ -475,7 +475,7 @@ variable "records" {
     ttl      = optional(number)
     proxied  = optional(bool)
   }))
-  description = "Zone's DNS records.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for records[].type argument: \"A\", \"AAAA\", \"CAA\", \"CERT\", \"CNAME\", \"DNSKEY\", \"DS\", \"HTTPS\", \"LOC\", \"MX\", \"NAPTR\", \"NS\", \"PTR\", \"SMIMEA\", \"SPF\", \"SRV\", \"SSHFP\", \"SVCB\", \"TLSA\", \"TXT\", \"URI\".\nPossible values for records[].priority argument: between 0 and 65535.\nPossible values for records[].ttl argument: between 60 and 86400, or 1 for automatic."
+  description = "Zone's DNS records.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for the `type` argument: \"A\", \"AAAA\", \"CAA\", \"CERT\", \"CNAME\", \"DNSKEY\", \"DS\", \"HTTPS\", \"LOC\", \"MX\", \"NAPTR\", \"NS\", \"PTR\", \"SMIMEA\", \"SPF\", \"SRV\", \"SSHFP\", \"SVCB\", \"TLSA\", \"TXT\", \"URI\".\nPossible values for the `priority` argument: between 0 and 65535.\nPossible values for the `ttl` argument: between 60 and 86400, or 1 for automatic."
   default     = []
 
   //noinspection HILUnresolvedReference
