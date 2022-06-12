@@ -34,7 +34,7 @@ locals {
 
 locals {
   security_level_avail_values = contains(local.avail_starting_with_enterprise, var.plan) ? ["off", "essentially_off", "low", "medium", "high", "under_attack"] : ["essentially_off", "low", "medium", "high", "under_attack"]
-  max_upload_avail_values     = contains(local.avail_starting_with_enterprise, var.plan) ? [225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500] : contains(local.avail_starting_with_business, var.plan) ? [125, 150, 175, 200] : [100]
+  max_upload_avail_values     = contains(local.avail_starting_with_enterprise, var.plan) ? [100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500] : contains(local.avail_starting_with_business, var.plan) ? [100, 125, 150, 175, 200] : [100]
 }
 
 locals {
