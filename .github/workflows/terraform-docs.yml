@@ -1,12 +1,9 @@
 name: Terraform Docs
 
-on:
-  pull_request:
-    paths:
-      - '**.tf'
+on: pull_request
 
 jobs:
-  terraform:
+  terraform-docs:
     name: Terraform Docs
     runs-on: ubuntu-latest
     steps:
@@ -15,7 +12,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
-      - name: Update Docs in PR
+      - name: Update Docs
         uses: terraform-docs/gh-actions@v1.0.0
         with:
           working-dir: .

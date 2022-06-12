@@ -3,7 +3,7 @@ name: Terraform Checks
 on: pull_request
 
 jobs:
-  terraform:
+  terraform-checks:
     name: Terraform Checks
     runs-on: ubuntu-latest
     steps:
@@ -13,13 +13,13 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
-      - name: Terraform Format
+      - name: Run Terraform Format
         run: terraform fmt -check -recursive
 
-      - name: Terraform Init
+      - name: Run Terraform Init
         run: terraform init -backend=false -upgrade
 
-      - name: Terraform Validate
+      - name: Run Terraform Validate
         run: terraform validate -no-color
 
       - name: Setup TFLint
