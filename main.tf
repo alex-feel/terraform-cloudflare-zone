@@ -457,4 +457,19 @@ resource "cloudflare_page_rule" "this" {
   }
   priority = each.value.priority
   status   = each.value.status
+
+  lifecycle {
+    //noinspection HCLUnknownBlockType
+    precondition {
+      //noinspection HILUnresolvedReference
+      condition     = alltrue([for page_rule in local.page_rules : anytrue([for key, value in page_rule.actions : try(local.cloudflare_page_rule_avail[key], true) if value != null && try(length(value) != 0, true)])])
+      error_message = "Error details: Each action object must contain at least one non-null action. Keep in mind that even if an action is not null in your configuration, it may evaluate to null if it is not available in the selected plan."
+    }
+    //noinspection HCLUnknownBlockType
+    precondition {
+      //noinspection HILUnresolvedReference
+      condition     = local.cloudflare_page_rule_avail.cache_ttl_by_status ? alltrue(flatten([for page_rule in local.page_rules : [for ttl in page_rule["actions"]["cache_ttl_by_status"][*]["ttl"] : try(ttl >= -1)]])) : true
+      error_message = "Error details: Each TTL value in each cache_ttl_by_status object must be greater than or equal to -1."
+    }
+  }
 }
