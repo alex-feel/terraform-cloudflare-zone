@@ -15,11 +15,13 @@ locals {
 # The nearest available values for the case when the value specified in the configuration is not available
 locals {
   security_level_closest_avail_values = {
-    "free"              = "essentially_off"
-    "pro"               = "essentially_off"
-    "partners_pro"      = "essentially_off"
-    "business"          = "essentially_off"
-    "partners_business" = "essentially_off"
+    "free"                = "essentially_off"
+    "pro"                 = "essentially_off"
+    "partners_pro"        = "essentially_off"
+    "business"            = "essentially_off"
+    "partners_business"   = "essentially_off"
+    "enterprise"          = "off"
+    "partners_enterprise" = "off"
   }
 }
 
@@ -38,15 +40,17 @@ resource "cloudflare_zone" "this" {
 # The nearest available values for the case when the value specified in the configuration is not available
 locals {
   max_upload_closest_avail_values = {
-    "free"              = 100
-    "pro"               = 100
-    "partners_pro"      = 100
-    "business"          = 200
-    "partners_business" = 200
+    "free"                = 100
+    "pro"                 = 100
+    "partners_pro"        = 100
+    "business"            = 200
+    "partners_business"   = 200
+    "enterprise"          = 500
+    "partners_enterprise" = 500
   }
 }
 
-# Availability of cloudflare_zone_settings_override resource settings or their values on the current plan
+# Availability of cloudflare_zone_settings_override resource settings on the current plan
 locals {
   cloudflare_zone_settings_override_avail = {
     cname_flattening            = contains(local.avail_starting_with_pro, var.plan) ? true : false
@@ -55,7 +59,6 @@ locals {
     http3                       = contains(local.avail_starting_with_pro, var.plan) ? true : false
     image_resizing              = contains(local.avail_starting_with_business, var.plan) ? true : false
     ipv6                        = contains(local.avail_starting_with_pro, var.plan) ? true : false
-    max_upload                  = contains(local.avail_starting_with_enterprise, var.plan) ? [100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500] : contains(local.avail_starting_with_business, var.plan) ? [100, 125, 150, 175, 200] : [100]
     mirage                      = contains(local.avail_starting_with_pro, var.plan) ? true : false
     orange_to_orange            = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
     origin_error_page_pass_thru = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
@@ -64,13 +67,20 @@ locals {
     proxy_read_timeout          = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
     pseudo_ipv4                 = contains(local.avail_starting_with_pro, var.plan) ? true : false
     response_buffering          = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
-    security_level              = contains(local.avail_starting_with_enterprise, var.plan) ? ["off", "essentially_off", "low", "medium", "high", "under_attack"] : ["essentially_off", "low", "medium", "high", "under_attack"]
     sort_query_string_for_cache = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
     tls_client_auth             = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
     true_client_ip_header       = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
     waf                         = contains(local.avail_starting_with_pro, var.plan) ? true : false
     webp                        = contains(local.avail_starting_with_pro, var.plan) ? true : false
     zero_rtt                    = contains(local.avail_starting_with_pro, var.plan) ? true : false
+  }
+}
+
+# Availability of cloudflare_zone_settings_override resource setting values on the current plan
+locals {
+  cloudflare_zone_settings_override_values_avail = {
+    max_upload     = contains(local.avail_starting_with_enterprise, var.plan) ? [100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500] : contains(local.avail_starting_with_business, var.plan) ? [100, 125, 150, 175, 200] : [100]
+    security_level = contains(local.avail_starting_with_enterprise, var.plan) ? ["off", "essentially_off", "low", "medium", "high", "under_attack"] : ["essentially_off", "low", "medium", "high", "under_attack"]
   }
 }
 
@@ -113,7 +123,7 @@ resource "cloudflare_zone_settings_override" "this" {
     image_resizing     = local.cloudflare_zone_settings_override_avail.image_resizing ? var.image_resizing : null
     ip_geolocation     = var.ip_geolocation
     ipv6               = local.cloudflare_zone_settings_override_avail.ipv6 ? var.ipv6 : null
-    max_upload         = contains(local.cloudflare_zone_settings_override_avail.max_upload, var.max_upload) ? var.max_upload : local.max_upload_closest_avail_values[var.plan]
+    max_upload         = contains(local.cloudflare_zone_settings_override_values_avail.max_upload, var.max_upload) ? var.max_upload : local.max_upload_closest_avail_values[var.plan]
     min_tls_version    = var.min_tls_version
 
     //noinspection HILUnresolvedReference
@@ -153,7 +163,7 @@ resource "cloudflare_zone_settings_override" "this" {
       nosniff            = var.security_header.nosniff
     }
 
-    security_level              = contains(local.cloudflare_zone_settings_override_avail.security_level, var.security_level) ? var.security_level : local.security_level_closest_avail_values[var.plan]
+    security_level              = contains(local.cloudflare_zone_settings_override_values_avail.security_level, var.security_level) ? var.security_level : local.security_level_closest_avail_values[var.plan]
     server_side_exclude         = var.server_side_exclude
     sort_query_string_for_cache = local.cloudflare_zone_settings_override_avail.sort_query_string_for_cache ? var.sort_query_string_for_cache : null
     ssl                         = var.ssl
@@ -253,19 +263,63 @@ resource "cloudflare_record" "this" {
 
 # cloudflare_page_rule resource
 
-# Availability of cloudflare_page_rule resource actions or their values on the current plan
+# The nearest available values for the case when the value specified in the configuration is not available
+locals {
+  browser_cache_ttl_closest_avail_values = {
+    "free"         = 120
+    "pro"          = 120
+    "partners_pro" = 120
+    # Not sure if the values for this action starting from 30 are available on the Business plan, perhaps only values starting from 60 or even from 120 are available
+    "business" = 30
+    # Not sure if the values for this action starting from 30 are available on the Business plan, perhaps only values starting from 60 or even from 120 are available
+    "partners_business"   = 30
+    "enterprise"          = 0
+    "partners_enterprise" = 0
+  }
+}
+
+# The nearest available values for the case when the value specified in the configuration is not available
+locals {
+  edge_cache_ttl_closest_avail_values = {
+    "free"                = 7200
+    "pro"                 = 3600
+    "partners_pro"        = 3600
+    "business"            = 1
+    "partners_business"   = 1
+    "enterprise"          = 1
+    "partners_enterprise" = 1
+  }
+}
+
+# Availability of cloudflare_page_rule resource actions on the current plan
 locals {
   cloudflare_page_rule_avail = {
+    bypass_cache_on_cookie      = contains(local.avail_starting_with_business, var.plan) ? true : false
+    cache_by_device_type        = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
     cache_key_fields            = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
+    cache_on_cookie             = contains(local.avail_starting_with_business, var.plan) ? true : false
     cache_ttl_by_status         = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
+    disable_railgun             = contains(local.avail_starting_with_business, var.plan) ? true : false
     mirage                      = local.cloudflare_zone_settings_override_avail.mirage
     origin_error_page_pass_thru = local.cloudflare_zone_settings_override_avail.origin_error_page_pass_thru
     polish                      = local.cloudflare_zone_settings_override_avail.polish
+    resolve_override            = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
+    respect_strong_etag         = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
     response_buffering          = local.cloudflare_zone_settings_override_avail.response_buffering
-    security_level              = local.cloudflare_zone_settings_override_avail.security_level
     sort_query_string_for_cache = local.cloudflare_zone_settings_override_avail.sort_query_string_for_cache
     true_client_ip_header       = local.cloudflare_zone_settings_override_avail.true_client_ip_header
     waf                         = local.cloudflare_zone_settings_override_avail.waf
+  }
+}
+
+# Availability of cloudflare_page_rule resource action values on the current plan
+locals {
+  cloudflare_page_rule_values_avail = {
+    # Not sure if the values for this action starting from 30 are available on the Business plan, perhaps only values starting from 60 or even from 120 are available
+    # Not sure if this lists for Business and Enterprise plans reflect all possible values between 0 and 120, perhaps there are some other values besides 30 and 60
+    browser_cache_ttl = contains(local.avail_starting_with_enterprise, var.plan) ? [0, 30, 60, 120, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000] : contains(local.avail_starting_with_business, var.plan) ? [30, 60, 120, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000] : [120, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000]
+    edge_cache_ttl    = contains(local.avail_starting_with_business, var.plan) ? 1 : contains(local.avail_starting_with_pro, var.plan) ? 3600 : 7200
+    security_level    = local.cloudflare_zone_settings_override_values_avail.security_level
   }
 }
 
@@ -392,7 +446,7 @@ resource "cloudflare_page_rule" "this" {
     respect_strong_etag         = each.value.actions["respect_strong_etag"]
     response_buffering          = local.cloudflare_page_rule_avail.response_buffering ? each.value.actions["response_buffering"] : null
     rocket_loader               = each.value.actions["rocket_loader"]
-    security_level              = try(contains(local.cloudflare_page_rule_avail.security_level, each.value.actions["security_level"]), false) ? each.value.actions["security_level"] : each.value.actions["security_level"] != null ? local.security_level_closest_avail_values[var.plan] : null
+    security_level              = try(contains(local.cloudflare_page_rule_values_avail.security_level, each.value.actions["security_level"]), false) ? each.value.actions["security_level"] : each.value.actions["security_level"] != null ? local.security_level_closest_avail_values[var.plan] : null
     server_side_exclude         = each.value.actions["server_side_exclude"]
     #    Unsupported argument, see https://github.com/cloudflare/terraform-provider-cloudflare/issues/1544
     #    smart_errors                = each.value.actions["smart_errors"]
