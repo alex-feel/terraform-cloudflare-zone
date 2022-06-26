@@ -348,10 +348,10 @@ resource "cloudflare_page_rule" "this" {
     always_online            = each.value.actions["always_online"]
     always_use_https         = each.value.actions["always_use_https"]
     automatic_https_rewrites = each.value.actions["automatic_https_rewrites"]
-    browser_cache_ttl        = each.value.actions["browser_cache_ttl"]
+    browser_cache_ttl        = try(contains(local.cloudflare_page_rule_values_avail.browser_cache_ttl, each.value.actions["browser_cache_ttl"]), false) ? each.value.actions["browser_cache_ttl"] : each.value.actions["browser_cache_ttl"] != null ? local.browser_cache_ttl_closest_avail_values[var.plan] : null
     browser_check            = each.value.actions["browser_check"]
-    bypass_cache_on_cookie   = each.value.actions["bypass_cache_on_cookie"]
-    cache_by_device_type     = each.value.actions["cache_by_device_type"]
+    bypass_cache_on_cookie   = local.cloudflare_page_rule_avail.bypass_cache_on_cookie ? each.value.actions["bypass_cache_on_cookie"] : null
+    cache_by_device_type     = local.cloudflare_page_rule_avail.cache_by_device_type ? each.value.actions["cache_by_device_type"] : null
     cache_deception_armor    = each.value.actions["cache_deception_armor"]
 
     //noinspection HILUnresolvedReference
@@ -390,7 +390,7 @@ resource "cloudflare_page_rule" "this" {
     }
 
     cache_level     = each.value.actions["cache_level"]
-    cache_on_cookie = each.value.actions["cache_on_cookie"]
+    cache_on_cookie = local.cloudflare_page_rule_avail.cache_on_cookie ? each.value.actions["cache_on_cookie"] : null
 
     //noinspection HILUnresolvedReference
     dynamic "cache_ttl_by_status" {
@@ -405,10 +405,10 @@ resource "cloudflare_page_rule" "this" {
 
     disable_apps           = each.value.actions["disable_apps"]
     disable_performance    = each.value.actions["disable_performance"]
-    disable_railgun        = each.value.actions["disable_railgun"]
+    disable_railgun        = local.cloudflare_page_rule_avail.disable_railgun ? each.value.actions["disable_railgun"] : null
     disable_security       = each.value.actions["disable_security"]
     disable_zaraz          = each.value.actions["disable_zaraz"]
-    edge_cache_ttl         = each.value.actions["edge_cache_ttl"]
+    edge_cache_ttl         = try(each.value.actions["edge_cache_ttl"] >= local.cloudflare_page_rule_values_avail.edge_cache_ttl, false) ? each.value.actions["edge_cache_ttl"] : each.value.actions["edge_cache_ttl"] != null ? local.edge_cache_ttl_closest_avail_values[var.plan] : null
     email_obfuscation      = each.value.actions["email_obfuscation"]
     explicit_cache_control = each.value.actions["explicit_cache_control"]
 
@@ -442,8 +442,8 @@ resource "cloudflare_page_rule" "this" {
     opportunistic_encryption    = each.value.actions["opportunistic_encryption"]
     origin_error_page_pass_thru = local.cloudflare_page_rule_avail.origin_error_page_pass_thru ? each.value.actions["origin_error_page_pass_thru"] : null
     polish                      = local.cloudflare_page_rule_avail.polish ? each.value.actions["polish"] : null
-    resolve_override            = each.value.actions["resolve_override"]
-    respect_strong_etag         = each.value.actions["respect_strong_etag"]
+    resolve_override            = local.cloudflare_page_rule_avail.resolve_override ? each.value.actions["resolve_override"] : null
+    respect_strong_etag         = local.cloudflare_page_rule_avail.respect_strong_etag ? each.value.actions["respect_strong_etag"] : null
     response_buffering          = local.cloudflare_page_rule_avail.response_buffering ? each.value.actions["response_buffering"] : null
     rocket_loader               = each.value.actions["rocket_loader"]
     security_level              = try(contains(local.cloudflare_page_rule_values_avail.security_level, each.value.actions["security_level"]), false) ? each.value.actions["security_level"] : each.value.actions["security_level"] != null ? local.security_level_closest_avail_values[var.plan] : null
