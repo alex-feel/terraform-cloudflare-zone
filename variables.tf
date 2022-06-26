@@ -320,7 +320,9 @@ variable "challenge_ttl" {
   default     = 1800
 }
 
-# The provider does not validate the variable value at the `terraform plan` stage
+# If the variable value is not one of the allowed values, then the explicitly specified value is ignored due to how the variable value is defined in main.tf
+# Thus, the variable value validation should be used because the provider will not be able to validate the variable value at the `terraform plan` stage
+# Also, the provider does not validate the variable value at the `terraform plan` stage
 variable "max_upload" {
   type        = number
   description = "The amount of data visitors can upload to your website in a single request.\nAvailability of values depending on the plan:\n\"free\", \"pro\", \"partners_pro\": 100;\n\"business\", \"partners_business\": 125, 150, 175, 200;\n\"enterprise\", \"partners_enterprise\": 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500.\nPossible values: 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500."
