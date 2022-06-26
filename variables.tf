@@ -502,6 +502,7 @@ variable "records" {
 
 # cloudflare_page_rule resource
 
+# The number of rules is not checked against the maximum available number of rules on the current plan, since the rules can be purchased in addition, and there is no data source for obtaining the available number of rules
 variable "page_rules" {
   type = list(object({
     page_rule_name = string
@@ -510,11 +511,14 @@ variable "page_rules" {
       always_online            = optional(string)
       always_use_https         = optional(bool)
       automatic_https_rewrites = optional(string)
-      browser_cache_ttl        = optional(number)
-      browser_check            = optional(string)
-      bypass_cache_on_cookie   = optional(string)
-      cache_by_device_type     = optional(string)
-      cache_deception_armor    = optional(string)
+      # If the `browser_cache_ttl` value is not one of the allowed values, then the explicitly specified value is ignored due to how the variable value is defined in main.tf
+      # Thus, the `browser_cache_ttl` value validation should be used because the provider will not be able to validate the variable value at the `terraform plan` stage
+      # Also, the provider does not validate the `browser_cache_ttl` value at the `terraform plan` stage
+      browser_cache_ttl      = optional(number)
+      browser_check          = optional(string)
+      bypass_cache_on_cookie = optional(string)
+      cache_by_device_type   = optional(string)
+      cache_deception_armor  = optional(string)
       cache_key_fields = optional(object({
         cookie = optional(object({
           check_presence = optional(list(string))
@@ -541,6 +545,7 @@ variable "page_rules" {
       }))
       cache_level     = optional(string)
       cache_on_cookie = optional(string)
+      # The provider does not validate the `cache_ttl_by_status.ttl` value at the `terraform plan` stage
       cache_ttl_by_status = optional(list(object({
         codes = string
         ttl   = number
@@ -580,9 +585,35 @@ variable "page_rules" {
       true_client_ip_header       = optional(string)
       waf                         = optional(string)
     })
+    # The provider does not validate the `priority` value at the `terraform plan` stage
     priority = optional(number)
     status   = optional(string)
   }))
   description = "Zone's page rules.\nNumber of allowed page rules depending on the plan:\n\"free\": 3;\n\"pro\", \"partners_pro\": 20;\n\"business\", \"partners_business\": 50;\n\"enterprise\", \"partners_enterprise\": 125.\nAvailability of values depending on the plan is the same as the availability of the same settings for the cloudflare_zone_settings_override resource, and for other settings, the availability can be found at https://support.cloudflare.com/hc/en-us/articles/218411427#h_18YTlvNlZET4Poljeih3TJ."
   default     = []
+
+  validation {
+    //noinspection HILUnresolvedReference
+    condition     = alltrue([for page_rule in var.page_rules : anytrue([for action in page_rule.actions : try(action != null)])])
+    error_message = "Error details: The action object of each rule must contain at least one non-null action."
+  }
+  validation {
+    //noinspection HILUnresolvedReference
+    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].browser_cache_ttl : try(contains([0, 30, 60, 120, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000], ttl), true)]]))
+    error_message = "Error details: The browser_cache_ttl values must be one of the following: 0, 30, 60, 120, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000."
+  }
+  validation {
+    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].edge_cache_ttl : try(ttl >= 1, true)]]))
+    error_message = "Error details: The edge_cache_ttl values must be greater than or equal to 1."
+  }
+  validation {
+    //noinspection HILUnresolvedReference
+    condition     = alltrue([for page_rule in var.page_rules : (contains([for key, value in page_rule.actions : key if value != null && try(length(value) != 0, true)], "forwarding_url") ? length([for key, value in page_rule.actions : key if value != null && try(length(value) != 0, true)]) == 1 : true)])
+    error_message = "Error details: The forwarding_url cannot be set with any other actions."
+  }
+  # The range of values is set empirically and looks unexpected, apparently, the maximum possible number of rules is 125
+  validation {
+    condition     = alltrue([for page_rule in var.page_rules : try(page_rule["priority"] >= 0 && page_rule["priority"] <= 1000, true)])
+    error_message = "Error details: The priority values must be between 0 and 1000."
+  }
 }
