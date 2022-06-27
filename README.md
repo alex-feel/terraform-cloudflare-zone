@@ -6,7 +6,7 @@
 
 Terraform module that creates zone resources on Cloudflare.
 
-The main goals of this module are to simplify the creation of resources in Cloudflare, while reducing the number of possible user errors at the earliest possible stage. See the notes below for more information.
+The main goals of this module are to simplify the creation of resources in Cloudflare, while reducing the number of possible user mistakes at the earliest possible stage. See notes below for more information.
 
 ## Supported Resources
 
