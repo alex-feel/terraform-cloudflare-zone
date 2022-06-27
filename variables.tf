@@ -579,8 +579,8 @@ variable "page_rules" {
       respect_strong_etag         = optional(string)
       response_buffering          = optional(string)
       rocket_loader               = optional(string)
-      # If the variable value is not one of the allowed values, then the explicitly specified value is ignored due to how the variable value is defined in main.tf
-      # Thus, the variable value validation should be used because the provider will not be able to validate the variable value at the `terraform plan` stage
+      # If the `security_level` value is not one of the allowed values, then the explicitly specified value is ignored due to how the variable value is defined in main.tf
+      # Thus, the `security_level` value validation should be used because the provider will not be able to validate the variable value at the `terraform plan` stage
       security_level              = optional(string)
       server_side_exclude         = optional(string)
       smart_errors                = optional(string)
