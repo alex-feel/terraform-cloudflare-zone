@@ -6,7 +6,7 @@
 
 Terraform module that creates zone resources on Cloudflare.
 
-The main goals of this module are to simplify the creation of resources in Cloudflare, while reducing the number of possible user mistakes. See notes below for more information.
+The main goals of this module are to simplify the creation of resources in Cloudflare, while reducing the number of possible user errors at the earliest possible stage. See the notes below for more information.
 
 ## Supported Resources
 
@@ -85,7 +85,7 @@ module "acme_com" {
 }
 ```
 
-* Run the following commands:
+* Run the following command (make sure you run this command every time to get new changes):
 
 ```bash
 $ terraform init -upgrade
@@ -93,8 +93,16 @@ $ terraform init -upgrade
 
 Note. Be aware of changes in your infrastructure when using the module with the latest changes, carefully examine the output of the `terraform plan` command before applying the changes.
 
+## Share Your Support
+
+Like the project? Please give it a star! You can find more about starring [here](https://docs.github.com/en/get-started/exploring-projects-on-github/saving-repositories-with-stars).
+
+## Contributors
+
+<a href="https://github.com/alex-feel/terraform-cloudflare-zone/graphs/contributors"><img src="https://contrib.rocks/image?repo=alex-feel/terraform-cloudflare-zone" /></a>
+
+<sup>Made with [contrib.rocks](https://contrib.rocks).</sup>
+
 ## License
 
 GNU General Public License v3.0. See [LICENSE](https://github.com/alex-feel/terraform-cloudflare-zone/blob/main/LICENSE) for full details.
-
-<sup>Made by Alex Feel and [contributors](https://github.com/alex-feel/terraform-cloudflare-zone/graphs/contributors).</sup>
