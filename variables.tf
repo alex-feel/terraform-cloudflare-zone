@@ -579,6 +579,8 @@ variable "page_rules" {
       respect_strong_etag         = optional(string)
       response_buffering          = optional(string)
       rocket_loader               = optional(string)
+      # If the variable value is not one of the allowed values, then the explicitly specified value is ignored due to how the variable value is defined in main.tf
+      # Thus, the variable value validation should be used because the provider will not be able to validate the variable value at the `terraform plan` stage
       security_level              = optional(string)
       server_side_exclude         = optional(string)
       smart_errors                = optional(string)
@@ -612,6 +614,10 @@ variable "page_rules" {
     //noinspection HILUnresolvedReference
     condition     = alltrue([for page_rule in var.page_rules : (contains([for key, value in page_rule.actions : key if value != null && try(length(value) != 0, true)], "forwarding_url") ? length([for key, value in page_rule.actions : key if value != null && try(length(value) != 0, true)]) == 1 : true)])
     error_message = "Error details: The forwarding_url cannot be set with any other actions."
+  }
+  validation {
+    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].security_level : try(contains(["off", "essentially_off", "low", "medium", "high", "under_attack"], ttl), true)]]))
+    error_message = "Error details: The security_level values must be one of the following: \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\"."
   }
   # The range of values is set empirically and looks unexpected, apparently, the maximum possible number of rules is 125
   validation {
