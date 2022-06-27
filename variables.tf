@@ -513,8 +513,8 @@ variable "page_rules" {
       always_online            = optional(string)
       always_use_https         = optional(bool)
       automatic_https_rewrites = optional(string)
-      # If the `browser_cache_ttl` value is not one of the allowed values, then the explicitly specified value is ignored due to how the variable value is defined in main.tf
-      # Thus, the `browser_cache_ttl` value validation should be used because the provider will not be able to validate the variable value at the `terraform plan` stage
+      # If the `browser_cache_ttl` value is not one of the allowed values, then the explicitly specified value is ignored due to how the `browser_cache_ttl` value is defined in main.tf
+      # Thus, the `browser_cache_ttl` value validation should be used because the provider will not be able to validate the `browser_cache_ttl` value at the `terraform plan` stage
       # Also, the provider does not validate the `browser_cache_ttl` value at the `terraform plan` stage
       browser_cache_ttl      = optional(number)
       browser_check          = optional(string)
@@ -579,8 +579,8 @@ variable "page_rules" {
       respect_strong_etag         = optional(string)
       response_buffering          = optional(string)
       rocket_loader               = optional(string)
-      # If the `security_level` value is not one of the allowed values, then the explicitly specified value is ignored due to how the variable value is defined in main.tf
-      # Thus, the `security_level` value validation should be used because the provider will not be able to validate the variable value at the `terraform plan` stage
+      # If the `security_level` value is not one of the allowed values, then the explicitly specified value is ignored due to how the `security_level` value is defined in main.tf
+      # Thus, the `security_level` value validation should be used because the provider will not be able to validate the `security_level` value at the `terraform plan` stage
       security_level              = optional(string)
       server_side_exclude         = optional(string)
       smart_errors                = optional(string)
