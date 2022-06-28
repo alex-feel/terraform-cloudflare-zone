@@ -176,6 +176,22 @@ resource "cloudflare_zone_settings_override" "this" {
     websockets                  = var.websockets
     zero_rtt                    = local.cloudflare_zone_settings_override_avail.zero_rtt ? var.zero_rtt : null
   }
+
+  # If you try to simultaneously set the `mobile_subdomain` value and create an A or CNAME record pointing to that subdomain, the operation may fail and require you to rerun `terraform apply`
+  # For this reason, records must be created first
+  depends_on = [
+    cloudflare_record.this
+  ]
+
+  lifecycle {
+    # The provider does not validate the `mobile_subdomain` value at the `terraform plan` stage to ensure that the specified subdomain exists or will be created
+    //noinspection HCLUnknownBlockType
+    precondition {
+      //noinspection HILUnresolvedReference
+      condition     = var.mobile_redirect.mobile_subdomain != null && length(var.mobile_redirect.mobile_subdomain) > 0 ? anytrue([for record in local.records : try(var.mobile_redirect.mobile_subdomain == record.name && (record.type == "A" || record.type == "CNAME"), false)]) : true
+      error_message = "Error details: The mobile_subdomain contains a non-existent subdomain, make sure you have a matching A or CNAME record."
+    }
+  }
 }
 
 # cloudflare_zone_dnssec resource
