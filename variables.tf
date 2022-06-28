@@ -603,12 +603,12 @@ variable "page_rules" {
   }
   validation {
     //noinspection HILUnresolvedReference
-    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].browser_cache_ttl : try(contains([0, 30, 60, 120, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000], ttl), true)]]))
-    error_message = "Error details: The browser_cache_ttl values must be one of the following: 0, 30, 60, 120, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000."
+    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].browser_cache_ttl : try(ttl >= 0 && ttl <= 31536000, true)]]))
+    error_message = "Error details: The browser_cache_ttl values must be between 0 and 31536000."
   }
   validation {
-    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].edge_cache_ttl : try(ttl >= 1, true)]]))
-    error_message = "Error details: The edge_cache_ttl values must be greater than or equal to 1."
+    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].edge_cache_ttl : try(ttl >= 1 && ttl <= 2678400, true)]]))
+    error_message = "Error details: The edge_cache_ttl values must be between 1 and 2678400."
   }
   validation {
     //noinspection HILUnresolvedReference

@@ -348,7 +348,7 @@ resource "cloudflare_page_rule" "this" {
     always_online            = each.value.actions["always_online"]
     always_use_https         = each.value.actions["always_use_https"]
     automatic_https_rewrites = each.value.actions["automatic_https_rewrites"]
-    browser_cache_ttl        = try(contains(local.cloudflare_page_rule_values_avail.browser_cache_ttl, each.value.actions["browser_cache_ttl"]), false) ? each.value.actions["browser_cache_ttl"] : each.value.actions["browser_cache_ttl"] != null ? local.browser_cache_ttl_closest_avail_values[var.plan] : null
+    browser_cache_ttl        = try(each.value.actions["browser_cache_ttl"] >= local.cloudflare_page_rule_values_avail.browser_cache_ttl, false) ? each.value.actions["browser_cache_ttl"] : each.value.actions["browser_cache_ttl"] != null ? local.browser_cache_ttl_closest_avail_values[var.plan] : null
     browser_check            = each.value.actions["browser_check"]
     bypass_cache_on_cookie   = local.cloudflare_page_rule_avail.bypass_cache_on_cookie ? each.value.actions["bypass_cache_on_cookie"] : null
     cache_by_device_type     = local.cloudflare_page_rule_avail.cache_by_device_type ? each.value.actions["cache_by_device_type"] : null
