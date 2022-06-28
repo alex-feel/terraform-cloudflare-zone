@@ -420,7 +420,6 @@ variable "enable_dnssec" {
 
 # cloudflare_record resource
 
-# Actually, `priority` values validation is not required, the field accepts any values, but for values outside the range from 0 to 65535, the resulting value may be unexpected for the end user
 variable "records" {
   type = list(object({
     record_name = string
@@ -489,7 +488,7 @@ variable "records" {
     error_message = "Error details: The priority must not be null for each record of type \"MX\"."
   }
 
-  # The provider does not validate the `priority` values at the `terraform plan` stage
+  # Actually, `priority` values validation is not required, it accepts any values, including negative ones, but for values outside the range from 0 to 65535, the resulting value may be unexpected for the end user
   //noinspection HILUnresolvedReference
   validation {
     condition     = alltrue([for i in var.records : try(i.priority >= 0 && i.priority <= 65535, true)])
