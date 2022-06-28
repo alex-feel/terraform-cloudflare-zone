@@ -43,12 +43,12 @@ variable "always_online" {
   default     = "on"
 }
 
-# The provider does not validate the variable value at the `terraform plan` stage
 variable "always_use_https" {
   type        = string
   description = "Reply to all requests for URLs that use 'http' with a 301 redirect to the equivalent 'https' URL. If you only want to redirect for a subset of requests, consider creating an 'Always use HTTPS' page rule.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 
+  # The provider does not validate the variable value at the `terraform plan` stage
   validation {
     condition     = contains(["off", "on"], var.always_use_https)
     error_message = "Error details: The always_use_https value must be one of the following: \"on\", \"off\"."
@@ -265,12 +265,12 @@ variable "polish" {
   default     = "off"
 }
 
-# The provider does not validate the variable value at the `terraform plan` stage
 variable "proxy_read_timeout" {
   type        = number
   description = "Maximum time between two read operations from origin.\nAvailable on the following plans: \"enterprise\", \"partners_enterprise\".\nPossible values: between 1 and 6000."
   default     = 100
 
+  # The provider does not validate the variable value at the `terraform plan` stage
   validation {
     condition     = var.proxy_read_timeout >= 1 && var.proxy_read_timeout <= 6000
     error_message = "Error details: The proxy_read_timeout value must be between 1 and 6000."
@@ -283,13 +283,13 @@ variable "pseudo_ipv4" {
   default     = "off"
 }
 
-# If the variable value is not one of the allowed values, then the explicitly specified value is ignored due to how the variable value is defined in main.tf
-# Thus, the variable value validation should be used because the provider will not be able to validate the variable value at the `terraform plan` stage
 variable "security_level" {
   type        = string
   description = "Choose the appropriate security profile for your website, which will automatically adjust each of the security settings. If you choose to customize an individual security setting, the profile will become Custom.\nAvailability of values depending on the plan:\n\"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\": \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\";\n\"enterprise\", \"partners_enterprise\": \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\".\nPossible values: \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\"."
   default     = "medium"
 
+  # If the variable value is not one of the allowed values, then the explicitly specified value is ignored due to how the variable value is defined in main.tf
+  # Thus, the variable value validation should be used because the provider will not validate the variable value at the `terraform plan` stage
   validation {
     condition     = contains(["off", "essentially_off", "low", "medium", "high", "under_attack"], var.security_level)
     error_message = "Error details: The security_level value must be one of the following: \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\"."
@@ -310,38 +310,38 @@ variable "tls_1_3" {
 
 variable "browser_cache_ttl" {
   type        = number
-  description = "Browser Cache TTL (in seconds) specifies how long Cloudflare-cached resources will remain on your visitors' computers. Cloudflare will honor any larger times specified by your server. Setting a TTL of 0 is equivalent to selecting `Respect Existing Headers`.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: from 0 and above."
+  description = "Browser Cache TTL (in seconds) specifies how long Cloudflare-cached resources will remain on your visitors' computers. Cloudflare will honor any larger times specified by your server. Setting a TTL of 0 is equivalent to selecting `Respect Existing Headers`.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: 0, 30, 60, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000."
   default     = 14400
 }
 
 variable "challenge_ttl" {
   type        = number
-  description = "Specify how long a visitor is allowed access to your site after successfully completing a challenge (such as a CAPTCHA). After the TTL has expired the visitor will have to complete a new challenge. We recommend a 15 - 45 minute setting and will attempt to honor any setting above 45 minutes.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: from 0 and above."
+  description = "Specify how long a visitor is allowed access to your site after successfully completing a challenge (such as a CAPTCHA). After the TTL has expired the visitor will have to complete a new challenge. We recommend a 15 - 45 minute setting and will attempt to honor any setting above 45 minutes.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: 300, 900, 1800, 2700, 3600, 7200, 10800, 14400, 28800, 57600, 86400, 604800, 2592000, 31536000."
   default     = 1800
 }
 
-# If the variable value is not one of the allowed values, then the explicitly specified value is ignored due to how the variable value is defined in main.tf
-# Thus, the variable value validation should be used because the provider will not be able to validate the variable value at the `terraform plan` stage
-# Also, the provider does not validate the variable value at the `terraform plan` stage
 variable "max_upload" {
   type        = number
   description = "The amount of data visitors can upload to your website in a single request.\nAvailability of values depending on the plan:\n\"free\", \"pro\", \"partners_pro\": 100;\n\"business\", \"partners_business\": 125, 150, 175, 200;\n\"enterprise\", \"partners_enterprise\": 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500.\nPossible values: 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500."
   default     = 100
 
+  # The provider does not validate the variable value at the `terraform plan` stage
+  # If the variable value is not one of the allowed values, then the explicitly specified value is ignored due to how the variable value is defined in main.tf
+  # Thus, the variable value validation should be used because the provider will not validate the variable value at the `terraform plan` stage
   validation {
     condition     = contains([100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500], var.max_upload)
     error_message = "Error details: The max_upload value must be one of the following: 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500."
   }
 }
 
-# Supported cipher suites by protocol can be found at https://developers.cloudflare.com/ssl/ssl-tls/cipher-suites/#supported-cipher-suites-by-protocol
-# When trying to use the ciphers "AEAD-AES128-GCM-SHA256", "AEAD-AES256-GCM-SHA384", "AEAD-CHACHA20-POLY1305-SHA256", error 1007 is returned from the API, despite the fact that the ciphers are declared to be supported
-# The provider does not validate the variable value at the `terraform plan` stage
 variable "ciphers" {
   type        = list(string)
   description = "An allowlist of ciphers for TLS termination. These ciphers must be in the BoringSSL format.\nAvailable on the following plans: Advanced Certificate Manager plan.\nPossible values for each element in the list: \"ECDHE-ECDSA-AES128-GCM-SHA256\", \"ECDHE-ECDSA-CHACHA20-POLY1305\", \"ECDHE-RSA-AES128-GCM-SHA256\", \"ECDHE-RSA-CHACHA20-POLY1305\", \"ECDHE-ECDSA-AES128-SHA256\", \"ECDHE-ECDSA-AES128-SHA\", \"ECDHE-RSA-AES128-SHA256\", \"ECDHE-RSA-AES128-SHA\", \"AES128-GCM-SHA256\", \"AES128-SHA256\", \"AES128-SHA\", \"ECDHE-ECDSA-AES256-GCM-SHA384\", \"ECDHE-ECDSA-AES256-SHA384\", \"ECDHE-RSA-AES256-GCM-SHA384\", \"ECDHE-RSA-AES256-SHA384\", \"ECDHE-RSA-AES256-SHA\", \"AES256-GCM-SHA384\", \"AES256-SHA256\", \"AES256-SHA\", \"DES-CBC3-SHA\", \"AEAD-AES128-GCM-SHA256\", \"AEAD-AES256-GCM-SHA384\", \"AEAD-CHACHA20-POLY1305-SHA256\"."
   default     = []
 
+  # The provider does not validate the variable value at the `terraform plan` stage
+  # Supported cipher suites by protocol can be found at https://developers.cloudflare.com/ssl/ssl-tls/cipher-suites/#supported-cipher-suites-by-protocol
+  # When trying to use the ciphers "AEAD-AES128-GCM-SHA256", "AEAD-AES256-GCM-SHA384", "AEAD-CHACHA20-POLY1305-SHA256", error 1007 is returned from the API, despite the fact that the ciphers are declared to be supported
   validation {
     condition     = alltrue([for i in var.ciphers : contains(["ECDHE-ECDSA-AES128-GCM-SHA256", "ECDHE-ECDSA-CHACHA20-POLY1305", "ECDHE-RSA-AES128-GCM-SHA256", "ECDHE-RSA-CHACHA20-POLY1305", "ECDHE-ECDSA-AES128-SHA256", "ECDHE-ECDSA-AES128-SHA", "ECDHE-RSA-AES128-SHA256", "ECDHE-RSA-AES128-SHA", "AES128-GCM-SHA256", "AES128-SHA256", "AES128-SHA", "ECDHE-ECDSA-AES256-GCM-SHA384", "ECDHE-ECDSA-AES256-SHA384", "ECDHE-RSA-AES256-GCM-SHA384", "ECDHE-RSA-AES256-SHA384", "ECDHE-RSA-AES256-SHA", "AES256-GCM-SHA384", "AES256-SHA256", "AES256-SHA", "DES-CBC3-SHA", "AEAD-AES128-GCM-SHA256", "AEAD-AES256-GCM-SHA384", "AEAD-CHACHA20-POLY1305-SHA256"], i)])
     error_message = "Error details: The ciphers value must be a list of one or more of the following values: \"ECDHE-ECDSA-AES128-GCM-SHA256\", \"ECDHE-ECDSA-CHACHA20-POLY1305\", \"ECDHE-RSA-AES128-GCM-SHA256\", \"ECDHE-RSA-CHACHA20-POLY1305\", \"ECDHE-ECDSA-AES128-SHA256\", \"ECDHE-ECDSA-AES128-SHA\", \"ECDHE-RSA-AES128-SHA256\", \"ECDHE-RSA-AES128-SHA\", \"AES128-GCM-SHA256\", \"AES128-SHA256\", \"AES128-SHA\", \"ECDHE-ECDSA-AES256-GCM-SHA384\", \"ECDHE-ECDSA-AES256-SHA384\", \"ECDHE-RSA-AES256-GCM-SHA384\", \"ECDHE-RSA-AES256-SHA384\", \"ECDHE-RSA-AES256-SHA\", \"AES256-GCM-SHA384\", \"AES256-SHA256\", \"AES256-SHA\", \"DES-CBC3-SHA\", \"AEAD-AES128-GCM-SHA256\", \"AEAD-AES256-GCM-SHA384\", \"AEAD-CHACHA20-POLY1305-SHA256\"."
@@ -363,9 +363,6 @@ variable "minify" {
   }
 }
 
-# The provider validates the `mobile_subdomain` value only at the `terraform apply` stage, making sure that the specified subdomain exists
-# It looks like it is not possible to check that the specified subdomain (A or CNAME record) exists using validation block
-# Maybe it will be possible after implementation https://github.com/hashicorp/terraform/issues/25609
 variable "mobile_redirect" {
   type = object({
     mobile_subdomain = string
@@ -380,13 +377,13 @@ variable "mobile_redirect" {
     strip_uri        = false
   }
 
+  # The provider does not check if the `mobile_subdomain` value is specified when the `status` value is `on` at the `terraform plan` stage
   validation {
     condition     = try((length(var.mobile_redirect.mobile_subdomain) >= 1 || var.mobile_redirect.mobile_subdomain == "" && var.mobile_redirect.status == "off"), true)
-    error_message = "Error details: The mobile_redirect.mobile_subdomain value must have a minimum length of 1."
+    error_message = "Error details: The mobile_subdomain value must have a minimum length of 1."
   }
 }
 
-# The provider does not validate the `security_header.max_age` value at the `terraform plan` stage
 variable "security_header" {
   type = object({
     enabled            = optional(bool)
@@ -405,10 +402,11 @@ variable "security_header" {
     nosniff            = true
   }
 
+  # The provider does not validate the `max_age` value at the `terraform plan` stage
+  # The maximum value for the `max_age` field is a signed integer
   validation {
-    # The maximum value for the `security_header.max_age` field is a signed integer
     condition     = var.security_header.max_age >= 0 && var.security_header.max_age <= 2147483647
-    error_message = "Error details: The security_header.max_age value must be between 0 and 2147483647."
+    error_message = "Error details: The max_age value must be between 0 and 2147483647."
   }
 }
 
@@ -422,9 +420,6 @@ variable "enable_dnssec" {
 
 # cloudflare_record resource
 
-# The provider does not validate if either `value` or `data` are provided at the `terraform plan` stage
-# The provider does not validate if `priority` are provided for "MX" type records at the `terraform plan` stage
-# The provider does not validate `priority` and the `ttl` values at the `terraform plan` stage
 # Actually, `priority` values validation is not required, the field accepts any values, but for values outside the range from 0 to 65535, the resulting value may be unexpected for the end user
 variable "records" {
   type = list(object({
@@ -480,25 +475,32 @@ variable "records" {
   description = "Zone's DNS records.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for the `type` argument: \"A\", \"AAAA\", \"CAA\", \"CERT\", \"CNAME\", \"DNSKEY\", \"DS\", \"HTTPS\", \"LOC\", \"MX\", \"NAPTR\", \"NS\", \"PTR\", \"SMIMEA\", \"SPF\", \"SRV\", \"SSHFP\", \"SVCB\", \"TLSA\", \"TXT\", \"URI\".\nPossible values for the `priority` argument: between 0 and 65535.\nPossible values for the `ttl` argument: between 60 and 86400, or 1 for automatic."
   default     = []
 
+  # The provider does not check if either `value` or `data` is provided at the `terraform plan` stage
   //noinspection HILUnresolvedReference
   validation {
     condition     = alltrue([for i in var.records : try(i.value != null || i.data != null)])
-    error_message = "Error details: Either value or data must be provided for each record."
+    error_message = "Error details: Either the value or the data must be provided for each record."
   }
+
+  # The provider does not check if `priority` are provided for "MX" type records at the `terraform plan` stage
   //noinspection HILUnresolvedReference
   validation {
     condition     = alltrue([for i in var.records : try(i.type == "MX" ? i.priority != null : true)])
-    error_message = "Error details: Priority must not be null for each record of type \"MX\"."
+    error_message = "Error details: The priority must not be null for each record of type \"MX\"."
   }
+
+  # The provider does not validate the `priority` values at the `terraform plan` stage
   //noinspection HILUnresolvedReference
   validation {
     condition     = alltrue([for i in var.records : try(i.priority >= 0 && i.priority <= 65535, true)])
-    error_message = "Error details: Priority values must be between 0 and 65535."
+    error_message = "Error details: The priority values must be between 0 and 65535."
   }
+
+  # The provider does not validate the `ttl` values at the `terraform plan` stage
   //noinspection HILUnresolvedReference
   validation {
     condition     = alltrue([for i in var.records : try(i.ttl == 1 || i.ttl >= 60 && i.ttl <= 86400, true)])
-    error_message = "Error details: TTL values must be between 60 and 86400, or 1 for automatic."
+    error_message = "Error details: The ttl values must be between 60 and 86400, or 1 for automatic."
   }
 }
 
@@ -513,14 +515,11 @@ variable "page_rules" {
       always_online            = optional(string)
       always_use_https         = optional(bool)
       automatic_https_rewrites = optional(string)
-      # If the `browser_cache_ttl` value is not one of the allowed values, then the explicitly specified value is ignored due to how the `browser_cache_ttl` value is defined in main.tf
-      # Thus, the `browser_cache_ttl` value validation should be used because the provider will not be able to validate the `browser_cache_ttl` value at the `terraform plan` stage
-      # Also, the provider does not validate the `browser_cache_ttl` value at the `terraform plan` stage
-      browser_cache_ttl      = optional(number)
-      browser_check          = optional(string)
-      bypass_cache_on_cookie = optional(string)
-      cache_by_device_type   = optional(string)
-      cache_deception_armor  = optional(string)
+      browser_cache_ttl        = optional(number)
+      browser_check            = optional(string)
+      bypass_cache_on_cookie   = optional(string)
+      cache_by_device_type     = optional(string)
+      cache_deception_armor    = optional(string)
       cache_key_fields = optional(object({
         cookie = optional(object({
           check_presence = optional(list(string))
@@ -547,7 +546,6 @@ variable "page_rules" {
       }))
       cache_level     = optional(string)
       cache_on_cookie = optional(string)
-      # The provider does not validate the `cache_ttl_by_status.ttl` value at the `terraform plan` stage
       cache_ttl_by_status = optional(list(object({
         codes = string
         ttl   = number
@@ -579,8 +577,6 @@ variable "page_rules" {
       respect_strong_etag         = optional(string)
       response_buffering          = optional(string)
       rocket_loader               = optional(string)
-      # If the `security_level` value is not one of the allowed values, then the explicitly specified value is ignored due to how the `security_level` value is defined in main.tf
-      # Thus, the `security_level` value validation should be used because the provider will not be able to validate the `security_level` value at the `terraform plan` stage
       security_level              = optional(string)
       server_side_exclude         = optional(string)
       smart_errors                = optional(string)
@@ -589,7 +585,6 @@ variable "page_rules" {
       true_client_ip_header       = optional(string)
       waf                         = optional(string)
     })
-    # The provider does not validate the `priority` value at the `terraform plan` stage
     priority = optional(number)
     status   = optional(string)
   }))
@@ -601,24 +596,40 @@ variable "page_rules" {
     condition     = alltrue([for page_rule in var.page_rules : anytrue([for action in page_rule.actions : try(action != null)])])
     error_message = "Error details: The action object of each rule must contain at least one non-null action."
   }
+
+  # The provider does not validate the `browser_cache_ttl` values at the `terraform plan` stage
+  # Explicitly specified value may be ignored due to how the `browser_cache_ttl` value is defined in main.tf
+  # Thus, the `browser_cache_ttl` value validation should be used because the provider will not always validate the `browser_cache_ttl` value at the `terraform plan` stage
+  # The `browser_cache_ttl` argument of the `cloudflare_zone_settings_override` resource only accepts values from a specific list, but any value within the allowed range can be used here
   validation {
     //noinspection HILUnresolvedReference
-    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].browser_cache_ttl : try(contains([0, 30, 60, 120, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000], ttl), true)]]))
-    error_message = "Error details: The browser_cache_ttl values must be one of the following: 0, 30, 60, 120, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000."
+    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].browser_cache_ttl : try(ttl >= 0 && ttl <= 31536000, true)]]))
+    error_message = "Error details: The browser_cache_ttl values must be between 0 and 31536000."
   }
+
+  # The provider does not validate the `edge_cache_ttl` values at the `terraform plan` stage
+  # Explicitly specified value may be ignored due to how the `edge_cache_ttl` value is defined in main.tf
+  # Thus, the `edge_cache_ttl` value validation should be used because the provider will not always validate the `edge_cache_ttl` value at the `terraform plan` stage
   validation {
-    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].edge_cache_ttl : try(ttl >= 1, true)]]))
-    error_message = "Error details: The edge_cache_ttl values must be greater than or equal to 1."
+    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].edge_cache_ttl : try(ttl >= 1 && ttl <= 2678400, true)]]))
+    error_message = "Error details: The edge_cache_ttl values must be between 1 and 2678400."
   }
+
+  # The provider does not check if the `forwarding_url` is set with any other actions at the `terraform plan` stage
   validation {
     //noinspection HILUnresolvedReference
     condition     = alltrue([for page_rule in var.page_rules : (contains([for key, value in page_rule.actions : key if value != null && try(length(value) != 0, true)], "forwarding_url") ? length([for key, value in page_rule.actions : key if value != null && try(length(value) != 0, true)]) == 1 : true)])
     error_message = "Error details: The forwarding_url cannot be set with any other actions."
   }
+
+  # If the `security_level` value is not one of the allowed values, then the explicitly specified value is ignored due to how the `security_level` value is defined in main.tf
+  # Thus, the `security_level` value validation should be used because the provider will not validate the `security_level` value at the `terraform plan` stage
   validation {
     condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].security_level : try(contains(["off", "essentially_off", "low", "medium", "high", "under_attack"], ttl), true)]]))
     error_message = "Error details: The security_level values must be one of the following: \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\"."
   }
+
+  # The provider does not validate the `priority` values at the `terraform plan` stage
   # The range of values is set empirically and looks unexpected, apparently, the maximum possible number of rules is 125
   validation {
     condition     = alltrue([for page_rule in var.page_rules : try(page_rule["priority"] >= 0 && page_rule["priority"] <= 1000, true)])

@@ -79,7 +79,9 @@ locals {
 # Availability of cloudflare_zone_settings_override resource setting values on the current plan
 locals {
   cloudflare_zone_settings_override_values_avail = {
-    max_upload     = contains(local.avail_starting_with_enterprise, var.plan) ? [100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500] : contains(local.avail_starting_with_business, var.plan) ? [100, 125, 150, 175, 200] : [100]
+    # Returns a list with all available values
+    max_upload = contains(local.avail_starting_with_enterprise, var.plan) ? [100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500] : contains(local.avail_starting_with_business, var.plan) ? [100, 125, 150, 175, 200] : [100]
+    # Returns a list with all available values
     security_level = contains(local.avail_starting_with_enterprise, var.plan) ? ["off", "essentially_off", "low", "medium", "high", "under_attack"] : ["essentially_off", "low", "medium", "high", "under_attack"]
   }
 }
@@ -175,6 +177,22 @@ resource "cloudflare_zone_settings_override" "this" {
     webp                        = local.cloudflare_zone_settings_override_avail.webp ? var.webp : null
     websockets                  = var.websockets
     zero_rtt                    = local.cloudflare_zone_settings_override_avail.zero_rtt ? var.zero_rtt : null
+  }
+
+  # If you try to simultaneously set the `mobile_subdomain` value and create an A or CNAME record pointing to that subdomain, the operation may fail and require you to rerun `terraform apply`
+  # For this reason, records must be created first
+  depends_on = [
+    cloudflare_record.this
+  ]
+
+  lifecycle {
+    # The provider does not validate the `mobile_subdomain` value at the `terraform plan` stage to ensure that the specified subdomain exists or will be created
+    //noinspection HCLUnknownBlockType
+    precondition {
+      //noinspection HILUnresolvedReference
+      condition     = var.mobile_redirect.mobile_subdomain != null && length(var.mobile_redirect.mobile_subdomain) > 0 ? anytrue([for record in local.records : try(var.mobile_redirect.mobile_subdomain == record.name && (record.type == "A" || record.type == "CNAME"), false)]) : true
+      error_message = "Error details: The mobile_subdomain contains a non-existent subdomain, make sure you have a matching A or CNAME record."
+    }
   }
 }
 
@@ -316,10 +334,12 @@ locals {
 locals {
   cloudflare_page_rule_values_avail = {
     # Not sure if the values for this action starting from 30 are available on the Business plan, perhaps only values starting from 60 or even from 120 are available
-    # Not sure if this lists for Business and Enterprise plans reflect all possible values between 0 and 120, perhaps there are some other values besides 30 and 60
-    browser_cache_ttl = contains(local.avail_starting_with_enterprise, var.plan) ? [0, 30, 60, 120, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000] : contains(local.avail_starting_with_business, var.plan) ? [30, 60, 120, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000] : [120, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000]
-    edge_cache_ttl    = contains(local.avail_starting_with_business, var.plan) ? 1 : contains(local.avail_starting_with_pro, var.plan) ? 3600 : 7200
-    security_level    = local.cloudflare_zone_settings_override_values_avail.security_level
+    # Returns the minimum available value
+    browser_cache_ttl = contains(local.avail_starting_with_enterprise, var.plan) ? 0 : contains(local.avail_starting_with_business, var.plan) ? 30 : 120
+    # Returns the minimum available value
+    edge_cache_ttl = contains(local.avail_starting_with_business, var.plan) ? 1 : contains(local.avail_starting_with_pro, var.plan) ? 3600 : 7200
+    # Returns a list with all available values
+    security_level = local.cloudflare_zone_settings_override_values_avail.security_level
   }
 }
 
@@ -348,7 +368,7 @@ resource "cloudflare_page_rule" "this" {
     always_online            = each.value.actions["always_online"]
     always_use_https         = each.value.actions["always_use_https"]
     automatic_https_rewrites = each.value.actions["automatic_https_rewrites"]
-    browser_cache_ttl        = try(contains(local.cloudflare_page_rule_values_avail.browser_cache_ttl, each.value.actions["browser_cache_ttl"]), false) ? each.value.actions["browser_cache_ttl"] : each.value.actions["browser_cache_ttl"] != null ? local.browser_cache_ttl_closest_avail_values[var.plan] : null
+    browser_cache_ttl        = try(each.value.actions["browser_cache_ttl"] >= local.cloudflare_page_rule_values_avail.browser_cache_ttl, false) ? each.value.actions["browser_cache_ttl"] : each.value.actions["browser_cache_ttl"] != null ? local.browser_cache_ttl_closest_avail_values[var.plan] : null
     browser_check            = each.value.actions["browser_check"]
     bypass_cache_on_cookie   = local.cloudflare_page_rule_avail.bypass_cache_on_cookie ? each.value.actions["bypass_cache_on_cookie"] : null
     cache_by_device_type     = local.cloudflare_page_rule_avail.cache_by_device_type ? each.value.actions["cache_by_device_type"] : null
@@ -465,11 +485,15 @@ resource "cloudflare_page_rule" "this" {
       condition     = alltrue([for page_rule in local.page_rules : anytrue([for key, value in page_rule.actions : try(local.cloudflare_page_rule_avail[key], true) if value != null && try(length(value) != 0, true)])])
       error_message = "Error details: Each action object must contain at least one non-null action. Keep in mind that even if an action is not null in your configuration, it may evaluate to null if it is not available in the selected plan."
     }
+
+    # The provider does not validate the `ttl` value in the `cache_ttl_by_status` objects at the `terraform plan` stage
+    # Perhaps there is a maximum possible value, or the `ttl` only accepts values from a predefined list
+    # There is full confidence only in the following values: -1, 0, more at https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/page_rule#cache-ttl-by-status
     //noinspection HCLUnknownBlockType
     precondition {
       //noinspection HILUnresolvedReference
       condition     = local.cloudflare_page_rule_avail.cache_ttl_by_status ? alltrue(flatten([for page_rule in local.page_rules : [for ttl in page_rule["actions"]["cache_ttl_by_status"][*]["ttl"] : try(ttl >= -1)]])) : true
-      error_message = "Error details: Each TTL value in each cache_ttl_by_status object must be greater than or equal to -1."
+      error_message = "Error details: The ttl value in each cache_ttl_by_status object must be greater than or equal to -1."
     }
   }
 }
