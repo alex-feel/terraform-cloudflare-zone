@@ -475,31 +475,27 @@ variable "records" {
   default     = []
 
   # The provider does not check if either `value` or `data` is provided at the `terraform plan` stage
-  //noinspection HILUnresolvedReference
   validation {
     condition     = alltrue([for i in var.records : try(i.value != null || i.data != null)])
     error_message = "Error details: Either the value or the data must be provided for each record."
   }
 
-  # The provider does not check if `priority` are provided for "MX" type records at the `terraform plan` stage
-  //noinspection HILUnresolvedReference
+  # The provider does not validate the `ttl` values at the `terraform plan` stage
   validation {
-    condition     = alltrue([for i in var.records : try(i.type == "MX" ? i.priority != null : true)])
-    error_message = "Error details: The priority must not be null for each record of type \"MX\"."
+    condition     = alltrue([for i in var.records : try(i.ttl == 1 || i.ttl >= 60 && i.ttl <= 86400, true)])
+    error_message = "Error details: The ttl values must be between 60 and 86400, or 1 for automatic."
   }
 
   # Actually, `priority` values validation is not required, it accepts any values, including negative ones, but for values outside the range from 0 to 65535, the resulting value may be unexpected for the end user
-  //noinspection HILUnresolvedReference
   validation {
     condition     = alltrue([for i in var.records : try(i.priority >= 0 && i.priority <= 65535, true)])
     error_message = "Error details: The priority values must be between 0 and 65535."
   }
 
-  # The provider does not validate the `ttl` values at the `terraform plan` stage
-  //noinspection HILUnresolvedReference
+  # The provider does not check if `priority` are provided for "MX" type records at the `terraform plan` stage
   validation {
-    condition     = alltrue([for i in var.records : try(i.ttl == 1 || i.ttl >= 60 && i.ttl <= 86400, true)])
-    error_message = "Error details: The ttl values must be between 60 and 86400, or 1 for automatic."
+    condition     = alltrue([for i in var.records : try(i.type == "MX" ? i.priority != null : true)])
+    error_message = "Error details: The priority must not be null for each record of type \"MX\"."
   }
 }
 
@@ -591,7 +587,6 @@ variable "page_rules" {
   default     = []
 
   validation {
-    //noinspection HILUnresolvedReference
     condition     = alltrue([for page_rule in var.page_rules : anytrue([for action in page_rule.actions : try(action != null)])])
     error_message = "Error details: The action object of each rule must contain at least one non-null action."
   }
@@ -601,8 +596,7 @@ variable "page_rules" {
   # Thus, the `browser_cache_ttl` value validation should be used because the provider will not always validate the `browser_cache_ttl` value at the `terraform plan` stage
   # The `browser_cache_ttl` argument of the `cloudflare_zone_settings_override` resource only accepts values from a specific list, but any value within the allowed range can be used here
   validation {
-    //noinspection HILUnresolvedReference
-    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].browser_cache_ttl : try(ttl >= 0 && ttl <= 31536000, true)]]))
+    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule.actions[*].browser_cache_ttl : try(ttl >= 0 && ttl <= 31536000, true)]]))
     error_message = "Error details: The browser_cache_ttl values must be between 0 and 31536000."
   }
 
@@ -610,13 +604,12 @@ variable "page_rules" {
   # Explicitly specified value may be ignored due to how the `edge_cache_ttl` value is defined in main.tf
   # Thus, the `edge_cache_ttl` value validation should be used because the provider will not always validate the `edge_cache_ttl` value at the `terraform plan` stage
   validation {
-    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].edge_cache_ttl : try(ttl >= 1 && ttl <= 2678400, true)]]))
+    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule.actions[*].edge_cache_ttl : try(ttl >= 1 && ttl <= 2678400, true)]]))
     error_message = "Error details: The edge_cache_ttl values must be between 1 and 2678400."
   }
 
   # The provider does not check if the `forwarding_url` is set with any other actions at the `terraform plan` stage
   validation {
-    //noinspection HILUnresolvedReference
     condition     = alltrue([for page_rule in var.page_rules : (contains([for key, value in page_rule.actions : key if value != null && try(length(value) != 0, true)], "forwarding_url") ? length([for key, value in page_rule.actions : key if value != null && try(length(value) != 0, true)]) == 1 : true)])
     error_message = "Error details: The forwarding_url cannot be set with any other actions."
   }
@@ -624,14 +617,14 @@ variable "page_rules" {
   # If the `security_level` value is not one of the allowed values, then the explicitly specified value is ignored due to how the `security_level` value is defined in main.tf
   # Thus, the `security_level` value validation should be used because the provider will not validate the `security_level` value at the `terraform plan` stage
   validation {
-    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].security_level : try(contains(["off", "essentially_off", "low", "medium", "high", "under_attack"], ttl), true)]]))
+    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule.actions[*].security_level : try(contains(["off", "essentially_off", "low", "medium", "high", "under_attack"], ttl), true)]]))
     error_message = "Error details: The security_level values must be one of the following: \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\"."
   }
 
   # The provider does not validate the `priority` values at the `terraform plan` stage
   # The range of values is set empirically and looks unexpected, apparently, the maximum possible number of rules is 125
   validation {
-    condition     = alltrue([for page_rule in var.page_rules : try(page_rule["priority"] >= 0 && page_rule["priority"] <= 1000, true)])
+    condition     = alltrue([for page_rule in var.page_rules : try(page_rule.priority >= 0 && page_rule.priority <= 1000, true)])
     error_message = "Error details: The priority values must be between 0 and 1000."
   }
 }

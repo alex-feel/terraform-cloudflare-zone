@@ -130,7 +130,6 @@ resource "cloudflare_zone_settings_override" "this" {
     max_upload         = contains(local.cloudflare_zone_settings_override_values_avail.max_upload, var.max_upload) ? var.max_upload : local.max_upload_closest_avail_values[var.plan]
     min_tls_version    = var.min_tls_version
 
-    //noinspection HILUnresolvedReference
     minify {
       css  = local.minify.css
       html = local.minify.html
@@ -139,7 +138,6 @@ resource "cloudflare_zone_settings_override" "this" {
 
     mirage = local.cloudflare_zone_settings_override_avail.mirage ? var.mirage : null
 
-    //noinspection HILUnresolvedReference
     mobile_redirect {
       mobile_subdomain = var.mobile_redirect.mobile_subdomain
       status           = local.mobile_redirect.status
@@ -189,9 +187,7 @@ resource "cloudflare_zone_settings_override" "this" {
 
   lifecycle {
     # The provider does not validate the `mobile_subdomain` value at the `terraform plan` stage to ensure that the specified subdomain exists or will be created
-    //noinspection HCLUnknownBlockType
     precondition {
-      //noinspection HILUnresolvedReference
       condition     = var.mobile_redirect.mobile_subdomain != null && length(var.mobile_redirect.mobile_subdomain) > 0 ? anytrue([for record in local.records : try(var.mobile_redirect.mobile_subdomain == record.name && (record.type == "A" || record.type == "CNAME"), false)]) : true
       error_message = "Error details: The mobile_subdomain contains a non-existent subdomain, make sure you have a matching A or CNAME record."
     }
@@ -229,51 +225,50 @@ resource "cloudflare_record" "this" {
   //noinspection ConflictingProperties
   value = each.value.value
 
-  //noinspection ConflictingProperties,HILUnresolvedReference
+  //noinspection ConflictingProperties
   dynamic "data" {
     for_each = each.value.value == null && each.value.data != null ? [1] : []
 
-    //noinspection HILUnresolvedReference
     content {
-      algorithm      = each.value.data["algorithm"]
-      altitude       = each.value.data["altitude"]
-      certificate    = each.value.data["certificate"]
-      content        = each.value.data["content"]
-      digest         = each.value.data["digest"]
-      digest_type    = each.value.data["digest_type"]
-      fingerprint    = each.value.data["fingerprint"]
-      flags          = each.value.data["flags"]
-      key_tag        = each.value.data["key_tag"]
-      lat_degrees    = each.value.data["lat_degrees"]
-      lat_direction  = each.value.data["lat_direction"]
-      lat_minutes    = each.value.data["lat_minutes"]
-      lat_seconds    = each.value.data["lat_seconds"]
-      long_degrees   = each.value.data["long_degrees"]
-      long_direction = each.value.data["long_direction"]
-      long_minutes   = each.value.data["long_minutes"]
-      long_seconds   = each.value.data["long_seconds"]
-      matching_type  = each.value.data["matching_type"]
-      name           = each.value.data["name"]
-      order          = each.value.data["order"]
-      port           = each.value.data["port"]
-      precision_horz = each.value.data["precision_horz"]
-      precision_vert = each.value.data["precision_vert"]
-      preference     = each.value.data["preference"]
-      priority       = each.value.data["priority"]
-      proto          = each.value.data["proto"]
-      protocol       = each.value.data["protocol"]
-      public_key     = each.value.data["public_key"]
-      regex          = each.value.data["regex"]
-      replacement    = each.value.data["replacement"]
-      selector       = each.value.data["selector"]
-      service        = each.value.data["service"]
-      size           = each.value.data["size"]
-      tag            = each.value.data["tag"]
-      target         = each.value.data["target"]
-      type           = each.value.data["type"]
-      usage          = each.value.data["usage"]
-      value          = each.value.data["value"]
-      weight         = each.value.data["weight"]
+      algorithm      = each.value.data.algorithm
+      altitude       = each.value.data.altitude
+      certificate    = each.value.data.certificate
+      content        = each.value.data.content
+      digest         = each.value.data.digest
+      digest_type    = each.value.data.digest_type
+      fingerprint    = each.value.data.fingerprint
+      flags          = each.value.data.flags
+      key_tag        = each.value.data.key_tag
+      lat_degrees    = each.value.data.lat_degrees
+      lat_direction  = each.value.data.lat_direction
+      lat_minutes    = each.value.data.lat_minutes
+      lat_seconds    = each.value.data.lat_seconds
+      long_degrees   = each.value.data.long_degrees
+      long_direction = each.value.data.long_direction
+      long_minutes   = each.value.data.long_minutes
+      long_seconds   = each.value.data.long_seconds
+      matching_type  = each.value.data.matching_type
+      name           = each.value.data.name
+      order          = each.value.data.order
+      port           = each.value.data.port
+      precision_horz = each.value.data.precision_horz
+      precision_vert = each.value.data.precision_vert
+      preference     = each.value.data.preference
+      priority       = each.value.data.priority
+      proto          = each.value.data.proto
+      protocol       = each.value.data.protocol
+      public_key     = each.value.data.public_key
+      regex          = each.value.data.regex
+      replacement    = each.value.data.replacement
+      selector       = each.value.data.selector
+      service        = each.value.data.service
+      size           = each.value.data.size
+      tag            = each.value.data.tag
+      target         = each.value.data.target
+      type           = each.value.data.type
+      usage          = each.value.data.usage
+      value          = each.value.data.value
+      weight         = each.value.data.weight
     }
   }
 
@@ -366,125 +361,110 @@ resource "cloudflare_page_rule" "this" {
   zone_id = cloudflare_zone.this.id
 
   target = each.value.target
-  //noinspection HILUnresolvedReference
   actions {
-    always_online            = each.value.actions["always_online"]
-    always_use_https         = each.value.actions["always_use_https"]
-    automatic_https_rewrites = each.value.actions["automatic_https_rewrites"]
-    browser_cache_ttl        = try(each.value.actions["browser_cache_ttl"] >= local.cloudflare_page_rule_values_avail.browser_cache_ttl, false) ? each.value.actions["browser_cache_ttl"] : each.value.actions["browser_cache_ttl"] != null ? local.browser_cache_ttl_closest_avail_values[var.plan] : null
-    browser_check            = each.value.actions["browser_check"]
-    bypass_cache_on_cookie   = local.cloudflare_page_rule_avail.bypass_cache_on_cookie ? each.value.actions["bypass_cache_on_cookie"] : null
-    cache_by_device_type     = local.cloudflare_page_rule_avail.cache_by_device_type ? each.value.actions["cache_by_device_type"] : null
-    cache_deception_armor    = each.value.actions["cache_deception_armor"]
+    always_online            = each.value.actions.always_online
+    always_use_https         = each.value.actions.always_use_https
+    automatic_https_rewrites = each.value.actions.automatic_https_rewrites
+    browser_cache_ttl        = try(each.value.actions.browser_cache_ttl >= local.cloudflare_page_rule_values_avail.browser_cache_ttl, false) ? each.value.actions.browser_cache_ttl : each.value.actions.browser_cache_ttl != null ? local.browser_cache_ttl_closest_avail_values[var.plan] : null
+    browser_check            = each.value.actions.browser_check
+    bypass_cache_on_cookie   = local.cloudflare_page_rule_avail.bypass_cache_on_cookie ? each.value.actions.bypass_cache_on_cookie : null
+    cache_by_device_type     = local.cloudflare_page_rule_avail.cache_by_device_type ? each.value.actions.cache_by_device_type : null
+    cache_deception_armor    = each.value.actions.cache_deception_armor
 
-    //noinspection HILUnresolvedReference
     dynamic "cache_key_fields" {
-      for_each = each.value.actions["cache_key_fields"] != null && local.cloudflare_page_rule_avail.cache_key_fields ? [1] : []
+      for_each = each.value.actions.cache_key_fields != null && local.cloudflare_page_rule_avail.cache_key_fields ? [1] : []
 
       content {
-        //noinspection HILUnresolvedReference
         cookie {
-          check_presence = try(each.value.actions["cache_key_fields"]["cookie"]["check_presence"], null)
-          include        = try(each.value.actions["cache_key_fields"]["cookie"]["include"], null)
+          check_presence = try(each.value.actions.cache_key_fields.cookie.check_presence, null)
+          include        = try(each.value.actions.cache_key_fields.cookie.include, null)
         }
-        //noinspection HILUnresolvedReference
         header {
-          check_presence = try(each.value.actions["cache_key_fields"]["header"]["check_presence"], null)
-          exclude        = try(each.value.actions["cache_key_fields"]["header"]["exclude"], null)
-          include        = try(each.value.actions["cache_key_fields"]["header"]["include"], null)
+          check_presence = try(each.value.actions.cache_key_fields.header.check_presence, null)
+          exclude        = try(each.value.actions.cache_key_fields.header.exclude, null)
+          include        = try(each.value.actions.cache_key_fields.header.include, null)
         }
-        //noinspection HILUnresolvedReference
         host {
-          resolved = try(each.value.actions["cache_key_fields"]["host"]["resolved"], null)
+          resolved = try(each.value.actions.cache_key_fields.host.resolved, null)
         }
-        //noinspection HILUnresolvedReference
         query_string {
-          exclude = try(each.value.actions["cache_key_fields"]["query_string"]["exclude"], null)
-          include = try(each.value.actions["cache_key_fields"]["query_string"]["include"], null)
-          ignore  = try(each.value.actions["cache_key_fields"]["query_string"]["ignore"], null)
+          exclude = try(each.value.actions.cache_key_fields.query_string.exclude, null)
+          include = try(each.value.actions.cache_key_fields.query_string.include, null)
+          ignore  = try(each.value.actions.cache_key_fields.query_string.ignore, null)
         }
-        //noinspection HILUnresolvedReference
         user {
-          device_type = try(each.value.actions["cache_key_fields"]["user"]["device_type"], null)
-          geo         = try(each.value.actions["cache_key_fields"]["user"]["geo"], null)
-          lang        = try(each.value.actions["cache_key_fields"]["user"]["lang"], null)
+          device_type = try(each.value.actions.cache_key_fields.user.device_type, null)
+          geo         = try(each.value.actions.cache_key_fields.user.geo, null)
+          lang        = try(each.value.actions.cache_key_fields.user.lang, null)
         }
       }
     }
 
-    cache_level     = each.value.actions["cache_level"]
-    cache_on_cookie = local.cloudflare_page_rule_avail.cache_on_cookie ? each.value.actions["cache_on_cookie"] : null
+    cache_level     = each.value.actions.cache_level
+    cache_on_cookie = local.cloudflare_page_rule_avail.cache_on_cookie ? each.value.actions.cache_on_cookie : null
 
-    //noinspection HILUnresolvedReference
     dynamic "cache_ttl_by_status" {
-      for_each = each.value.actions["cache_ttl_by_status"] != null && local.cloudflare_page_rule_avail.cache_ttl_by_status ? each.value.actions["cache_ttl_by_status"][*] : []
+      for_each = each.value.actions.cache_ttl_by_status != null && local.cloudflare_page_rule_avail.cache_ttl_by_status ? each.value.actions.cache_ttl_by_status[*] : []
 
-      //noinspection HILUnresolvedReference
       content {
-        codes = try(each.value.actions["cache_ttl_by_status"][cache_ttl_by_status.key]["codes"], null)
-        ttl   = try(each.value.actions["cache_ttl_by_status"][cache_ttl_by_status.key]["ttl"], null)
+        codes = try(each.value.actions.cache_ttl_by_status[cache_ttl_by_status.key].codes, null)
+        ttl   = try(each.value.actions.cache_ttl_by_status[cache_ttl_by_status.key].ttl, null)
       }
     }
 
-    disable_apps           = each.value.actions["disable_apps"]
-    disable_performance    = each.value.actions["disable_performance"]
-    disable_railgun        = local.cloudflare_page_rule_avail.disable_railgun ? each.value.actions["disable_railgun"] : null
-    disable_security       = each.value.actions["disable_security"]
-    disable_zaraz          = each.value.actions["disable_zaraz"]
-    edge_cache_ttl         = try(each.value.actions["edge_cache_ttl"] >= local.cloudflare_page_rule_values_avail.edge_cache_ttl, false) ? each.value.actions["edge_cache_ttl"] : each.value.actions["edge_cache_ttl"] != null ? local.edge_cache_ttl_closest_avail_values[var.plan] : null
-    email_obfuscation      = each.value.actions["email_obfuscation"]
-    explicit_cache_control = each.value.actions["explicit_cache_control"]
+    disable_apps           = each.value.actions.disable_apps
+    disable_performance    = each.value.actions.disable_performance
+    disable_railgun        = local.cloudflare_page_rule_avail.disable_railgun ? each.value.actions.disable_railgun : null
+    disable_security       = each.value.actions.disable_security
+    disable_zaraz          = each.value.actions.disable_zaraz
+    edge_cache_ttl         = try(each.value.actions.edge_cache_ttl >= local.cloudflare_page_rule_values_avail.edge_cache_ttl, false) ? each.value.actions.edge_cache_ttl : each.value.actions.edge_cache_ttl != null ? local.edge_cache_ttl_closest_avail_values[var.plan] : null
+    email_obfuscation      = each.value.actions.email_obfuscation
+    explicit_cache_control = each.value.actions.explicit_cache_control
 
-    //noinspection HILUnresolvedReference
     dynamic "forwarding_url" {
-      for_each = each.value.actions["forwarding_url"] != null ? [1] : []
+      for_each = each.value.actions.forwarding_url != null ? [1] : []
 
-      //noinspection HILUnresolvedReference
       content {
-        status_code = try(each.value.actions["forwarding_url"]["status_code"], null)
-        url         = try(each.value.actions["forwarding_url"]["url"], null)
+        status_code = try(each.value.actions.forwarding_url.status_code, null)
+        url         = try(each.value.actions.forwarding_url.url, null)
       }
     }
 
-    host_header_override = each.value.actions["host_header_override"]
-    ip_geolocation       = each.value.actions["ip_geolocation"]
+    host_header_override = each.value.actions.host_header_override
+    ip_geolocation       = each.value.actions.ip_geolocation
 
-    //noinspection HILUnresolvedReference
     dynamic "minify" {
-      for_each = each.value.actions["minify"] != null ? [1] : []
+      for_each = each.value.actions.minify != null ? [1] : []
 
-      //noinspection HILUnresolvedReference
       content {
-        html = each.value.actions["minify"]["html"]
-        css  = each.value.actions["minify"]["css"]
-        js   = each.value.actions["minify"]["js"]
+        html = each.value.actions.minify.html
+        css  = each.value.actions.minify.css
+        js   = each.value.actions.minify.js
       }
     }
 
-    mirage                      = local.cloudflare_page_rule_avail.mirage ? each.value.actions["mirage"] : null
-    opportunistic_encryption    = each.value.actions["opportunistic_encryption"]
-    origin_error_page_pass_thru = local.cloudflare_page_rule_avail.origin_error_page_pass_thru ? each.value.actions["origin_error_page_pass_thru"] : null
-    polish                      = local.cloudflare_page_rule_avail.polish ? each.value.actions["polish"] : null
-    resolve_override            = local.cloudflare_page_rule_avail.resolve_override ? each.value.actions["resolve_override"] : null
-    respect_strong_etag         = local.cloudflare_page_rule_avail.respect_strong_etag ? each.value.actions["respect_strong_etag"] : null
-    response_buffering          = local.cloudflare_page_rule_avail.response_buffering ? each.value.actions["response_buffering"] : null
-    rocket_loader               = each.value.actions["rocket_loader"]
-    security_level              = try(contains(local.cloudflare_page_rule_values_avail.security_level, each.value.actions["security_level"]), false) ? each.value.actions["security_level"] : each.value.actions["security_level"] != null ? local.security_level_closest_avail_values[var.plan] : null
-    server_side_exclude         = each.value.actions["server_side_exclude"]
+    mirage                      = local.cloudflare_page_rule_avail.mirage ? each.value.actions.mirage : null
+    opportunistic_encryption    = each.value.actions.opportunistic_encryption
+    origin_error_page_pass_thru = local.cloudflare_page_rule_avail.origin_error_page_pass_thru ? each.value.actions.origin_error_page_pass_thru : null
+    polish                      = local.cloudflare_page_rule_avail.polish ? each.value.actions.polish : null
+    resolve_override            = local.cloudflare_page_rule_avail.resolve_override ? each.value.actions.resolve_override : null
+    respect_strong_etag         = local.cloudflare_page_rule_avail.respect_strong_etag ? each.value.actions.respect_strong_etag : null
+    response_buffering          = local.cloudflare_page_rule_avail.response_buffering ? each.value.actions.response_buffering : null
+    rocket_loader               = each.value.actions.rocket_loader
+    security_level              = try(contains(local.cloudflare_page_rule_values_avail.security_level, each.value.actions.security_level), false) ? each.value.actions.security_level : each.value.actions.security_level != null ? local.security_level_closest_avail_values[var.plan] : null
+    server_side_exclude         = each.value.actions.server_side_exclude
     #    Unsupported argument, see https://github.com/cloudflare/terraform-provider-cloudflare/issues/1544
-    #    smart_errors                = each.value.actions["smart_errors"]
-    sort_query_string_for_cache = local.cloudflare_page_rule_avail.sort_query_string_for_cache ? each.value.actions["sort_query_string_for_cache"] : null
-    ssl                         = each.value.actions["ssl"]
-    true_client_ip_header       = local.cloudflare_page_rule_avail.true_client_ip_header ? each.value.actions["true_client_ip_header"] : null
-    waf                         = local.cloudflare_page_rule_avail.waf ? each.value.actions["waf"] : null
+    #    smart_errors                = each.value.actions.smart_errors
+    sort_query_string_for_cache = local.cloudflare_page_rule_avail.sort_query_string_for_cache ? each.value.actions.sort_query_string_for_cache : null
+    ssl                         = each.value.actions.ssl
+    true_client_ip_header       = local.cloudflare_page_rule_avail.true_client_ip_header ? each.value.actions.true_client_ip_header : null
+    waf                         = local.cloudflare_page_rule_avail.waf ? each.value.actions.waf : null
   }
   priority = each.value.priority
   status   = each.value.status
 
   lifecycle {
-    //noinspection HCLUnknownBlockType
     precondition {
-      //noinspection HILUnresolvedReference
       condition     = alltrue([for page_rule in local.page_rules : anytrue([for key, value in page_rule.actions : try(local.cloudflare_page_rule_avail[key], true) if value != null && try(length(value) != 0, true)])])
       error_message = "Error details: Each action object must contain at least one non-null action. Keep in mind that even if an action is not null in your configuration, it may evaluate to null if it is not available in the selected plan."
     }
@@ -492,10 +472,8 @@ resource "cloudflare_page_rule" "this" {
     # The provider does not validate the `ttl` value in the `cache_ttl_by_status` objects at the `terraform plan` stage
     # Perhaps there is a maximum possible value, or the `ttl` only accepts values from a predefined list
     # There is full confidence only in the following values: -1, 0, more at https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/page_rule#cache-ttl-by-status
-    //noinspection HCLUnknownBlockType
     precondition {
-      //noinspection HILUnresolvedReference
-      condition     = local.cloudflare_page_rule_avail.cache_ttl_by_status ? alltrue(flatten([for page_rule in local.page_rules : [for ttl in page_rule["actions"]["cache_ttl_by_status"][*]["ttl"] : try(ttl >= -1)]])) : true
+      condition     = local.cloudflare_page_rule_avail.cache_ttl_by_status ? alltrue(flatten([for page_rule in local.page_rules : [for ttl in page_rule.actions.cache_ttl_by_status[*].ttl : try(ttl >= -1)]])) : true
       error_message = "Error details: The ttl value in each cache_ttl_by_status object must be greater than or equal to -1."
     }
   }

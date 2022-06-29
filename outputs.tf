@@ -65,67 +65,56 @@ output "zone_type" {
 # cloudflare_zone_dnssec resource
 
 output "dnssec_status" {
-  //noinspection HILUnresolvedReference
   value       = try(cloudflare_zone_dnssec.this[0].status, null)
   description = "The status of the Zone DNSSEC."
 }
 
 output "flags" {
-  //noinspection HILUnresolvedReference
   value       = try(cloudflare_zone_dnssec.this[0].flags, null)
   description = "Zone DNSSEC flags."
 }
 
 output "algorithm" {
-  //noinspection HILUnresolvedReference
   value       = try(cloudflare_zone_dnssec.this[0].algorithm, null)
   description = "Zone DNSSEC algorithm."
 }
 
 output "key_type" {
-  //noinspection HILUnresolvedReference
   value       = try(cloudflare_zone_dnssec.this[0].key_type, null)
   description = "Key type used for Zone DNSSEC."
 }
 
 output "digest_type" {
-  //noinspection HILUnresolvedReference
   value       = try(cloudflare_zone_dnssec.this[0].digest_type, null)
   description = "Digest Type for Zone DNSSEC."
 }
 
 output "digest_algorithm" {
-  //noinspection HILUnresolvedReference
   value       = try(cloudflare_zone_dnssec.this[0].digest_algorithm, null)
   description = "Digest algorithm use for Zone DNSSEC."
 }
 
 output "digest" {
-  //noinspection HILUnresolvedReference
   value       = try(cloudflare_zone_dnssec.this[0].digest, null)
   description = "Zone DNSSEC digest."
 }
 
 output "ds" {
-  //noinspection HILUnresolvedReference
   value       = try(cloudflare_zone_dnssec.this[0].ds, null)
   description = "DS for the Zone DNSSEC."
 }
 
 output "key_tag" {
-  //noinspection HILUnresolvedReference
   value       = try(cloudflare_zone_dnssec.this[0].key_tag, null)
   description = "Key Tag for the Zone DNSSEC."
 }
 
 output "public_key" {
-  //noinspection HILUnresolvedReference
   value       = try(cloudflare_zone_dnssec.this[0].public_key, null)
   description = "Public Key for the Zone DNSSEC."
 }
 
 output "modified_on" {
-  //noinspection HILUnresolvedReference
   value       = try(cloudflare_zone_dnssec.this[0].modified_on, null)
   description = "Zone DNSSEC updated time."
 }
