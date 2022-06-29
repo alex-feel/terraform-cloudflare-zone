@@ -38,11 +38,21 @@ repos:
       files: (\.tf|\.tfvars)$
       exclude: \.terraform\/.*$
 
-    - id: terraform_docs
-      name: Terraform Docs
+    - id: terraform_full_docs
+      name: Terraform Full Docs
       description: Generates documentation from Terraform modules in various output formats.
       require_serial: true
-      entry: terraform-docs .
+      entry: terraform-docs -c .terraform-full-docs.yml .
+      language: system
+      pass_filenames: false
+      files: (\.tf|\.terraform\.lock\.hcl)$
+      exclude: \.terraform\/.*$
+
+    - id: terraform_partial_docs
+      name: Terraform Partial Docs
+      description: Generates documentation from Terraform modules in various output formats.
+      require_serial: true
+      entry: terraform-docs -c .terraform-partial-docs.yml .
       language: system
       pass_filenames: false
       files: (\.tf|\.terraform\.lock\.hcl)$

@@ -12,11 +12,20 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
-      - name: Update Docs
+      - name: Update Full Docs
         uses: terraform-docs/gh-actions@v1.0.0
         with:
           working-dir: .
           output-file: USAGE.md
-          config-file: .terraform-docs.yml
-          git-commit-message: Update docs
+          config-file: .terraform-full-docs.yml
+          git-commit-message: Update USAGE.md
+          git-push: true
+
+      - name: Update Partial Docs
+        uses: terraform-docs/gh-actions@v1.0.0
+        with:
+          working-dir: .
+          output-file: README.md
+          config-file: .terraform-partial-docs.yml
+          git-commit-message: Update README.md
           git-push: true

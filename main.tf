@@ -27,6 +27,7 @@ locals {
 
 # cloudflare_zone resource
 
+# Cloudflare Zone
 resource "cloudflare_zone" "this" {
   zone       = var.zone
   paused     = var.paused
@@ -100,6 +101,7 @@ locals {
   })
 }
 
+# Cloudflare Zone settings
 resource "cloudflare_zone_settings_override" "this" {
   zone_id = cloudflare_zone.this.id
 
@@ -198,6 +200,7 @@ resource "cloudflare_zone_settings_override" "this" {
 
 # cloudflare_zone_dnssec resource
 
+# Cloudflare Zone DNSSEC
 resource "cloudflare_zone_dnssec" "this" {
   count = var.enable_dnssec ? 1 : 0
 
@@ -215,7 +218,7 @@ locals {
   })
 }
 
-//noinspection HILUnresolvedReference
+# Cloudflare record
 resource "cloudflare_record" "this" {
   for_each = var.records != null ? { for record in local.records : record.record_name => record } : {}
 
@@ -356,7 +359,7 @@ locals {
   })
 }
 
-//noinspection HILUnresolvedReference
+# Cloudflare page rule
 resource "cloudflare_page_rule" "this" {
   for_each = var.page_rules != null ? { for page_rule in local.page_rules : page_rule.page_rule_name => page_rule } : {}
 

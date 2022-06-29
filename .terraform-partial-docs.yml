@@ -1,0 +1,34 @@
+formatter: markdown table
+
+sections:
+  show:
+    - requirements
+    - resources
+
+content: |-
+  {{ .Requirements }}
+
+  ## Supported Resources
+
+  These types of resources are supported:
+
+  {{ range .Module.Resources }}* [{{ .Description }}]({{ .URL }})
+  {{ end }}
+
+output:
+  file: "README.md"
+  mode: inject
+
+sort:
+  enabled: false
+
+settings:
+  anchor: true
+  color: true
+  default: true
+  description: true
+  escape: true
+  indent: 2
+  required: true
+  sensitive: true
+  type: true
