@@ -480,10 +480,10 @@ variable "records" {
     error_message = "Error details: Either the value or the data must be provided for each record."
   }
 
-  # The provider does not check if `priority` are provided for "MX" type records at the `terraform plan` stage
+  # The provider does not validate the `ttl` values at the `terraform plan` stage
   validation {
-    condition     = alltrue([for i in var.records : try(i.type == "MX" ? i.priority != null : true)])
-    error_message = "Error details: The priority must not be null for each record of type \"MX\"."
+    condition     = alltrue([for i in var.records : try(i.ttl == 1 || i.ttl >= 60 && i.ttl <= 86400, true)])
+    error_message = "Error details: The ttl values must be between 60 and 86400, or 1 for automatic."
   }
 
   # Actually, `priority` values validation is not required, it accepts any values, including negative ones, but for values outside the range from 0 to 65535, the resulting value may be unexpected for the end user
@@ -492,10 +492,10 @@ variable "records" {
     error_message = "Error details: The priority values must be between 0 and 65535."
   }
 
-  # The provider does not validate the `ttl` values at the `terraform plan` stage
+  # The provider does not check if `priority` are provided for "MX" type records at the `terraform plan` stage
   validation {
-    condition     = alltrue([for i in var.records : try(i.ttl == 1 || i.ttl >= 60 && i.ttl <= 86400, true)])
-    error_message = "Error details: The ttl values must be between 60 and 86400, or 1 for automatic."
+    condition     = alltrue([for i in var.records : try(i.type == "MX" ? i.priority != null : true)])
+    error_message = "Error details: The priority must not be null for each record of type \"MX\"."
   }
 }
 
