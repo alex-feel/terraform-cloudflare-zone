@@ -596,7 +596,7 @@ variable "page_rules" {
   # Thus, the `browser_cache_ttl` value validation should be used because the provider will not always validate the `browser_cache_ttl` value at the `terraform plan` stage
   # The `browser_cache_ttl` argument of the `cloudflare_zone_settings_override` resource only accepts values from a specific list, but any value within the allowed range can be used here
   validation {
-    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].browser_cache_ttl : try(ttl >= 0 && ttl <= 31536000, true)]]))
+    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule.actions[*].browser_cache_ttl : try(ttl >= 0 && ttl <= 31536000, true)]]))
     error_message = "Error details: The browser_cache_ttl values must be between 0 and 31536000."
   }
 
@@ -604,7 +604,7 @@ variable "page_rules" {
   # Explicitly specified value may be ignored due to how the `edge_cache_ttl` value is defined in main.tf
   # Thus, the `edge_cache_ttl` value validation should be used because the provider will not always validate the `edge_cache_ttl` value at the `terraform plan` stage
   validation {
-    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].edge_cache_ttl : try(ttl >= 1 && ttl <= 2678400, true)]]))
+    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule.actions[*].edge_cache_ttl : try(ttl >= 1 && ttl <= 2678400, true)]]))
     error_message = "Error details: The edge_cache_ttl values must be between 1 and 2678400."
   }
 
@@ -617,14 +617,14 @@ variable "page_rules" {
   # If the `security_level` value is not one of the allowed values, then the explicitly specified value is ignored due to how the `security_level` value is defined in main.tf
   # Thus, the `security_level` value validation should be used because the provider will not validate the `security_level` value at the `terraform plan` stage
   validation {
-    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule["actions"][*].security_level : try(contains(["off", "essentially_off", "low", "medium", "high", "under_attack"], ttl), true)]]))
+    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule.actions[*].security_level : try(contains(["off", "essentially_off", "low", "medium", "high", "under_attack"], ttl), true)]]))
     error_message = "Error details: The security_level values must be one of the following: \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\"."
   }
 
   # The provider does not validate the `priority` values at the `terraform plan` stage
   # The range of values is set empirically and looks unexpected, apparently, the maximum possible number of rules is 125
   validation {
-    condition     = alltrue([for page_rule in var.page_rules : try(page_rule["priority"] >= 0 && page_rule["priority"] <= 1000, true)])
+    condition     = alltrue([for page_rule in var.page_rules : try(page_rule.priority >= 0 && page_rule.priority <= 1000, true)])
     error_message = "Error details: The priority values must be between 0 and 1000."
   }
 }
