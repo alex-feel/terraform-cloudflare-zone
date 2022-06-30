@@ -29,8 +29,8 @@ module "acme_com" {
     },
     {
       record_name = "srv_sip_tls"
-      name        = "_sip._tls"
       type        = "SRV"
+      name        = "_sip._tls"
       data = {
         service  = "_sip"
         proto    = "_tls"
