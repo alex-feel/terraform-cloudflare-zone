@@ -25,7 +25,7 @@ variable "jump_start" {
 
 variable "plan" {
   type        = string
-  description = "The desired plan for the zone. Can be updated once the one is created. Changing this value will create/cancel associated subscriptions.\nPossible values: \"free\", \"pro\", \"business\", \"enterprise\", \"partners_free\", \"partners_pro\", \"partners_business\", \"partners_enterprise\"."
+  description = "The desired plan for the zone. Can be updated once the one is created. Changing this value will create/cancel associated subscriptions.\nPossible values: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\"."
   default     = "free"
 }
 
@@ -39,13 +39,13 @@ variable "type" {
 
 variable "always_online" {
   type        = string
-  description = "When enabled, Always Online will serve pages from our cache if your server is offline.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "When enabled, Always Online will serve pages from our cache if your server is offline.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
 variable "always_use_https" {
   type        = string
-  description = "Reply to all requests for URLs that use 'http' with a 301 redirect to the equivalent 'https' URL. If you only want to redirect for a subset of requests, consider creating an 'Always use HTTPS' page rule.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "Reply to all requests for URLs that use 'http' with a 301 redirect to the equivalent 'https' URL. If you only want to redirect for a subset of requests, consider creating an 'Always use HTTPS' page rule.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 
   # The provider does not validate the variable value at the `terraform plan` stage
@@ -57,43 +57,43 @@ variable "always_use_https" {
 
 variable "automatic_https_rewrites" {
   type        = string
-  description = "Enable the Automatic HTTPS Rewrites feature for this zone.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "Enable the Automatic HTTPS Rewrites feature for this zone.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
 variable "brotli" {
   type        = string
-  description = "When the client requesting an asset supports the brotli compression algorithm, Cloudflare will serve a brotli compressed version of the asset.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "When the client requesting an asset supports the brotli compression algorithm, Cloudflare will serve a brotli compressed version of the asset.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "browser_check" {
   type        = string
-  description = "Browser Integrity Check is similar to Bad Behavior and looks for common HTTP headers abused most commonly by spammers and denies access to your page. It will also challenge visitors that do not have a user agent or a non standard user agent (also commonly used by abuse bots, crawlers or visitors).\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "Browser Integrity Check is similar to Bad Behavior and looks for common HTTP headers abused most commonly by spammers and denies access to your page. It will also challenge visitors that do not have a user agent or a non standard user agent (also commonly used by abuse bots, crawlers or visitors).\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
 variable "development_mode" {
   type        = string
-  description = "Development Mode temporarily allows you to enter development mode for your websites if you need to make changes to your site. This will bypass Cloudflare's accelerated cache and slow down your site, but is useful if you are making changes to cacheable content (like images, css, or JavaScript) and would like to see those changes right away. Once entered, development mode will last for 3 hours and then automatically toggle off.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "Development Mode temporarily allows you to enter development mode for your websites if you need to make changes to your site. This will bypass Cloudflare's accelerated cache and slow down your site, but is useful if you are making changes to cacheable content (like images, css, or JavaScript) and would like to see those changes right away. Once entered, development mode will last for 3 hours and then automatically toggle off.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "early_hints" {
   type        = string
-  description = "When enabled, Cloudflare will attempt to speed up overall page loads by serving 103 responses with Link headers from the final response (https://developers.cloudflare.com/cache/about/early-hints).\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "When enabled, Cloudflare will attempt to speed up overall page loads by serving 103 responses with Link headers from the final response (https://developers.cloudflare.com/cache/about/early-hints).\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
 variable "email_obfuscation" {
   type        = string
-  description = "Encrypt email adresses on your web page from bots, while keeping them visible to humans.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "Encrypt email adresses on your web page from bots, while keeping them visible to humans.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
 variable "hotlink_protection" {
   type        = string
-  description = "When enabled, the Hotlink Protection option ensures that other sites cannot suck up your bandwidth by building pages that use images hosted on your site. Anytime a request for an image on your site hits Cloudflare, we check to ensure that it's not another site requesting them. People will still be able to download and view images from your page, but other sites won't be able to steal them for use on their own pages.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "When enabled, the Hotlink Protection option ensures that other sites cannot suck up your bandwidth by building pages that use images hosted on your site. Anytime a request for an image on your site hits Cloudflare, we check to ensure that it's not another site requesting them. People will still be able to download and view images from your page, but other sites won't be able to steal them for use on their own pages.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
@@ -111,7 +111,7 @@ variable "http3" {
 
 variable "ip_geolocation" {
   type        = string
-  description = "Enable IP Geolocation to have Cloudflare geolocate visitors to your website and pass the country code to you.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "Enable IP Geolocation to have Cloudflare geolocate visitors to your website and pass the country code to you.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
@@ -129,13 +129,13 @@ variable "mirage" {
 
 variable "opportunistic_encryption" {
   type        = string
-  description = "Enable the Opportunistic Encryption feature for this zone.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "Enable the Opportunistic Encryption feature for this zone.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
 variable "opportunistic_onion" {
   type        = string
-  description = "Add an Alt-Svc header to all legitimate requests from Tor, allowing the connection to use our onion services instead of exit nodes.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "Add an Alt-Svc header to all legitimate requests from Tor, allowing the connection to use our onion services instead of exit nodes.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
@@ -159,7 +159,7 @@ variable "prefetch_preload" {
 
 variable "privacy_pass" {
   type        = string
-  description = "Privacy Pass is a browser extension developed by the Privacy Pass Team to improve the browsing experience for your visitors. Enabling Privacy Pass will reduce the number of CAPTCHAs shown to your visitors.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "Privacy Pass is a browser extension developed by the Privacy Pass Team to improve the browsing experience for your visitors. Enabling Privacy Pass will reduce the number of CAPTCHAs shown to your visitors.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
@@ -171,13 +171,13 @@ variable "response_buffering" {
 
 variable "rocket_loader" {
   type        = string
-  description = "Rocket Loader is a general-purpose asynchronous JavaScript optimisation which prioritises the rendering of your content while loading your site's Javascript asynchronously. Turning on Rocket Loader will immediately improve a web page's rendering time, sometimes measured as Time to First Paint (TTFP) and also the window.onload time (assuming there is JavaScript on the page), which can have a positive impact on your Google search ranking. When turned on, Rocket Loader will automatically defer the loading of all Javascript referenced in your HTML, with no configuration required.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\", \"manual\"."
+  description = "Rocket Loader is a general-purpose asynchronous JavaScript optimisation which prioritises the rendering of your content while loading your site's Javascript asynchronously. Turning on Rocket Loader will immediately improve a web page's rendering time, sometimes measured as Time to First Paint (TTFP) and also the window.onload time (assuming there is JavaScript on the page), which can have a positive impact on your Google search ranking. When turned on, Rocket Loader will automatically defer the loading of all Javascript referenced in your HTML, with no configuration required.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\", \"manual\"."
   default     = "off"
 }
 
 variable "server_side_exclude" {
   type        = string
-  description = "If there is sensitive content on your website that you want visible to real visitors, but that you want to hide from suspicious visitors, all you have to do is wrap the content with Cloudflare SSE tags. Wrap any content that you want to be excluded from suspicious visitors in the following SSE tags: <!--sse--><!--/sse-->. For example: <!--sse--> Bad visitors won't see my phone number, 555-555-5555 <!--/sse-->. Note: SSE only will work with HTML. If you have HTML minification enabled, you won't see the SSE tags in your HTML source when it's served through Cloudflare. SSE will still function in this case, as Cloudflare's HTML minification and SSE functionality occur on-the-fly as the resource moves through our network to the visitor's computer.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "If there is sensitive content on your website that you want visible to real visitors, but that you want to hide from suspicious visitors, all you have to do is wrap the content with Cloudflare SSE tags. Wrap any content that you want to be excluded from suspicious visitors in the following SSE tags: <!--sse--><!--/sse-->. For example: <!--sse--> Bad visitors won't see my phone number, 555-555-5555 <!--/sse-->. Note: SSE only will work with HTML. If you have HTML minification enabled, you won't see the SSE tags in your HTML source when it's served through Cloudflare. SSE will still function in this case, as Cloudflare's HTML minification and SSE functionality occur on-the-fly as the resource moves through our network to the visitor's computer.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
@@ -201,7 +201,7 @@ variable "true_client_ip_header" {
 
 variable "universal_ssl" {
   type        = string
-  description = "Disabling Universal SSL removes any currently active Universal SSL certificates for your zone from the edge and prevents any future Universal SSL certificates from being ordered. If there are no dedicated certificates or custom certificates uploaded for the domain, visitors will be unable to access the domain over HTTPS.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "Disabling Universal SSL removes any currently active Universal SSL certificates for your zone from the edge and prevents any future Universal SSL certificates from being ordered. If there are no dedicated certificates or custom certificates uploaded for the domain, visitors will be unable to access the domain over HTTPS.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
@@ -219,7 +219,7 @@ variable "webp" {
 
 variable "websockets" {
   type        = string
-  description = "WebSockets are open connections sustained between the client and the origin server. Inside a WebSockets connection, the client and the origin can pass data back and forth without having to reestablish sessions. This makes exchanging data within a WebSockets connection fast. WebSockets are often used for real-time applications such as live chat and gaming.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "WebSockets are open connections sustained between the client and the origin server. Inside a WebSockets connection, the client and the origin can pass data back and forth without having to reestablish sessions. This makes exchanging data within a WebSockets connection fast. WebSockets are often used for real-time applications such as live chat and gaming.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
@@ -231,7 +231,7 @@ variable "zero_rtt" {
 
 variable "cache_level" {
   type        = string
-  description = "Cache Level functions based off the setting level. The basic setting will cache most static resources (i.e., css, images, and JavaScript). The simplified setting will ignore the query string when delivering a cached resource. The aggressive setting will cache all static resources, including ones with a query string.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"aggressive\", \"basic\", \"simplified\"."
+  description = "Cache Level functions based off the setting level. The basic setting will cache most static resources (i.e., css, images, and JavaScript). The simplified setting will ignore the query string when delivering a cached resource. The aggressive setting will cache all static resources, including ones with a query string.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"aggressive\", \"basic\", \"simplified\"."
   default     = "aggressive"
 }
 
@@ -255,7 +255,7 @@ variable "image_resizing" {
 
 variable "min_tls_version" {
   type        = string
-  description = "Only accept HTTPS requests that use at least the TLS protocol version specified. For example, if TLS 1.1 is selected, TLS 1.0 connections will be rejected, while 1.1, 1.2, and 1.3 (if enabled) will be permitted.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"1.0\", \"1.1\", \"1.2\", \"1.3\"."
+  description = "Only accept HTTPS requests that use at least the TLS protocol version specified. For example, if TLS 1.1 is selected, TLS 1.0 connections will be rejected, while 1.1, 1.2, and 1.3 (if enabled) will be permitted.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"1.0\", \"1.1\", \"1.2\", \"1.3\"."
   default     = "1.0"
 }
 
@@ -285,7 +285,7 @@ variable "pseudo_ipv4" {
 
 variable "security_level" {
   type        = string
-  description = "Choose the appropriate security profile for your website, which will automatically adjust each of the security settings. If you choose to customize an individual security setting, the profile will become Custom.\nAvailability of values depending on the plan:\n\"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\": \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\";\n\"enterprise\", \"partners_enterprise\": \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\".\nPossible values: \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\"."
+  description = "Choose the appropriate security profile for your website, which will automatically adjust each of the security settings. If you choose to customize an individual security setting, the profile will become Custom.\nAvailability of values depending on the plan:\n\"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\": \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\";\n\"enterprise\", \"partners_enterprise\": \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\".\nPossible values: \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\"."
   default     = "medium"
 
   # If the variable value is not one of the allowed values, then the explicitly specified value is ignored due to how the variable value is defined in main.tf
@@ -298,31 +298,31 @@ variable "security_level" {
 
 variable "ssl" {
   type        = string
-  description = "SSL encrypts your visitor's connection and safeguards credit card numbers and other personal data to and from your website. SSL can take up to 5 minutes to fully activate. Requires Cloudflare active on your root domain or www domain. Off: no SSL between the visitor and Cloudflare, and no SSL between Cloudflare and your web server (all HTTP traffic). Flexible: SSL between the visitor and Cloudflare -- visitor sees HTTPS on your site, but no SSL between Cloudflare and your web server. You don't need to have an SSL cert on your web server, but your visitors will still see the site as being HTTPS enabled. Full: SSL between the visitor and Cloudflare -- visitor sees HTTPS on your site, and SSL between Cloudflare and your web server. You'll need to have your own SSL cert or self-signed cert at the very least. Full (Strict): SSL between the visitor and Cloudflare -- visitor sees HTTPS on your site, and SSL between Cloudflare and your web server. You'll need to have a valid SSL certificate installed on your web server. This certificate must be signed by a certificate authority, have an expiration date in the future, and respond for the request domain name (hostname).\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"off\", \"flexible\", \"full\", \"strict\", \"origin_pull\"."
+  description = "SSL encrypts your visitor's connection and safeguards credit card numbers and other personal data to and from your website. SSL can take up to 5 minutes to fully activate. Requires Cloudflare active on your root domain or www domain. Off: no SSL between the visitor and Cloudflare, and no SSL between Cloudflare and your web server (all HTTP traffic). Flexible: SSL between the visitor and Cloudflare -- visitor sees HTTPS on your site, but no SSL between Cloudflare and your web server. You don't need to have an SSL cert on your web server, but your visitors will still see the site as being HTTPS enabled. Full: SSL between the visitor and Cloudflare -- visitor sees HTTPS on your site, and SSL between Cloudflare and your web server. You'll need to have your own SSL cert or self-signed cert at the very least. Full (Strict): SSL between the visitor and Cloudflare -- visitor sees HTTPS on your site, and SSL between Cloudflare and your web server. You'll need to have a valid SSL certificate installed on your web server. This certificate must be signed by a certificate authority, have an expiration date in the future, and respond for the request domain name (hostname).\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"off\", \"flexible\", \"full\", \"strict\", \"origin_pull\"."
   default     = "off"
 }
 
 variable "tls_1_3" {
   type        = string
-  description = "Enable Crypto TLS 1.3 feature for this zone.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\", \"zrt\"."
+  description = "Enable Crypto TLS 1.3 feature for this zone.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\", \"zrt\"."
   default     = "off"
 }
 
 variable "browser_cache_ttl" {
   type        = number
-  description = "Browser Cache TTL (in seconds) specifies how long Cloudflare-cached resources will remain on your visitors' computers. Cloudflare will honor any larger times specified by your server. Setting a TTL of 0 is equivalent to selecting `Respect Existing Headers`.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: 0, 30, 60, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000."
+  description = "Browser Cache TTL (in seconds) specifies how long Cloudflare-cached resources will remain on your visitors' computers. Cloudflare will honor any larger times specified by your server. Setting a TTL of 0 is equivalent to selecting `Respect Existing Headers`.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: 0, 30, 60, 300, 1200, 1800, 3600, 7200, 10800, 14400, 18000, 28800, 43200, 57600, 72000, 86400, 172800, 259200, 345600, 432000, 691200, 1382400, 2073600, 2678400, 5356800, 16070400, 31536000."
   default     = 14400
 }
 
 variable "challenge_ttl" {
   type        = number
-  description = "Specify how long a visitor is allowed access to your site after successfully completing a challenge (such as a CAPTCHA). After the TTL has expired the visitor will have to complete a new challenge. We recommend a 15 - 45 minute setting and will attempt to honor any setting above 45 minutes.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: 300, 900, 1800, 2700, 3600, 7200, 10800, 14400, 28800, 57600, 86400, 604800, 2592000, 31536000."
+  description = "Specify how long a visitor is allowed access to your site after successfully completing a challenge (such as a CAPTCHA). After the TTL has expired the visitor will have to complete a new challenge. We recommend a 15 - 45 minute setting and will attempt to honor any setting above 45 minutes.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: 300, 900, 1800, 2700, 3600, 7200, 10800, 14400, 28800, 57600, 86400, 604800, 2592000, 31536000."
   default     = 1800
 }
 
 variable "max_upload" {
   type        = number
-  description = "The amount of data visitors can upload to your website in a single request.\nAvailability of values depending on the plan:\n\"free\", \"pro\", \"partners_pro\": 100;\n\"business\", \"partners_business\": 125, 150, 175, 200;\n\"enterprise\", \"partners_enterprise\": 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500.\nPossible values: 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500."
+  description = "The amount of data visitors can upload to your website in a single request.\nAvailability of values depending on the plan:\n\"free\", \"partners_free\", \"pro\", \"partners_pro\": 100;\n\"business\", \"partners_business\": 125, 150, 175, 200;\n\"enterprise\", \"partners_enterprise\": 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500.\nPossible values: 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500."
   default     = 100
 
   # The provider does not validate the variable value at the `terraform plan` stage
@@ -354,7 +354,7 @@ variable "minify" {
     html = optional(string)
     js   = optional(string)
   })
-  description = "Automatically minify certain assets for your website.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for each argument: \"on\", \"off\"."
+  description = "Automatically minify certain assets for your website.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for each argument: \"on\", \"off\"."
   # These defaults don't really apply and are just for documentation purposes, see `main.tf` file
   default = {
     css  = "off"
@@ -369,7 +369,7 @@ variable "mobile_redirect" {
     status           = optional(string)
     strip_uri        = optional(bool)
   })
-  description = "Automatically redirect visitors on mobile devices to a mobile-optimized subdomain.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for the `status` argument: \"on\", \"off\".\nPossible values for the `strip_uri` argument: true, false."
+  description = "Automatically redirect visitors on mobile devices to a mobile-optimized subdomain.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for the `status` argument: \"on\", \"off\".\nPossible values for the `strip_uri` argument: true, false."
   # These defaults don't really apply and are just for documentation purposes, see `main.tf` file
   default = {
     mobile_subdomain = ""
@@ -392,7 +392,7 @@ variable "security_header" {
     include_subdomains = optional(bool)
     nosniff            = optional(bool)
   })
-  description = "Cloudflare security headers for a zone.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for the `enabled` argument: true, false.\nPossible values for the `preload` argument: true, false.\nPossible values for the `max_age` argument: between 0 and 2147483647.\nPossible values for the `include_subdomains` argument: true, false.\nPossible values for the `nosniff` argument: true, false."
+  description = "Cloudflare security headers for a zone.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for the `enabled` argument: true, false.\nPossible values for the `preload` argument: true, false.\nPossible values for the `max_age` argument: between 0 and 2147483647.\nPossible values for the `include_subdomains` argument: true, false.\nPossible values for the `nosniff` argument: true, false."
   # These defaults don't really apply and are just for documentation purposes, see `main.tf` file
   default = {
     enabled            = true
@@ -414,7 +414,7 @@ variable "security_header" {
 
 variable "enable_dnssec" {
   type        = bool
-  description = "Enable or disable DNSSEC.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: true, false."
+  description = "Enable or disable DNSSEC.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: true, false."
   default     = false
 }
 
@@ -471,7 +471,7 @@ variable "records" {
     ttl      = optional(number)
     proxied  = optional(bool)
   }))
-  description = "Zone's DNS records.\nAvailable on the following plans: \"free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for the `type` argument: \"A\", \"AAAA\", \"CAA\", \"CERT\", \"CNAME\", \"DNSKEY\", \"DS\", \"HTTPS\", \"LOC\", \"MX\", \"NAPTR\", \"NS\", \"PTR\", \"SMIMEA\", \"SPF\", \"SRV\", \"SSHFP\", \"SVCB\", \"TLSA\", \"TXT\", \"URI\".\nPossible values for the `priority` argument: between 0 and 65535.\nPossible values for the `ttl` argument: between 60 and 86400, or 1 for automatic."
+  description = "Zone's DNS records.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for the `type` argument: \"A\", \"AAAA\", \"CAA\", \"CERT\", \"CNAME\", \"DNSKEY\", \"DS\", \"HTTPS\", \"LOC\", \"MX\", \"NAPTR\", \"NS\", \"PTR\", \"SMIMEA\", \"SPF\", \"SRV\", \"SSHFP\", \"SVCB\", \"TLSA\", \"TXT\", \"URI\".\nPossible values for the `priority` argument: between 0 and 65535.\nPossible values for the `ttl` argument: between 60 and 86400, or 1 for automatic."
   default     = []
 
   # The provider does not check if either `value` or `data` is provided at the `terraform plan` stage
