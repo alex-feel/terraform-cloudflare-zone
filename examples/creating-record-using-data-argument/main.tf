@@ -4,9 +4,6 @@ terraform {
   required_providers {
     cloudflare = {
       source = "cloudflare/cloudflare"
-      # Specify the correct version, taking into account the minimum requirements at https://github.com/alex-feel/terraform-cloudflare-zone/blob/main/providers.tf
-      # You can usually use the latest version available at https://github.com/cloudflare/terraform-provider-cloudflare/tags
-      version = "x.x.x"
     }
   }
 }
@@ -32,8 +29,8 @@ module "acme_com" {
     },
     {
       record_name = "srv_sip_tls"
-      name        = "_sip._tls"
       type        = "SRV"
+      name        = "_sip._tls"
       data = {
         service  = "_sip"
         proto    = "_tls"
