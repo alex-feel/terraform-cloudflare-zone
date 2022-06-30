@@ -105,7 +105,7 @@ Note. Be aware of changes in your infrastructure when using the module with the 
 
 ## Share Your Support
 
-Like the project? Please give it a star! You can find more about starring [here](https://docs.github.com/en/get-started/exploring-projects-on-github/saving-repositories-with-stars).
+Like the project? Please [give it a star](https://github.com/alex-feel/terraform-cloudflare-zone)! You can find more about starring [here](https://docs.github.com/en/get-started/exploring-projects-on-github/saving-repositories-with-stars).
 
 ## Contributors
 
