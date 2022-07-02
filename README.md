@@ -4,7 +4,7 @@
 [![](https://img.shields.io/badge/dynamic/json?color=5c4ee5&label=registry%20downloads&query=%24.downloads&url=https%3A%2F%2Fregistry.terraform.io%2Fv1%2Fmodules%2Falex-feel%2Fzone%2Fcloudflare&logo=terraform)](https://registry.terraform.io/modules/alex-feel/zone/cloudflare/latest)
 [![](https://img.shields.io/badge/license-GPLv3-c00404.svg)](https://github.com/alex-feel/terraform-cloudflare-zone/blob/main/LICENSE)
 
-Terraform module that creates zone resources on Cloudflare.
+Terraform module that creates zone resources in Cloudflare with minimal effort on your part.
 
 The main goals of this module are to simplify the creation of resources in Cloudflare, while reducing the number of possible user mistakes at the earliest possible stage. See notes below for more information.
 
@@ -53,7 +53,7 @@ Also, you can find detailed usage information in [USAGE.md](https://github.com/a
 
 ## Notes
 
-[Cloudflare Zone settings](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/zone_settings_override):
+### Cloudflare Zone settings
 
 * If you try to use an argument that is available in a higher plan than your current one, the argument will be ignored without errors.
 * If you try to set a value for the `security_level` or the `max_upload` argument that is not available on your current plan, the argument value will be set to the closest value available on your current plan.
@@ -61,7 +61,7 @@ Also, you can find detailed usage information in [USAGE.md](https://github.com/a
 * It is not necessary to specify all fields, such as `html`, `css`, and `js` in the `minify` [object](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/zone_settings_override#minify) (block in the original resource), despite the fact that according to the documentation all fields are required. You can only specify the fields you need, the rest of the fields will take on the default values.
 * It is not necessary to specify `status` and `strip_uri` fields in the `mobile_redirect` [object](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/zone_settings_override#mobile_redirect) (block in the original resource), despite the fact that according to the documentation these fields are required. You can only specify the fields you need, the rest of the fields will take on the default values.
 
-[Cloudflare record](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record):
+### Cloudflare record
 
 * The `name` and the `data["name"]` argument values default to `@` (root). This is actually the default behavior, but only for the value of the `data["name"]` argument when you are not using the module.
 * The `data` argument **is supported**. The `value` argument takes precedence over the `data` argument to avoid errors if two arguments are accidentally given at the same time, since only one of them can be given at the same time.
@@ -72,7 +72,7 @@ Also, you can find detailed usage information in [USAGE.md](https://github.com/a
 * The `proxied` argument value is forced to `false` for wildcard records for non-enterprise plans, regardless of explicitly set value, because non-enterprise customers can create but not proxy wildcard records.
 * For each record, you need to come up with any valid name and specify it as the `record_name` argument value (see examples [here](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples)).
 
-[Cloudflare page rule](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/page_rule):
+### Cloudflare page rule
 
 * It is not necessary to specify empty `cookie`, `header`, `host`, `query_string`, or `user` objects (blocks in the original resource) in the `cache_key_fields` [object](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/page_rule#cache-key-fields) (block in the original resource) if you don't need them, despite the fact that, according to the documentation, all blocks are required, but allowed to be empty. You can only specify the objects you need.
 * It is not necessary to specify all fields, such as `html`, `css`, and `js` in the `minify` [object](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/page_rule#minify) (block in the original resource), despite the fact that according to the documentation all fields are required. You can only specify the fields you need, the rest of the fields will take on the default values.
@@ -81,7 +81,20 @@ Also, you can find detailed usage information in [USAGE.md](https://github.com/a
 * For each page rule, you need to come up with any valid name and specify it as the `page_rule_name` argument value (see an example [here](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples/basic)).
 * Due to the specific implementation of the Cloudflare API, in fact, you cannot use the `priority` argument to set the priority of a particular page rule. You can find details in this [issue](https://github.com/cloudflare/terraform-provider-cloudflare/issues/187). If you need to prioritize page rules, in which case you can only partially use the module, creating page rules requires using the regular `cloudflare_page_rule` resources, as well as the `depends_on` meta argument, as described [here](https://github.com/cloudflare/terraform-provider-cloudflare/issues/187#issuecomment-450987683). See an [example](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples/page-rules-with-priorities) of using the module in such a case.
 
-## Get the Latest Changes
+## Switching to Another Module Version
+
+To switch to another module version, just do the following:
+
+* Specify the necessary module version in your configuration using the `version` constraint. Use one of the values at [tags](https://github.com/alex-feel/terraform-cloudflare-zone/tags) (preferably the latest).
+* Run the following command:
+
+```bash
+$ terraform init -upgrade
+```
+
+Note. Be aware of changes in your infrastructure after switching to another module version, carefully examine the output of the `terraform plan` command before applying the changes.
+
+## Getting the Latest Changes
 
 If you want to use a module with the latest changes that are not yet available in the Terraform Registry, you need to:
 
