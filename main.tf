@@ -54,26 +54,26 @@ locals {
 # Availability of cloudflare_zone_settings_override resource settings on the current plan
 locals {
   cloudflare_zone_settings_override_avail = {
-    cname_flattening            = contains(local.avail_starting_with_pro, var.plan) ? true : false
-    h2_prioritization           = contains(local.avail_starting_with_pro, var.plan) ? true : false
-    http2                       = contains(local.avail_starting_with_pro, var.plan) ? true : false
-    http3                       = contains(local.avail_starting_with_pro, var.plan) ? true : false
-    image_resizing              = contains(local.avail_starting_with_business, var.plan) ? true : false
-    ipv6                        = contains(local.avail_starting_with_pro, var.plan) ? true : false
-    mirage                      = contains(local.avail_starting_with_pro, var.plan) ? true : false
-    orange_to_orange            = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
-    origin_error_page_pass_thru = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
-    polish                      = contains(local.avail_starting_with_pro, var.plan) ? true : false
-    prefetch_preload            = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
-    proxy_read_timeout          = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
-    pseudo_ipv4                 = contains(local.avail_starting_with_pro, var.plan) ? true : false
-    response_buffering          = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
-    sort_query_string_for_cache = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
-    tls_client_auth             = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
-    true_client_ip_header       = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
-    waf                         = contains(local.avail_starting_with_pro, var.plan) ? true : false
-    webp                        = contains(local.avail_starting_with_pro, var.plan) ? true : false
-    zero_rtt                    = contains(local.avail_starting_with_pro, var.plan) ? true : false
+    cname_flattening            = contains(local.avail_starting_with_pro, var.plan)
+    h2_prioritization           = contains(local.avail_starting_with_pro, var.plan)
+    http2                       = contains(local.avail_starting_with_pro, var.plan)
+    http3                       = contains(local.avail_starting_with_pro, var.plan)
+    image_resizing              = contains(local.avail_starting_with_business, var.plan)
+    ipv6                        = contains(local.avail_starting_with_pro, var.plan)
+    mirage                      = contains(local.avail_starting_with_pro, var.plan)
+    orange_to_orange            = contains(local.avail_starting_with_enterprise, var.plan)
+    origin_error_page_pass_thru = contains(local.avail_starting_with_enterprise, var.plan)
+    polish                      = contains(local.avail_starting_with_pro, var.plan)
+    prefetch_preload            = contains(local.avail_starting_with_enterprise, var.plan)
+    proxy_read_timeout          = contains(local.avail_starting_with_enterprise, var.plan)
+    pseudo_ipv4                 = contains(local.avail_starting_with_pro, var.plan)
+    response_buffering          = contains(local.avail_starting_with_enterprise, var.plan)
+    sort_query_string_for_cache = contains(local.avail_starting_with_enterprise, var.plan)
+    tls_client_auth             = contains(local.avail_starting_with_enterprise, var.plan)
+    true_client_ip_header       = contains(local.avail_starting_with_enterprise, var.plan)
+    waf                         = contains(local.avail_starting_with_pro, var.plan)
+    webp                        = contains(local.avail_starting_with_pro, var.plan)
+    zero_rtt                    = contains(local.avail_starting_with_pro, var.plan)
   }
 }
 
@@ -310,21 +310,21 @@ locals {
 # Availability of cloudflare_page_rule resource actions on the current plan
 locals {
   cloudflare_page_rule_avail = {
-    bypass_cache_on_cookie      = contains(local.avail_starting_with_business, var.plan) ? true : false
-    cache_by_device_type        = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
-    cache_key_fields            = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
-    cache_on_cookie             = contains(local.avail_starting_with_business, var.plan) ? true : false
-    cache_ttl_by_status         = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
-    disable_railgun             = contains(local.avail_starting_with_business, var.plan) ? true : false
-    mirage                      = local.cloudflare_zone_settings_override_avail.mirage
-    origin_error_page_pass_thru = local.cloudflare_zone_settings_override_avail.origin_error_page_pass_thru
-    polish                      = local.cloudflare_zone_settings_override_avail.polish
-    resolve_override            = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
-    respect_strong_etag         = contains(local.avail_starting_with_enterprise, var.plan) ? true : false
-    response_buffering          = local.cloudflare_zone_settings_override_avail.response_buffering
-    sort_query_string_for_cache = local.cloudflare_zone_settings_override_avail.sort_query_string_for_cache
-    true_client_ip_header       = local.cloudflare_zone_settings_override_avail.true_client_ip_header
-    waf                         = local.cloudflare_zone_settings_override_avail.waf
+    bypass_cache_on_cookie      = contains(local.avail_starting_with_business, var.plan)
+    cache_by_device_type        = contains(local.avail_starting_with_enterprise, var.plan)
+    cache_key_fields            = contains(local.avail_starting_with_enterprise, var.plan)
+    cache_on_cookie             = contains(local.avail_starting_with_business, var.plan)
+    cache_ttl_by_status         = contains(local.avail_starting_with_enterprise, var.plan)
+    disable_railgun             = contains(local.avail_starting_with_business, var.plan)
+    mirage                      = contains(local.avail_starting_with_pro, var.plan)
+    origin_error_page_pass_thru = contains(local.avail_starting_with_enterprise, var.plan)
+    polish                      = contains(local.avail_starting_with_pro, var.plan)
+    resolve_override            = contains(local.avail_starting_with_enterprise, var.plan)
+    respect_strong_etag         = contains(local.avail_starting_with_enterprise, var.plan)
+    response_buffering          = contains(local.avail_starting_with_enterprise, var.plan)
+    sort_query_string_for_cache = contains(local.avail_starting_with_enterprise, var.plan)
+    true_client_ip_header       = contains(local.avail_starting_with_enterprise, var.plan)
+    waf                         = contains(local.avail_starting_with_pro, var.plan)
   }
 }
 
