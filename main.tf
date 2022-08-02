@@ -362,7 +362,6 @@ resource "cloudflare_page_rule" "this" {
 
   target = each.value.target
   actions {
-    always_online            = each.value.actions.always_online
     always_use_https         = each.value.actions.always_use_https
     automatic_https_rewrites = each.value.actions.automatic_https_rewrites
     browser_cache_ttl        = try(each.value.actions.browser_cache_ttl >= local.cloudflare_page_rule_values_avail.browser_cache_ttl, false) ? each.value.actions.browser_cache_ttl : each.value.actions.browser_cache_ttl != null ? local.browser_cache_ttl_closest_avail_values[var.plan] : null
