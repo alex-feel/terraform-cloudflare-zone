@@ -73,9 +73,11 @@ locals {
     sort_query_string_for_cache = contains(local.avail_starting_with_enterprise, var.plan)
     tls_client_auth             = contains(local.avail_starting_with_enterprise, var.plan)
     true_client_ip_header       = contains(local.avail_starting_with_enterprise, var.plan)
-    waf                         = contains(local.avail_starting_with_pro, var.plan)
-    webp                        = contains(local.avail_starting_with_pro, var.plan)
-    zero_rtt                    = contains(local.avail_starting_with_pro, var.plan)
+    # There is no complete certainty that this setting is available only on Enterprise plans
+    visitor_ip = contains(local.avail_starting_with_enterprise, var.plan)
+    waf        = contains(local.avail_starting_with_pro, var.plan)
+    webp       = contains(local.avail_starting_with_pro, var.plan)
+    zero_rtt   = contains(local.avail_starting_with_pro, var.plan)
   }
 }
 
@@ -177,6 +179,7 @@ resource "cloudflare_zone_settings_override" "this" {
     tls_client_auth             = local.cloudflare_zone_settings_override_avail.tls_client_auth ? var.tls_client_auth : null
     true_client_ip_header       = local.cloudflare_zone_settings_override_avail.true_client_ip_header ? var.true_client_ip_header : null
     universal_ssl               = var.universal_ssl
+    visitor_ip                  = local.cloudflare_zone_settings_override_avail.visitor_ip ? var.visitor_ip : null
     waf                         = local.cloudflare_zone_settings_override_avail.waf ? var.waf : null
     webp                        = local.cloudflare_zone_settings_override_avail.webp ? var.webp : null
     websockets                  = var.websockets
