@@ -55,6 +55,7 @@ locals {
 locals {
   cloudflare_zone_settings_override_avail = {
     cname_flattening            = contains(local.avail_starting_with_pro, var.plan)
+    filter_logs_to_cloudflare   = contains(local.avail_starting_with_enterprise, var.plan)
     h2_prioritization           = contains(local.avail_starting_with_pro, var.plan)
     http2                       = contains(local.avail_starting_with_pro, var.plan)
     http3                       = contains(local.avail_starting_with_pro, var.plan)
@@ -115,20 +116,21 @@ resource "cloudflare_zone_settings_override" "this" {
     cache_level              = var.cache_level
     challenge_ttl            = var.challenge_ttl
     # At the moment, it is not possible to automatically ignore this option without errors if you do not have the Advanced Certificate Manager plan subscription, as there is no data source that allows you to get the subscription status
-    ciphers            = var.ciphers
-    cname_flattening   = local.cloudflare_zone_settings_override_avail.cname_flattening ? var.cname_flattening : null
-    development_mode   = var.development_mode
-    early_hints        = var.early_hints
-    email_obfuscation  = var.email_obfuscation
-    h2_prioritization  = local.cloudflare_zone_settings_override_avail.h2_prioritization ? var.h2_prioritization : null
-    hotlink_protection = var.hotlink_protection
-    http2              = local.cloudflare_zone_settings_override_avail.http2 ? var.http2 : null
-    http3              = local.cloudflare_zone_settings_override_avail.http3 ? var.http3 : null
-    image_resizing     = local.cloudflare_zone_settings_override_avail.image_resizing ? var.image_resizing : null
-    ip_geolocation     = var.ip_geolocation
-    ipv6               = local.cloudflare_zone_settings_override_avail.ipv6 ? var.ipv6 : null
-    max_upload         = contains(local.cloudflare_zone_settings_override_values_avail.max_upload, var.max_upload) ? var.max_upload : local.max_upload_closest_avail_values[var.plan]
-    min_tls_version    = var.min_tls_version
+    ciphers                   = var.ciphers
+    cname_flattening          = local.cloudflare_zone_settings_override_avail.cname_flattening ? var.cname_flattening : null
+    development_mode          = var.development_mode
+    early_hints               = var.early_hints
+    email_obfuscation         = var.email_obfuscation
+    filter_logs_to_cloudflare = local.cloudflare_zone_settings_override_avail.filter_logs_to_cloudflare ? var.filter_logs_to_cloudflare : null
+    h2_prioritization         = local.cloudflare_zone_settings_override_avail.h2_prioritization ? var.h2_prioritization : null
+    hotlink_protection        = var.hotlink_protection
+    http2                     = local.cloudflare_zone_settings_override_avail.http2 ? var.http2 : null
+    http3                     = local.cloudflare_zone_settings_override_avail.http3 ? var.http3 : null
+    image_resizing            = local.cloudflare_zone_settings_override_avail.image_resizing ? var.image_resizing : null
+    ip_geolocation            = var.ip_geolocation
+    ipv6                      = local.cloudflare_zone_settings_override_avail.ipv6 ? var.ipv6 : null
+    max_upload                = contains(local.cloudflare_zone_settings_override_values_avail.max_upload, var.max_upload) ? var.max_upload : local.max_upload_closest_avail_values[var.plan]
+    min_tls_version           = var.min_tls_version
 
     minify {
       css  = local.minify.css
