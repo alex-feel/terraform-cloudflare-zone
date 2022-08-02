@@ -91,6 +91,12 @@ variable "email_obfuscation" {
   default     = "on"
 }
 
+variable "filter_logs_to_cloudflare" {
+  type        = string
+  description = "A very niche feature that will not be publicly documented.\nAvailable on the following plans: \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  default     = "off"
+}
+
 variable "hotlink_protection" {
   type        = string
   description = "When enabled, the Hotlink Protection option ensures that other sites cannot suck up your bandwidth by building pages that use images hosted on your site. Anytime a request for an image on your site hits Cloudflare, we check to ensure that it's not another site requesting them. People will still be able to download and view images from your page, but other sites won't be able to steal them for use on their own pages.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
@@ -118,6 +124,12 @@ variable "ip_geolocation" {
 variable "ipv6" {
   type        = string
   description = "Enable IPv6 on all subdomains that are Cloudflare enabled.\nAvailable on the following plans: \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  default     = "off"
+}
+
+variable "log_to_cloudflare" {
+  type        = string
+  description = "A very niche feature that will not be publicly documented.\nAvailable on the following plans: \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
@@ -203,6 +215,13 @@ variable "universal_ssl" {
   type        = string
   description = "Disabling Universal SSL removes any currently active Universal SSL certificates for your zone from the edge and prevents any future Universal SSL certificates from being ordered. If there are no dedicated certificates or custom certificates uploaded for the domain, visitors will be unable to access the domain over HTTPS.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
+}
+
+# There is no complete certainty that this setting is available only on Enterprise plans
+variable "visitor_ip" {
+  type        = string
+  description = "A privacy toggle that controls whether a visitor IP address is sent to the origin.\nAvailable on the following plans: \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  default     = "off"
 }
 
 variable "waf" {
