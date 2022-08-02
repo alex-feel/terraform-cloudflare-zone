@@ -56,7 +56,6 @@ resource "cloudflare_page_rule" "change_login_page_settings" {
   target  = "acme.com/login"
 
   actions {
-    always_online  = "off"
     browser_check  = "on"
     security_level = "high"
   }

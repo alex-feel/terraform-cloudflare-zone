@@ -507,7 +507,6 @@ variable "page_rules" {
     page_rule_name = string
     target         = string
     actions = object({
-      always_online            = optional(string)
       always_use_https         = optional(bool)
       automatic_https_rewrites = optional(string)
       browser_cache_ttl        = optional(number)
