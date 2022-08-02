@@ -61,6 +61,7 @@ locals {
     http3                       = contains(local.avail_starting_with_pro, var.plan)
     image_resizing              = contains(local.avail_starting_with_business, var.plan)
     ipv6                        = contains(local.avail_starting_with_pro, var.plan)
+    log_to_cloudflare           = contains(local.avail_starting_with_enterprise, var.plan)
     mirage                      = contains(local.avail_starting_with_pro, var.plan)
     orange_to_orange            = contains(local.avail_starting_with_enterprise, var.plan)
     origin_error_page_pass_thru = contains(local.avail_starting_with_enterprise, var.plan)
@@ -129,6 +130,7 @@ resource "cloudflare_zone_settings_override" "this" {
     image_resizing            = local.cloudflare_zone_settings_override_avail.image_resizing ? var.image_resizing : null
     ip_geolocation            = var.ip_geolocation
     ipv6                      = local.cloudflare_zone_settings_override_avail.ipv6 ? var.ipv6 : null
+    log_to_cloudflare         = local.cloudflare_zone_settings_override_avail.log_to_cloudflare ? var.log_to_cloudflare : null
     max_upload                = contains(local.cloudflare_zone_settings_override_values_avail.max_upload, var.max_upload) ? var.max_upload : local.max_upload_closest_avail_values[var.plan]
     min_tls_version           = var.min_tls_version
 

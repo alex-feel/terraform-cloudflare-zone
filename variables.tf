@@ -127,6 +127,12 @@ variable "ipv6" {
   default     = "off"
 }
 
+variable "log_to_cloudflare" {
+  type        = string
+  description = "A very niche feature that will not be publicly documented.\nAvailable on the following plans: \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  default     = "off"
+}
+
 variable "mirage" {
   type        = string
   description = "Automatically optimize image loading for website visitors on mobile devices.\nAvailable on the following plans: \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
