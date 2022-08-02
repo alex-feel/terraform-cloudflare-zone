@@ -39,7 +39,7 @@ variable "type" {
 
 variable "always_online" {
   type        = string
-  description = "When enabled, Always Online will serve pages from our cache if your server is offline.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "When enabled, Cloudflare serves limited copies of web pages available from the Internet Archive's Wayback Machine if your server is offline.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "on"
 }
 
