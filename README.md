@@ -81,6 +81,10 @@ Also, you can find detailed usage information in [USAGE.md](https://github.com/a
 * For each page rule, you need to come up with any valid name and specify it as the `page_rule_name` argument value (see an example [here](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples/basic)).
 * Due to the specific implementation of the Cloudflare API, in fact, you cannot use the `priority` argument to set the priority of a particular page rule. You can find details in this [issue](https://github.com/cloudflare/terraform-provider-cloudflare/issues/187). If you need to prioritize page rules, in which case you can only partially use the module, creating page rules requires using the regular `cloudflare_page_rule` resources, as well as the `depends_on` meta argument, as described [here](https://github.com/cloudflare/terraform-provider-cloudflare/issues/187#issuecomment-450987683). See an [example](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples/page-rules-with-priorities) of using the module in such a case.
 
+## Migrating to the Module
+
+If you are not yet using Terraform to manage Cloudflare resources, you can start using the module right now. If you already have resources created in Cloudflare using Terraform and would like to switch to using the module, [this guide](https://github.com/alex-feel/terraform-cloudflare-zone/wiki/Migration) will show you how to do it.
+
 ## Switching to Another Module Version
 
 To switch to another module version, just do the following:
