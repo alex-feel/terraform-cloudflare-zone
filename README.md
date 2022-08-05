@@ -83,7 +83,15 @@ Also, you can find detailed usage information in [USAGE.md](https://github.com/a
 
 ## Migrating to the Module
 
-If you are not yet using Terraform to manage Cloudflare resources, you can start using the module right now. If you already have resources created in Cloudflare using Terraform and would like to switch to using the module, [this guide](https://github.com/alex-feel/terraform-cloudflare-zone/wiki/Migration) will show you how to do it.
+If you want to start managing your resources with the module, you have several options to do so. However, your next steps will depend on whether you already have resources in Cloudflare and whether you are already using Terraform to manage them.
+
+In general, your approach would be:
+
+1. If you don't have resources in Cloudflare, you can simply start using the module. See [examples](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples) and detailed usage information in [USAGE.md](https://github.com/alex-feel/terraform-cloudflare-zone/blob/main/USAGE.md).
+2. If you have resources in Cloudflare but don't use Terraform to manage them, you can re-create or import your existing resources and start managing them through Terraform using the module.
+3. If you have resources in Cloudflare and are already using Terraform to manage them, you can re-create or move (change resource addresses) your existing resources and start managing them through Terraform using the module.
+
+You can find detailed instructions in [this guide](https://github.com/alex-feel/terraform-cloudflare-zone/wiki/Migration).
 
 ## Switching to Another Module Version
 
