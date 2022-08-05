@@ -215,9 +215,10 @@ resource "cloudflare_zone_dnssec" "this" {
 # Assigning default values for arguments that have no value in the configuration
 locals {
   records = defaults(var.records, {
-    name    = "@"
-    ttl     = 1
-    proxied = false
+    name            = "@"
+    ttl             = 1
+    proxied         = false
+    allow_overwrite = false
   })
 }
 
@@ -279,9 +280,10 @@ resource "cloudflare_record" "this" {
     }
   }
 
-  ttl      = contains(["A", "AAAA", "CNAME"], each.value.type) && each.value.proxied == true ? 1 : each.value.ttl
-  priority = each.value.priority
-  proxied  = contains(["A", "AAAA", "CNAME"], each.value.type) && each.value.proxied == true ? length(regexall("^\\*{1}", each.value.name)) == 0 || (length(regexall("^\\*{1}", each.value.name)) > 0 && contains(local.avail_starting_with_enterprise, var.plan)) ? true : false : false
+  ttl             = contains(["A", "AAAA", "CNAME"], each.value.type) && each.value.proxied == true ? 1 : each.value.ttl
+  priority        = each.value.priority
+  proxied         = contains(["A", "AAAA", "CNAME"], each.value.type) && each.value.proxied == true ? length(regexall("^\\*{1}", each.value.name)) == 0 || (length(regexall("^\\*{1}", each.value.name)) > 0 && contains(local.avail_starting_with_enterprise, var.plan)) ? true : false : false
+  allow_overwrite = each.value.allow_overwrite
 }
 
 # cloudflare_page_rule resource

@@ -486,9 +486,10 @@ variable "records" {
       value          = optional(string)
       weight         = optional(number)
     }))
-    priority = optional(number)
-    ttl      = optional(number)
-    proxied  = optional(bool)
+    priority        = optional(number)
+    ttl             = optional(number)
+    proxied         = optional(bool)
+    allow_overwrite = optional(bool)
   }))
   description = "Zone's DNS records.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for the `type` argument: \"A\", \"AAAA\", \"CAA\", \"CERT\", \"CNAME\", \"DNSKEY\", \"DS\", \"HTTPS\", \"LOC\", \"MX\", \"NAPTR\", \"NS\", \"PTR\", \"SMIMEA\", \"SPF\", \"SRV\", \"SSHFP\", \"SVCB\", \"TLSA\", \"TXT\", \"URI\".\nPossible values for the `priority` argument: between 0 and 65535.\nPossible values for the `ttl` argument: between 60 and 86400, or 1 for automatic."
   default     = []
