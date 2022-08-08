@@ -69,8 +69,9 @@ module "acme_com" {
       page_rule_name = "change_login_page_settings"
       target         = "acme.com/login"
       actions = {
-        browser_check  = "on"
-        security_level = "high"
+        cache_level         = "bypass"
+        disable_performance = true
+        security_level      = "high"
       }
     }
   ]
