@@ -163,6 +163,14 @@ variable "origin_error_page_pass_thru" {
   default     = "off"
 }
 
+# The default value of the setting is null, because in order to apply it, the setting must be activated through the customer support / account team and there is no way to know if it is available for change (`readonly_settings` output does not contain information about whether this setting is read-only)
+# Also, the default values for Enterprise plans and other plans are different
+variable "origin_max_http_version" {
+  type        = string
+  description = "The highest HTTP version Cloudflare will attempt to use with your origin. This setting allows Cloudflare to make HTTP/2 requests to your origin.\nNote that you must contact customer support / account team to enable this setting before use, otherwise you will not be able to change it.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: 1, 2."
+  default     = null
+}
+
 variable "prefetch_preload" {
   type        = string
   description = "Cloudflare will prefetch any URLs that are included in the response headers.\nAvailable on the following plans: \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."

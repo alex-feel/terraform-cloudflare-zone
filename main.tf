@@ -154,6 +154,7 @@ resource "cloudflare_zone_settings_override" "this" {
     opportunistic_onion         = var.opportunistic_onion
     orange_to_orange            = local.cloudflare_zone_settings_override_avail.orange_to_orange ? var.orange_to_orange : null
     origin_error_page_pass_thru = local.cloudflare_zone_settings_override_avail.origin_error_page_pass_thru ? var.origin_error_page_pass_thru : null
+    origin_max_http_version     = var.origin_max_http_version
     # Since `polish` and `webp` are available on the same plan, it is not necessary to check if `webp` is available when `polish` is definitely available, so we can just use `var.webp` in the expression
     polish             = local.cloudflare_zone_settings_override_avail.polish ? (var.polish == null || var.polish == "off") && var.webp == "on" ? "lossless" : var.polish : null
     prefetch_preload   = local.cloudflare_zone_settings_override_avail.prefetch_preload ? var.prefetch_preload : null
