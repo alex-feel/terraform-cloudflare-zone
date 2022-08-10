@@ -13,7 +13,7 @@ repos:
     - id: terraform_init
       name: Terraform Init
       description: Initializes a working directory containing Terraform configuration files.
-      entry: terraform init -backend=false
+      entry: terraform init -backend=false -upgrade
       language: system
       pass_filenames: false
       files: (\.tf|\.tfvars)$
