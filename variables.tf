@@ -610,7 +610,7 @@ variable "page_rules" {
     priority = optional(number)
     status   = optional(string)
   }))
-  description = "Zone's page rules.\nNumber of allowed page rules depending on the plan:\n\"free\": 3;\n\"pro\", \"partners_pro\": 20;\n\"business\", \"partners_business\": 50;\n\"enterprise\", \"partners_enterprise\": 125.\nAvailability of values depending on the plan is the same as the availability of the same settings for the cloudflare_zone_settings_override resource, and for other settings, the availability can be found at https://support.cloudflare.com/hc/en-us/articles/218411427#h_18YTlvNlZET4Poljeih3TJ."
+  description = "Zone's page rules.\nNumber of allowed page rules depending on the plan:\n\"free\": 3;\n\"pro\", \"partners_pro\": 20;\n\"business\", \"partners_business\": 50;\n\"enterprise\", \"partners_enterprise\": 125.\nAvailability of values depending on the plan is the same as the availability of the same settings for the `cloudflare_zone_settings_override` resource, and for other settings, the availability can be found at [this page](https://support.cloudflare.com/hc/en-us/articles/218411427#h_18YTlvNlZET4Poljeih3TJ)."
   default     = []
 
   validation {
