@@ -25,6 +25,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_zone"></a> [zone](#input\_zone) | The DNS zone name which will be added, e.g. example.com. | `string` | n/a | yes |
+| <a name="input_account_id"></a> [account\_id](#input\_account\_id) | Account ID to manage the zone resource in. | `string` | n/a | yes |
 | <a name="input_paused"></a> [paused](#input\_paused) | Indicates if the zone is only using Cloudflare DNS services. A true value means the zone will not receive security or performance benefits.<br>Possible values: true, false. | `bool` | `false` | no |
 | <a name="input_jump_start"></a> [jump\_start](#input\_jump\_start) | Automatically attempt to fetch existing DNS records on creation. Ignored after zone is created.<br>Possible values: true, false. | `bool` | `false` | no |
 | <a name="input_plan"></a> [plan](#input\_plan) | The desired plan for the zone. Can be updated once the one is created. Changing this value will create/cancel associated subscriptions.<br>Possible values: "free", "partners\_free", "pro", "partners\_pro", "business", "partners\_business", "enterprise", "partners\_enterprise". | `string` | `"free"` | no |

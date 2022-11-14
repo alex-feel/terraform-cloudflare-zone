@@ -29,7 +29,8 @@ module "domains" {
   for_each = toset(local.domains)
 
   # Required
-  zone = each.value
+  account_id = "c2tby9ikk6f0mpa7njg0waa4o2m5jnr3"
+  zone       = each.value
 
   # Optional
   always_online = "off"

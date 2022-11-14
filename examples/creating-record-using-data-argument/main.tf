@@ -16,7 +16,8 @@ module "acme_com" {
   version = "x.x.x"
 
   # Required
-  zone = "acme.com"
+  account_id = "c2tby9ikk6f0mpa7njg0waa4o2m5jnr3"
+  zone       = "acme.com"
 
   records = [
     {
