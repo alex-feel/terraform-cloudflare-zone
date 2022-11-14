@@ -5,24 +5,14 @@ output "zone_id" {
   description = "The zone ID."
 }
 
-output "plan" {
-  value       = cloudflare_zone.this.plan
-  description = "The name of the commercial plan to apply to the zone."
+output "meta" {
+  value       = cloudflare_zone.this.meta
+  description = "Map of booleans, indicating some zone statuses or flags."
 }
 
-output "vanity_name_servers" {
-  value       = cloudflare_zone.this.vanity_name_servers
-  description = "List of Vanity Nameservers (if set)."
-}
-
-output "meta_wildcard_proxiable" {
-  value       = cloudflare_zone.this.meta.wildcard_proxiable
-  description = "Indicates whether wildcard DNS records can receive Cloudflare security and performance features."
-}
-
-output "meta_phishing_detected" {
-  value       = cloudflare_zone.this.meta.phishing_detected
-  description = "Indicates if URLs on the zone have been identified as hosting phishing content."
+output "name_servers" {
+  value       = cloudflare_zone.this.name_servers
+  description = "Cloudflare-assigned name servers. This is only populated for zones that use Cloudflare DNS."
 }
 
 output "status" {
@@ -30,9 +20,9 @@ output "status" {
   description = "Status of the zone. Valid values: active, pending, initializing, moved, deleted, deactivated."
 }
 
-output "name_servers" {
-  value       = cloudflare_zone.this.name_servers
-  description = "Cloudflare-assigned name servers. This is only populated for zones that use Cloudflare DNS."
+output "vanity_name_servers" {
+  value       = cloudflare_zone.this.vanity_name_servers
+  description = "List of Vanity Nameservers (if set)."
 }
 
 output "verification_key" {
