@@ -1,8 +1,3 @@
-terraform {
-  # The module functionality uses the defaults function, more details in https://www.terraform.io/language/functions/defaults
-  experiments = [module_variable_optional_attrs]
-}
-
 # List of plans that affect the availability of settings
 locals {
   avail_starting_with_pro        = ["pro", "partners_pro", "business", "partners_business", "enterprise", "partners_enterprise"]
@@ -91,20 +86,6 @@ locals {
   }
 }
 
-# Assigning default values for arguments that have no value in the configuration
-locals {
-  minify = defaults(var.minify, {
-    css  = "off"
-    html = "off"
-    js   = "off"
-  })
-
-  mobile_redirect = defaults(var.mobile_redirect, {
-    status    = "off"
-    strip_uri = false
-  })
-}
-
 # Cloudflare Zone settings
 resource "cloudflare_zone_settings_override" "this" {
   zone_id = cloudflare_zone.this.id
@@ -137,17 +118,17 @@ resource "cloudflare_zone_settings_override" "this" {
     min_tls_version           = var.min_tls_version
 
     minify {
-      css  = local.minify.css
-      html = local.minify.html
-      js   = local.minify.js
+      css  = coalesce(var.minify.css, "off")
+      html = coalesce(var.minify.html, "off")
+      js   = coalesce(var.minify.js, "off")
     }
 
     mirage = local.cloudflare_zone_settings_override_avail.mirage ? var.mirage : null
 
     mobile_redirect {
       mobile_subdomain = var.mobile_redirect.mobile_subdomain
-      status           = local.mobile_redirect.status
-      strip_uri        = local.mobile_redirect.strip_uri
+      status           = coalesce(var.mobile_redirect.status, "off")
+      strip_uri        = coalesce(var.mobile_redirect.strip_uri, false)
     }
 
     opportunistic_encryption    = var.opportunistic_encryption
@@ -196,7 +177,7 @@ resource "cloudflare_zone_settings_override" "this" {
   lifecycle {
     # The provider does not validate the `mobile_subdomain` value at the `terraform plan` stage to ensure that the specified subdomain exists or will be created
     precondition {
-      condition     = var.mobile_redirect.mobile_subdomain != null && length(var.mobile_redirect.mobile_subdomain) > 0 ? anytrue([for record in local.records : try(var.mobile_redirect.mobile_subdomain == record.name && (record.type == "A" || record.type == "CNAME"), false)]) : true
+      condition     = var.mobile_redirect.mobile_subdomain != null && length(var.mobile_redirect.mobile_subdomain) > 0 ? anytrue([for record in var.records : try(var.mobile_redirect.mobile_subdomain == record.name && (record.type == "A" || record.type == "CNAME"), false)]) : true
       error_message = "Error details: The mobile_subdomain contains a non-existent subdomain, make sure you have a matching A or CNAME record."
     }
   }
@@ -213,23 +194,13 @@ resource "cloudflare_zone_dnssec" "this" {
 
 # cloudflare_record resource
 
-# Assigning default values for arguments that have no value in the configuration
-locals {
-  records = defaults(var.records, {
-    name            = "@"
-    ttl             = 1
-    proxied         = false
-    allow_overwrite = false
-  })
-}
-
 # Cloudflare record
 resource "cloudflare_record" "this" {
-  for_each = var.records != null ? { for record in local.records : record.record_name => record } : {}
+  for_each = var.records != null ? { for record in var.records : record.record_name => record } : {}
 
   zone_id = cloudflare_zone.this.id
 
-  name = each.value.name
+  name = coalesce(each.value.name, "@")
   type = each.value.type
   //noinspection ConflictingProperties
   value = each.value.value
@@ -281,10 +252,10 @@ resource "cloudflare_record" "this" {
     }
   }
 
-  ttl             = contains(["A", "AAAA", "CNAME"], each.value.type) && each.value.proxied == true ? 1 : each.value.ttl
+  ttl             = contains(["A", "AAAA", "CNAME"], each.value.type) && each.value.proxied == true ? 1 : coalesce(each.value.ttl, 1)
   priority        = each.value.priority
-  proxied         = contains(["A", "AAAA", "CNAME"], each.value.type) && each.value.proxied == true ? length(regexall("^\\*{1}", each.value.name)) == 0 || (length(regexall("^\\*{1}", each.value.name)) > 0 && contains(local.avail_starting_with_enterprise, var.plan)) ? true : false : false
-  allow_overwrite = each.value.allow_overwrite
+  proxied         = contains(["A", "AAAA", "CNAME"], each.value.type) && each.value.proxied == true ? length(regexall("^\\*{1}", coalesce(each.value.name, "@"))) == 0 || (length(regexall("^\\*{1}", coalesce(each.value.name, "@"))) > 0 && contains(local.avail_starting_with_enterprise, var.plan)) ? true : false : false
+  allow_overwrite = coalesce(each.value.allow_overwrite, false)
 }
 
 # cloudflare_page_rule resource
@@ -351,22 +322,9 @@ locals {
   }
 }
 
-# Assigning default values for arguments that have no value in the configuration
-locals {
-  page_rules = defaults(var.page_rules, {
-    actions = {
-      minify = {
-        css  = "off"
-        html = "off"
-        js   = "off"
-      }
-    }
-  })
-}
-
 # Cloudflare page rule
 resource "cloudflare_page_rule" "this" {
-  for_each = var.page_rules != null ? { for page_rule in local.page_rules : page_rule.page_rule_name => page_rule } : {}
+  for_each = var.page_rules != null ? { for page_rule in var.page_rules : page_rule.page_rule_name => page_rule } : {}
 
   zone_id = cloudflare_zone.this.id
 
@@ -446,9 +404,9 @@ resource "cloudflare_page_rule" "this" {
       for_each = each.value.actions.minify != null ? [1] : []
 
       content {
-        html = each.value.actions.minify.html
-        css  = each.value.actions.minify.css
-        js   = each.value.actions.minify.js
+        html = coalesce(each.value.actions.minify.html, "off")
+        css  = coalesce(each.value.actions.minify.css, "off")
+        js   = coalesce(each.value.actions.minify.js, "off")
       }
     }
 
@@ -474,15 +432,17 @@ resource "cloudflare_page_rule" "this" {
 
   lifecycle {
     precondition {
-      condition     = alltrue([for page_rule in local.page_rules : anytrue([for key, value in page_rule.actions : try(local.cloudflare_page_rule_avail[key], true) if value != null && try(length(value) != 0, true)])])
-      error_message = "Error details: Each action object must contain at least one non-null action. Keep in mind that even if an action is not null in your configuration, it may evaluate to null if it is not available in the selected plan."
+      condition = anytrue([
+        for key, value in each.value.actions : try(local.cloudflare_page_rule_avail[key], true) if value != null && try(length(value) != 0, true)
+      ])
+      error_message = "Error details: The action object of each rule must contain at least one non-null action. Keep in mind that even if an action is not null in your configuration, it may evaluate to null if it is not available on your current plan."
     }
 
     # The provider does not validate the `ttl` value in the `cache_ttl_by_status` objects at the `terraform plan` stage
     # Perhaps there is a maximum possible value, or the `ttl` only accepts values from a predefined list
     # There is full confidence only in the following values: -1, 0, more at https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/page_rule#cache-ttl-by-status
     precondition {
-      condition     = local.cloudflare_page_rule_avail.cache_ttl_by_status ? alltrue(flatten([for page_rule in local.page_rules : [for ttl in page_rule.actions.cache_ttl_by_status[*].ttl : try(ttl >= -1)]])) : true
+      condition     = each.value.actions.cache_ttl_by_status != null && local.cloudflare_page_rule_avail.cache_ttl_by_status ? alltrue([for ttl in each.value.actions.cache_ttl_by_status[*].ttl : try(ttl >= -1)]) : true
       error_message = "Error details: The ttl value in each cache_ttl_by_status object must be greater than or equal to -1."
     }
   }
