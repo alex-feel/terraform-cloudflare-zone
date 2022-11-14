@@ -177,7 +177,7 @@ resource "cloudflare_zone_settings_override" "this" {
   lifecycle {
     # The provider does not validate the `mobile_subdomain` value at the `terraform plan` stage to ensure that the specified subdomain exists or will be created
     precondition {
-      condition     = var.mobile_redirect.mobile_subdomain != null && length(var.mobile_redirect.mobile_subdomain) > 0 ? anytrue([for record in var.records : try(var.mobile_redirect.mobile_subdomain == record.name && (record.type == "A" || record.type == "CNAME"), false)]) : true
+      condition     = var.mobile_redirect.mobile_subdomain != null && length(var.mobile_redirect.mobile_subdomain) > 0 ? anytrue([for record in var.records : try(var.mobile_redirect.mobile_subdomain == record.name && (record.type == "A" || record.type == "AAAA" || record.type == "CNAME"), false)]) : true
       error_message = "Error details: The mobile_subdomain contains a non-existent subdomain, make sure you have a matching A or CNAME record."
     }
   }
