@@ -9,7 +9,7 @@ variable "zone" {
 
 variable "account_id" {
   type        = string
-  description = "Account ID to manage the zone resource in."
+  description = "Account ID to manage the zone resource in. You can get more information on how to find `account_id` at [this page](https://developers.cloudflare.com/fundamentals/get-started/basic-tasks/find-account-and-zone-ids/)."
 }
 
 # Optional
@@ -86,7 +86,7 @@ variable "development_mode" {
 
 variable "early_hints" {
   type        = string
-  description = "When enabled, Cloudflare will attempt to speed up overall page loads by serving 103 responses with Link headers from the final response (https://developers.cloudflare.com/cache/about/early-hints).\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
+  description = "When enabled, Cloudflare will attempt to speed up overall page loads by serving 103 responses with Link headers from the final response ([https://developers.cloudflare.com/cache/about/early-hints](https://developers.cloudflare.com/cache/about/early-hints)).\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values: \"on\", \"off\"."
   default     = "off"
 }
 
