@@ -36,8 +36,9 @@ It's as simple as:
 module "acme_com" {
   source = "registry.terraform.io/alex-feel/zone/cloudflare"
   # It is recommended to pin a module to a specific version
-  version = "x.x.x"
-  zone    = "acme.com"
+  version    = "x.x.x"
+  account_id = "c2tby9ikk6f0mpa7njg0waa4o2m5jnr3"
+  zone       = "acme.com"
   # There may be many other arguments here
 }
 ```
