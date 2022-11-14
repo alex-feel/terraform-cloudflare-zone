@@ -364,17 +364,21 @@ variable "max_upload" {
 variable "ciphers" {
   type        = list(string)
   description = "An allowlist of ciphers for TLS termination. These ciphers must be in the BoringSSL format.\nAvailable on the following plans: Advanced Certificate Manager plan.\nPossible values for each element in the list: \"ECDHE-ECDSA-AES128-GCM-SHA256\", \"ECDHE-ECDSA-CHACHA20-POLY1305\", \"ECDHE-RSA-AES128-GCM-SHA256\", \"ECDHE-RSA-CHACHA20-POLY1305\", \"ECDHE-ECDSA-AES128-SHA256\", \"ECDHE-ECDSA-AES128-SHA\", \"ECDHE-RSA-AES128-SHA256\", \"ECDHE-RSA-AES128-SHA\", \"AES128-GCM-SHA256\", \"AES128-SHA256\", \"AES128-SHA\", \"ECDHE-ECDSA-AES256-GCM-SHA384\", \"ECDHE-ECDSA-AES256-SHA384\", \"ECDHE-RSA-AES256-GCM-SHA384\", \"ECDHE-RSA-AES256-SHA384\", \"ECDHE-RSA-AES256-SHA\", \"AES256-GCM-SHA384\", \"AES256-SHA256\", \"AES256-SHA\", \"DES-CBC3-SHA\", \"AEAD-AES128-GCM-SHA256\", \"AEAD-AES256-GCM-SHA384\", \"AEAD-CHACHA20-POLY1305-SHA256\"."
-  default     = []
+  # The `default` argument is used to make the variable optional
+  default = []
 
   # The provider does not validate the variable value at the `terraform plan` stage
   # Supported cipher suites by protocol can be found at https://developers.cloudflare.com/ssl/ssl-tls/cipher-suites/#supported-cipher-suites-by-protocol
   # When trying to use the ciphers "AEAD-AES128-GCM-SHA256", "AEAD-AES256-GCM-SHA384", "AEAD-CHACHA20-POLY1305-SHA256", error 1007 is returned from the API, despite the fact that the ciphers are declared to be supported
   validation {
-    condition     = alltrue([for i in var.ciphers : contains(["ECDHE-ECDSA-AES128-GCM-SHA256", "ECDHE-ECDSA-CHACHA20-POLY1305", "ECDHE-RSA-AES128-GCM-SHA256", "ECDHE-RSA-CHACHA20-POLY1305", "ECDHE-ECDSA-AES128-SHA256", "ECDHE-ECDSA-AES128-SHA", "ECDHE-RSA-AES128-SHA256", "ECDHE-RSA-AES128-SHA", "AES128-GCM-SHA256", "AES128-SHA256", "AES128-SHA", "ECDHE-ECDSA-AES256-GCM-SHA384", "ECDHE-ECDSA-AES256-SHA384", "ECDHE-RSA-AES256-GCM-SHA384", "ECDHE-RSA-AES256-SHA384", "ECDHE-RSA-AES256-SHA", "AES256-GCM-SHA384", "AES256-SHA256", "AES256-SHA", "DES-CBC3-SHA", "AEAD-AES128-GCM-SHA256", "AEAD-AES256-GCM-SHA384", "AEAD-CHACHA20-POLY1305-SHA256"], i)])
+    condition = alltrue([
+      for i in var.ciphers : contains(["ECDHE-ECDSA-AES128-GCM-SHA256", "ECDHE-ECDSA-CHACHA20-POLY1305", "ECDHE-RSA-AES128-GCM-SHA256", "ECDHE-RSA-CHACHA20-POLY1305", "ECDHE-ECDSA-AES128-SHA256", "ECDHE-ECDSA-AES128-SHA", "ECDHE-RSA-AES128-SHA256", "ECDHE-RSA-AES128-SHA", "AES128-GCM-SHA256", "AES128-SHA256", "AES128-SHA", "ECDHE-ECDSA-AES256-GCM-SHA384", "ECDHE-ECDSA-AES256-SHA384", "ECDHE-RSA-AES256-GCM-SHA384", "ECDHE-RSA-AES256-SHA384", "ECDHE-RSA-AES256-SHA", "AES256-GCM-SHA384", "AES256-SHA256", "AES256-SHA", "DES-CBC3-SHA", "AEAD-AES128-GCM-SHA256", "AEAD-AES256-GCM-SHA384", "AEAD-CHACHA20-POLY1305-SHA256"], i)
+    ])
     error_message = "Error details: The ciphers value must be a list of one or more of the following values: \"ECDHE-ECDSA-AES128-GCM-SHA256\", \"ECDHE-ECDSA-CHACHA20-POLY1305\", \"ECDHE-RSA-AES128-GCM-SHA256\", \"ECDHE-RSA-CHACHA20-POLY1305\", \"ECDHE-ECDSA-AES128-SHA256\", \"ECDHE-ECDSA-AES128-SHA\", \"ECDHE-RSA-AES128-SHA256\", \"ECDHE-RSA-AES128-SHA\", \"AES128-GCM-SHA256\", \"AES128-SHA256\", \"AES128-SHA\", \"ECDHE-ECDSA-AES256-GCM-SHA384\", \"ECDHE-ECDSA-AES256-SHA384\", \"ECDHE-RSA-AES256-GCM-SHA384\", \"ECDHE-RSA-AES256-SHA384\", \"ECDHE-RSA-AES256-SHA\", \"AES256-GCM-SHA384\", \"AES256-SHA256\", \"AES256-SHA\", \"DES-CBC3-SHA\", \"AEAD-AES128-GCM-SHA256\", \"AEAD-AES256-GCM-SHA384\", \"AEAD-CHACHA20-POLY1305-SHA256\"."
   }
 }
 
+# All attribute fields with default values are required by the provider
 variable "minify" {
   type = object({
     css  = optional(string)
@@ -382,7 +386,8 @@ variable "minify" {
     js   = optional(string)
   })
   description = "Automatically minify certain assets for your website.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for each argument: \"on\", \"off\"."
-  # These defaults don't really apply and are just for documentation purposes, see `main.tf` file
+  # These defaults don't really apply and are only for generating documentation with terraform-docs, the module applies defaults itself, see main.tf
+  # Also, the `default` argument is used to make the variable optional
   default = {
     css  = "off"
     html = "off"
@@ -390,6 +395,7 @@ variable "minify" {
   }
 }
 
+# All attribute fields with default values are required by the provider
 variable "mobile_redirect" {
   type = object({
     mobile_subdomain = string
@@ -397,7 +403,8 @@ variable "mobile_redirect" {
     strip_uri        = optional(bool)
   })
   description = "Automatically redirect visitors on mobile devices to a mobile-optimized subdomain.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for the `status` argument: \"on\", \"off\".\nPossible values for the `strip_uri` argument: true, false."
-  # These defaults don't really apply and are just for documentation purposes, see `main.tf` file
+  # These defaults don't really apply and are only for generating documentation with terraform-docs, the module applies defaults itself, see module defaults above
+  # Also, the `default` argument is used to make the variable optional
   default = {
     mobile_subdomain = ""
     status           = "off"
@@ -420,7 +427,8 @@ variable "security_header" {
     nosniff            = optional(bool)
   })
   description = "Cloudflare security headers for a zone.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for the `enabled` argument: true, false.\nPossible values for the `preload` argument: true, false.\nPossible values for the `max_age` argument: between 0 and 2147483647.\nPossible values for the `include_subdomains` argument: true, false.\nPossible values for the `nosniff` argument: true, false."
-  # These defaults don't really apply and are just for documentation purposes, see `main.tf` file
+  # These defaults don't really apply and are only for generating documentation with terraform-docs, the provider applies defaults itself, see the provider docs for more info
+  # Also, the `default` argument is used to make the variable optional
   default = {
     enabled            = true
     preload            = false
@@ -447,6 +455,7 @@ variable "enable_dnssec" {
 
 # cloudflare_record resource
 
+# All attribute fields with default values are required by the provider
 variable "records" {
   type = list(object({
     record_name = string
@@ -500,29 +509,39 @@ variable "records" {
     allow_overwrite = optional(bool)
   }))
   description = "Zone's DNS records.\nAvailable on the following plans: \"free\", \"partners_free\", \"pro\", \"partners_pro\", \"business\", \"partners_business\", \"enterprise\", \"partners_enterprise\".\nPossible values for the `type` argument: \"A\", \"AAAA\", \"CAA\", \"CERT\", \"CNAME\", \"DNSKEY\", \"DS\", \"HTTPS\", \"LOC\", \"MX\", \"NAPTR\", \"NS\", \"PTR\", \"SMIMEA\", \"SPF\", \"SRV\", \"SSHFP\", \"SVCB\", \"TLSA\", \"TXT\", \"URI\".\nPossible values for the `priority` argument: between 0 and 65535.\nPossible values for the `ttl` argument: between 60 and 86400, or 1 for automatic."
-  default     = []
+  # Currently, there is no way to specify default values for a variable of type list of objects to add them to the documentation using terraform-docs
+  # The `default` argument is used to make the variable optional
+  default = []
 
   # The provider does not check if either `value` or `data` is provided at the `terraform plan` stage
   validation {
-    condition     = alltrue([for i in var.records : try(i.value != null || i.data != null)])
+    condition = alltrue([
+      for i in var.records : try(i.value != null || i.data != null)
+    ])
     error_message = "Error details: Either the value or the data must be provided for each record."
   }
 
   # The provider does not validate the `ttl` values at the `terraform plan` stage
   validation {
-    condition     = alltrue([for i in var.records : try(i.ttl == 1 || i.ttl >= 60 && i.ttl <= 86400, true)])
+    condition = alltrue([
+      for i in var.records : try(i.ttl == 1 || i.ttl >= 60 && i.ttl <= 86400, true)
+    ])
     error_message = "Error details: The ttl values must be between 60 and 86400, or 1 for automatic."
   }
 
   # Actually, `priority` values validation is not required, it accepts any values, including negative ones, but for values outside the range from 0 to 65535, the resulting value may be unexpected for the end user
   validation {
-    condition     = alltrue([for i in var.records : try(i.priority >= 0 && i.priority <= 65535, true)])
+    condition = alltrue([
+      for i in var.records : try(i.priority >= 0 && i.priority <= 65535, true)
+    ])
     error_message = "Error details: The priority values must be between 0 and 65535."
   }
 
   # The provider does not check if `priority` are provided for "MX" type records at the `terraform plan` stage
   validation {
-    condition     = alltrue([for i in var.records : try(i.type == "MX" ? i.priority != null : true)])
+    condition = alltrue([
+      for i in var.records : try(i.type == "MX" ? i.priority != null : true)
+    ])
     error_message = "Error details: The priority must not be null for each record of type \"MX\"."
   }
 }
@@ -530,6 +549,7 @@ variable "records" {
 # cloudflare_page_rule resource
 
 # The number of rules is not checked against the maximum available number of rules on the current plan, since the rules can be purchased in addition, and there is no data source for obtaining the available number of rules
+# All attribute fields with default values are required by the provider
 variable "page_rules" {
   type = list(object({
     page_rule_name = string
@@ -611,10 +631,16 @@ variable "page_rules" {
     status   = optional(string)
   }))
   description = "Zone's page rules.\nNumber of allowed page rules depending on the plan:\n\"free\": 3;\n\"pro\", \"partners_pro\": 20;\n\"business\", \"partners_business\": 50;\n\"enterprise\", \"partners_enterprise\": 125.\nAvailability of values depending on the plan is the same as the availability of the same settings for the `cloudflare_zone_settings_override` resource, and for other settings, the availability can be found at [this page](https://support.cloudflare.com/hc/en-us/articles/218411427#h_18YTlvNlZET4Poljeih3TJ)."
-  default     = []
+  # Currently, there is no way to specify default values for a variable of type list of objects to add them to the documentation using terraform-docs
+  # The `default` argument is used to make the variable optional
+  default = []
 
   validation {
-    condition     = alltrue([for page_rule in var.page_rules : anytrue([for action in page_rule.actions : try(action != null)])])
+    condition = alltrue([
+      for page_rule in var.page_rules : anytrue([
+        for action in page_rule.actions : try(action != null)
+      ])
+    ])
     error_message = "Error details: The action object of each rule must contain at least one non-null action."
   }
 
@@ -623,7 +649,11 @@ variable "page_rules" {
   # Thus, the `browser_cache_ttl` value validation should be used because the provider will not always validate the `browser_cache_ttl` value at the `terraform plan` stage
   # The `browser_cache_ttl` argument of the `cloudflare_zone_settings_override` resource only accepts values from a specific list, but any value within the allowed range can be used here
   validation {
-    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule.actions[*].browser_cache_ttl : try(ttl >= 0 && ttl <= 31536000, true)]]))
+    condition = alltrue(flatten([
+      for page_rule in var.page_rules : [
+        for ttl in page_rule.actions[*].browser_cache_ttl : try(ttl >= 0 && ttl <= 31536000, true)
+      ]
+    ]))
     error_message = "Error details: The browser_cache_ttl values must be between 0 and 31536000."
   }
 
@@ -631,27 +661,39 @@ variable "page_rules" {
   # Explicitly specified value may be ignored due to how the `edge_cache_ttl` value is defined in main.tf
   # Thus, the `edge_cache_ttl` value validation should be used because the provider will not always validate the `edge_cache_ttl` value at the `terraform plan` stage
   validation {
-    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule.actions[*].edge_cache_ttl : try(ttl >= 1 && ttl <= 2678400, true)]]))
+    condition = alltrue(flatten([
+      for page_rule in var.page_rules : [
+        for ttl in page_rule.actions[*].edge_cache_ttl : try(ttl >= 1 && ttl <= 2678400, true)
+      ]
+    ]))
     error_message = "Error details: The edge_cache_ttl values must be between 1 and 2678400."
   }
 
   # The provider does not check if the `forwarding_url` is set with any other actions at the `terraform plan` stage
   validation {
-    condition     = alltrue([for page_rule in var.page_rules : (contains([for key, value in page_rule.actions : key if value != null && try(length(value) != 0, true)], "forwarding_url") ? length([for key, value in page_rule.actions : key if value != null && try(length(value) != 0, true)]) == 1 : true)])
+    condition = alltrue([
+      for page_rule in var.page_rules : (contains([for key, value in page_rule.actions : key if value != null && try(length(value) != 0, true)], "forwarding_url") ? length([for key, value in page_rule.actions : key if value != null && try(length(value) != 0, true)]) == 1 : true)
+    ])
     error_message = "Error details: The forwarding_url cannot be set with any other actions."
   }
 
   # If the `security_level` value is not one of the allowed values, then the explicitly specified value is ignored due to how the `security_level` value is defined in main.tf
   # Thus, the `security_level` value validation should be used because the provider will not validate the `security_level` value at the `terraform plan` stage
   validation {
-    condition     = alltrue(flatten([for page_rule in var.page_rules : [for ttl in page_rule.actions[*].security_level : try(contains(["off", "essentially_off", "low", "medium", "high", "under_attack"], ttl), true)]]))
+    condition = alltrue(flatten([
+      for page_rule in var.page_rules : [
+        for ttl in page_rule.actions[*].security_level : try(contains(["off", "essentially_off", "low", "medium", "high", "under_attack"], ttl), true)
+      ]
+    ]))
     error_message = "Error details: The security_level values must be one of the following: \"off\", \"essentially_off\", \"low\", \"medium\", \"high\", \"under_attack\"."
   }
 
   # The provider does not validate the `priority` values at the `terraform plan` stage
   # The range of values is set empirically and looks unexpected, apparently, the maximum possible number of rules is 125
   validation {
-    condition     = alltrue([for page_rule in var.page_rules : try(page_rule.priority >= 0 && page_rule.priority <= 1000, true)])
+    condition = alltrue([
+      for page_rule in var.page_rules : try(page_rule.priority >= 0 && page_rule.priority <= 1000, true)
+    ])
     error_message = "Error details: The priority values must be between 0 and 1000."
   }
 }

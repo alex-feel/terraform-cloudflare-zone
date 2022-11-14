@@ -13,7 +13,7 @@ The main goals of this module are to simplify the creation of resources in Cloud
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.2.0, < 1.3.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
 | <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | >= 3.21.0 |
 
 ## Supported Resources
@@ -65,9 +65,9 @@ Also, you can find detailed usage information in [USAGE.md](https://github.com/a
 
 * The `name` and the `data.name` argument values default to `@` (root). This is actually the default behavior, but only for the value of the `data.name` argument when you are not using the module.
 * The `data` argument is fully supported. The `value` argument takes precedence over the `data` argument to avoid errors if two arguments are accidentally given at the same time, since only one of them can be given at the same time.
-* The `ttl` argument value defaults to `1` (automatic).
+* The `ttl` argument value defaults to `1` (automatic). This is actually the default behavior.
 * The `ttl` argument value is forced to `1` (automatic), regardless of explicitly set value, if you set the `proxied` argument value to `true`.
-* The `proxied` argument value defaults to `false`. You must explicitly set this argument value to `true` for the records that you want to proxy through Cloudflare.
+* The `proxied` argument value defaults to `false`. This is actually the default behavior. You must explicitly set this argument value to `true` for the records that you want to proxy through Cloudflare.
 * The `proxied` argument value is forced to `false` for unsupported record types, regardless of explicitly set value.
 * The `proxied` argument value is forced to `false` for wildcard records for non-enterprise plans, regardless of explicitly set value, because non-enterprise customers can create but not proxy wildcard records.
 * For each record, you need to come up with any valid name and specify it as the `record_name` argument value (see examples [here](https://github.com/alex-feel/terraform-cloudflare-zone/tree/main/examples)).
