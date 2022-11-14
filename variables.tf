@@ -7,6 +7,11 @@ variable "zone" {
   description = "The DNS zone name which will be added, e.g. example.com."
 }
 
+variable "account_id" {
+  type        = string
+  description = "Account ID to manage the zone resource in."
+}
+
 # Optional
 
 # cloudflare_zone resource

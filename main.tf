@@ -25,6 +25,7 @@ locals {
 # Cloudflare Zone
 resource "cloudflare_zone" "this" {
   zone       = var.zone
+  account_id = var.account_id
   paused     = var.paused
   jump_start = var.jump_start
   plan       = var.plan

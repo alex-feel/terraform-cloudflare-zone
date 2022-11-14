@@ -14,8 +14,11 @@ module "acme_com" {
   source = "registry.terraform.io/alex-feel/zone/cloudflare"
   # It is recommended to pin a module to a specific version, available versions can be found at https://github.com/alex-feel/terraform-cloudflare-zone/tags
   version = "x.x.x"
+
   # Required
-  zone = "acme.com"
+  account_id = "c2tby9ikk6f0mpa7njg0waa4o2m5jnr3"
+  zone       = "acme.com"
+
   records = [
     {
       record_name = "txt_spf_wildcard"
