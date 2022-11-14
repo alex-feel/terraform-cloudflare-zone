@@ -92,12 +92,10 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_zone_id"></a> [zone\_id](#output\_zone\_id) | The zone ID. |
-| <a name="output_plan"></a> [plan](#output\_plan) | The name of the commercial plan to apply to the zone. |
-| <a name="output_vanity_name_servers"></a> [vanity\_name\_servers](#output\_vanity\_name\_servers) | List of Vanity Nameservers (if set). |
-| <a name="output_meta_wildcard_proxiable"></a> [meta\_wildcard\_proxiable](#output\_meta\_wildcard\_proxiable) | Indicates whether wildcard DNS records can receive Cloudflare security and performance features. |
-| <a name="output_meta_phishing_detected"></a> [meta\_phishing\_detected](#output\_meta\_phishing\_detected) | Indicates if URLs on the zone have been identified as hosting phishing content. |
-| <a name="output_status"></a> [status](#output\_status) | Status of the zone. Valid values: active, pending, initializing, moved, deleted, deactivated. |
+| <a name="output_meta"></a> [meta](#output\_meta) | Map of booleans, indicating some zone statuses or flags. |
 | <a name="output_name_servers"></a> [name\_servers](#output\_name\_servers) | Cloudflare-assigned name servers. This is only populated for zones that use Cloudflare DNS. |
+| <a name="output_status"></a> [status](#output\_status) | Status of the zone. Valid values: active, pending, initializing, moved, deleted, deactivated. |
+| <a name="output_vanity_name_servers"></a> [vanity\_name\_servers](#output\_vanity\_name\_servers) | List of Vanity Nameservers (if set). |
 | <a name="output_verification_key"></a> [verification\_key](#output\_verification\_key) | Contains the TXT record value to validate domain ownership. This is only populated for zones of type partial. |
 | <a name="output_initial_settings"></a> [initial\_settings](#output\_initial\_settings) | Settings present in the zone at the time the resource is created. This will be used to restore the original settings when this resource is destroyed. Shares the same schema as the settings attribute (Above). |
 | <a name="output_initial_settings_read_at"></a> [initial\_settings\_read\_at](#output\_initial\_settings\_read\_at) | Time when this resource was created and the initial\_settings were set. |
