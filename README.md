@@ -115,8 +115,9 @@ If you want to use a module with the latest changes that are not yet available i
 
 ```hcl
 module "acme_com" {
-  source = "github.com/alex-feel/terraform-cloudflare-zone"
-  zone   = "acme.com"
+  source     = "github.com/alex-feel/terraform-cloudflare-zone"
+  account_id = "c2tby9ikk6f0mpa7njg0waa4o2m5jnr3"
+  zone       = "acme.com"
   # There may be many other arguments here
 }
 ```
