@@ -1,0 +1,28 @@
+name: Close stale issues and PRs
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v7
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          days-before-issue-stale: 90
+          days-before-pr-stale: 14
+          days-before-close: 7
+          stale-issue-message: |
+            Marking this issue as stale due to 60 days of inactivity. This helps our maintainers find and focus on the active issues. If this issue receives no comments in the next 7 days it will automatically be closed. Maintainers can also remove the `lifecycle/stale` label.
+            If this issue was automatically closed and you feel this issue should be reopened, we encourage creating a new issue linking back to this one for added context. Thank you!
+          stale-pr-message: |
+            Marking this pull request as stale due to 14 days of inactivity. This helps our maintainers find and focus on the active pull requests. If this pull request receives no comments in the next 7 days it will automatically be closed. Maintainers can also remove the `lifecycle/stale` label.
+            If this pull request was automatically closed and you feel this pull request should be reopened, we encourage creating a new pull request linking back to this one for added context. Thank you!
+          close-issue-message: 'This issue was closed because it has been stalled for 7 days with no activity.'
+          close-pr-message: 'This PR was closed because it has been stalled for 7 days with no activity.'
+          stale-issue-label: 'lifecycle/stale'
+          stale-pr-label: 'lifecycle/stale'
+          exempt-pr-labels: 'workflow/pending-maintainer-response'
+          any-of-issue-labels: 'triage/needs-information,triage/not-reproducible,triage/unresolved,workflow/pending-contributor-response,workflow/pending-op-response'
