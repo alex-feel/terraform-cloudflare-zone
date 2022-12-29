@@ -421,8 +421,6 @@ resource "cloudflare_page_rule" "this" {
     rocket_loader               = each.value.actions.rocket_loader
     security_level              = try(contains(local.cloudflare_page_rule_values_avail.security_level, each.value.actions.security_level), false) ? each.value.actions.security_level : each.value.actions.security_level != null ? local.security_level_closest_avail_values[var.plan] : null
     server_side_exclude         = each.value.actions.server_side_exclude
-    #    Unsupported argument, see https://github.com/cloudflare/terraform-provider-cloudflare/issues/1544
-    #    smart_errors                = each.value.actions.smart_errors
     sort_query_string_for_cache = local.cloudflare_page_rule_avail.sort_query_string_for_cache ? each.value.actions.sort_query_string_for_cache : null
     ssl                         = each.value.actions.ssl
     true_client_ip_header       = local.cloudflare_page_rule_avail.true_client_ip_header ? each.value.actions.true_client_ip_header : null

@@ -626,7 +626,6 @@ variable "page_rules" {
       rocket_loader               = optional(string)
       security_level              = optional(string)
       server_side_exclude         = optional(string)
-      smart_errors                = optional(string)
       sort_query_string_for_cache = optional(string)
       ssl                         = optional(string)
       true_client_ip_header       = optional(string)
